@@ -50,7 +50,7 @@ Public Class MainForm
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents PropsFlowLayoutPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents bnPath As System.Windows.Forms.Button
-    Friend WithEvents bArguments As System.Windows.Forms.Button
+    Friend WithEvents bnArguments As System.Windows.Forms.Button
     Friend WithEvents ToolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
     Friend WithEvents OptionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ReplaceInPathToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -91,7 +91,7 @@ Public Class MainForm
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.bnPath = New System.Windows.Forms.Button()
-        Me.bArguments = New System.Windows.Forms.Button()
+        Me.bnArguments = New System.Windows.Forms.Button()
         Me.PropsFlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.MainTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
@@ -385,16 +385,16 @@ Public Class MainForm
         Me.bnPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.bnPath.UseVisualStyleBackColor = True
         '
-        'bArguments
+        'bnArguments
         '
-        Me.bArguments.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.bArguments.Location = New System.Drawing.Point(2006, 307)
-        Me.bArguments.Margin = New System.Windows.Forms.Padding(15, 0, 15, 0)
-        Me.bArguments.Name = "bArguments"
-        Me.bArguments.Size = New System.Drawing.Size(70, 70)
-        Me.bArguments.TabIndex = 8
-        Me.bArguments.Text = "%"
-        Me.bArguments.UseVisualStyleBackColor = True
+        Me.bnArguments.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.bnArguments.Location = New System.Drawing.Point(2006, 307)
+        Me.bnArguments.Margin = New System.Windows.Forms.Padding(15, 0, 15, 0)
+        Me.bnArguments.Name = "bnArguments"
+        Me.bnArguments.Size = New System.Drawing.Size(70, 70)
+        Me.bnArguments.TabIndex = 8
+        Me.bnArguments.Text = "%"
+        Me.bnArguments.UseVisualStyleBackColor = True
         '
         'PropsFlowLayoutPanel
         '
@@ -421,7 +421,7 @@ Public Class MainForm
         Me.MainTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.21946!))
         Me.MainTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.MainTableLayoutPanel.Controls.Add(Me.FlowLayoutPanel1, 2, 6)
-        Me.MainTableLayoutPanel.Controls.Add(Me.bArguments, 3, 4)
+        Me.MainTableLayoutPanel.Controls.Add(Me.bnArguments, 3, 4)
         Me.MainTableLayoutPanel.Controls.Add(Me.PropsFlowLayoutPanel, 1, 5)
         Me.MainTableLayoutPanel.Controls.Add(Me.tbArguments, 2, 4)
         Me.MainTableLayoutPanel.Controls.Add(Me.lv, 0, 2)
@@ -536,8 +536,8 @@ Public Class MainForm
 
         SetColumnWidths()
         SelectFirst()
-
         Native.SetWindowTheme(lv.Handle, "explorer", Nothing)
+        tbSearch.Focus()
     End Sub
 
     <STAThread()>
@@ -684,6 +684,12 @@ Public Class MainForm
 
         If Not SelectedItem Is Nothing Then
             PropsFlowLayoutPanel.Enabled = True
+            tbArguments.Enabled = True
+            tbFileTypes.Enabled = True
+            tbName.Enabled = True
+            tbPath.Enabled = True
+            bnArguments.Enabled = True
+            bnPath.Enabled = True
 
             tbName.Text = SelectedItem.Name
 
@@ -702,6 +708,12 @@ Public Class MainForm
             cbRunAsAdmin.Checked = SelectedItem.RunAsAdmin
         Else
             PropsFlowLayoutPanel.Enabled = False
+            tbArguments.Enabled = False
+            tbFileTypes.Enabled = False
+            tbName.Enabled = False
+            tbPath.Enabled = False
+            bnArguments.Enabled = False
+            bnPath.Enabled = False
 
             tbName.Text = ""
             tbFileTypes.Text = ""
@@ -819,7 +831,7 @@ Public Class MainForm
         AddItem(CloneObject(Of ItemAttribute)(SelectedItem))
     End Sub
 
-    Private Sub bArguments_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bArguments.Click
+    Private Sub bArguments_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnArguments.Click
         tbArguments.Focus()
 
         If tbArguments.Text = "" Then
@@ -885,5 +897,10 @@ Public Class MainForm
         p.StartInfo.FileName = "C:\Windows\System32\regsvr32.exe"
         p.StartInfo.Arguments = "/u """ + DLLPath + """"
         p.Start()
+    End Sub
+
+    Private Sub MainForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        tbSearch.Focus()
+        tbArguments.HideSelection = True
     End Sub
 End Class
