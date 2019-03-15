@@ -1,4 +1,4 @@
-### Open with++
+# Open with++
 
 A shell extension like Open++ which adds a customizable context menu to the windows file explorer.
 
@@ -22,58 +22,58 @@ There are a few defaults commands included, for suggestions about defaults pleas
 
 https://github.com/stax76/OpenWithPlusPlus/issues
 
-# Add
+### Add
 
 Adds a new command to Open with++ menu.
 
-# Remove
+### Remove
 
 Removes the selected command from Open with++ menu.
 
-# Clone
+### Clone
 
 Dublicates a command.
 
-# Tools > Replace in paths of all items
+### Tools > Replace in paths of all items
 
 Allows to search and replaces in all files in one go.
 
-# Tools > Options
+### Tools > Options
 
 Allows to define macros to be used as File Types.
 
-# Install/Uninstall
+### Install/Uninstall
 
 Installs/Uninstalls the shell extension. It is however only unloaded from the explorer process after a reboot or after the explorer is restarted which can easily be achieved with the task manager. Once the libaray is unloaded it can be moved or deleted.
 
-# Name
+### Name
 
 Specifies the name of the command.
 
-# File Types
+### File Types
 
 Specifies for which file types the menu is shown.
 
-# Path
+### Path
 
 Specifies the program to be used for opening the selected files or folders. If the program file resides on the system path, you can enter just the file name. If not, enter the full path of the program. You can also use environment variables to specify program which will be replaced with corresponding variable value when executing the command (for example, "%windir%\explorer.exe").
 
-# Arguments
+### Arguments
 
 Specifies the arguments that are passed to the program when the command is executed, such as command line switches. You can also use environment variables and the predefined variable %paths% which expands to the paths of the selected files or folders. Each path is enclosed in double quotation marks and separated by a space.
 
-# Show in sub menu
+### Show in sub menu
 
 Specifies if the menu is created on top level or as sub menu
 
-# Run as admin
+### Run as admin
 
 Specifies that the command executes with elevated privilegs. When disable commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
 
-# Directories
+### Directories
 
 Specifies that the menu/command is shown when folders are selected or the folder background is clicked.
 
-# All Files
+### All Files
 
 Specifies that the menu/command is shown for any type of selected files, this is usefull for a text editor for instance because files that contain text can have countless file extensions.
