@@ -241,7 +241,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 		InsertMenu(popMenu, -1, MF_BYPOSITION | MF_SEPARATOR, commandIndex, L"");
 	}
 
-	InsertMenu(popMenu, -1, MF_BYPOSITION, commandIndex, L"Edit...");
+	InsertMenu(popMenu, -1, MF_BYPOSITION, commandIndex, L"Customize Open with++");
 	EditIndex = commandIndex - uidFirstCmd;
 
 	return commandIndex - uidFirstCmd + 1;
@@ -280,13 +280,6 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 	{
 		if (id == Items[i]->CommandIndex)
 		{
-			if (!FileExist(Items[i]->Path))
-			{
-				std::wstring s = L"File doesn't exist.\n\n" + Items[i]->Path;
-				MessageBox(hwnd, s.c_str(), PRODUCT_NAME, 0);
-				break;
-			}
-
 			PROCESS_INFORMATION pi = {0};
 			STARTUPINFO si = {sizeof(si)};
 
@@ -297,6 +290,14 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				std::wstring joined = L"\"" + JoinList(&ShellItems, L"\" \"") + L"\"";
 				CString argh = args.c_str();
 				argh.Replace(L"%items%", joined.c_str());
+				args = argh.GetBuffer();
+			}
+
+			if (args.find(L"%paths%") != std::wstring::npos)
+			{
+				std::wstring joined = L"\"" + JoinList(&ShellItems, L"\" \"") + L"\"";
+				CString argh = args.c_str();
+				argh.Replace(L"%paths%", joined.c_str());
 				args = argh.GetBuffer();
 			}
 
@@ -321,14 +322,52 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				verb = L"runas";
 			}
 
+			std::wstring path = Items[i]->Path;
+			std::wstring var(L"%");
+
+			if (path.find(var) != std::string::npos)
+			{
+				TCHAR szEnvPath[MAX_PATH];
+				DWORD result = ExpandEnvironmentStrings(path.c_str(), szEnvPath, MAX_PATH);
+
+				if (result)
+				{
+					std::wstring newPath(szEnvPath);
+					path = newPath;
+				}
+			}
+
+			if (args.find(var) != std::string::npos)
+			{
+				TCHAR szEnvArgs[MAX_PATH];
+				DWORD result = ExpandEnvironmentStrings(args.c_str(), szEnvArgs, MAX_PATH);
+
+				if (result)
+				{
+					std::wstring newArgs(szEnvArgs);
+					args = newArgs;
+				}
+			}
+
+			std::wstring guiExe(L"OpenWithPPGUI.exe");
+
+			if (guiExe == path)
+			{
+				TCHAR exeDir[MAX_PATH];
+				SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,
+					L"ExeDir", exeDir, NULL);
+
+				std::wstring exeDirString(exeDir);
+				path = exeDirString + guiExe;
+			}
+
 			SHELLEXECUTEINFO shExecInfo;
 
 			shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-
 			shExecInfo.fMask = NULL;
 			shExecInfo.hwnd = hwnd;
 			shExecInfo.lpVerb = verb.c_str();
-			shExecInfo.lpFile = Items[i]->Path.c_str();
+			shExecInfo.lpFile = path.c_str();
 			shExecInfo.lpParameters = args.c_str();
 			shExecInfo.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
 			shExecInfo.nShow = SW_NORMAL;

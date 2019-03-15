@@ -9,13 +9,86 @@ Imports Microsoft.VisualBasic
 Public Class g
     Public Shared ShellItems As New List(Of String)
     Public Shared Settings As AppSettings
-    Public Shared SettingsDir As String = Application.StartupPath + "\"
+    Public Shared SettingsDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\Open with++\"
+    Public Shared PathsFile As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\Open with++\Paths.txt"
 
     Public Shared Sub LoadSettings()
         If File.Exists(SettingsDir + "Settings.xml") Then
             g.Settings = XMLSerializerHelp.LoadXML(Of AppSettings)(SettingsDir + "Settings.xml")
         Else
             g.Settings = New AppSettings
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "CMD",
+                .Path = "cmd.exe",
+                .Arguments = "/K CD /D %paths%",
+                .Directories = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "PowerShell",
+                .Path = "powershell.exe",
+                .Arguments = "-noexit -command cd \""%paths%\""",
+                .SubMenu = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "PowerShell ISE",
+                .FileTypes = "ps1",
+                .Path = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe",
+                .Arguments = "%paths%",
+                .SubMenu = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "regsvr32",
+                .FileTypes = "dll ax ocx olb",
+                .Path = "C:\WINDOWS\System32\regsvr32.exe",
+                .Arguments = "%paths%",
+                .SubMenu = True,
+                .RunAsAdmin = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "regsvr32 uninstall",
+                .FileTypes = "dll ax ocx olb",
+                .Path = "C:\WINDOWS\System32\regsvr32.exe",
+                .Arguments = "/u %paths%",
+                .SubMenu = True,
+                .RunAsAdmin = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "Copy Paths",
+                .Directories = True,
+                .AllFiles = True,
+                .Path = "OpenWithPPGUI.exe",
+                .Arguments = "-CopyPaths %paths%",
+                .SubMenu = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "Execute",
+                .FileTypes = "ps1",
+                .Path = "powershell.exe",
+                .Arguments = "-noexit %paths%",
+                .SubMenu = True})
+
+            g.Settings.Items.Add(
+                New ItemAttribute With {
+                .Name = "Open new explorer window here",
+                .Path = "explorer.exe",
+                .Arguments = "%paths%",
+                .Directories = True,
+                .SubMenu = True})
+        End If
+
+        If g.Settings.Macros.Count = 0 Then
+            g.Settings.Macros.Add(New Macro() With {.Name = "%video%", .Value = "mpg avi vob mp4 d2v divx mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%audio%", .Value = "mp2 mp3 ac3 wav w64 m4a dts dtsma dtshr dtshd eac3 thd thd+ac3 ogg mka aac opus flac mpa"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%subtitle%", .Value = "sub sup idx ass aas srt"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%image%", .Value = "png jpg gif bmp"})
         End If
     End Sub
 
@@ -72,6 +145,7 @@ End Class
 Public Class XMLSerializerHelp
     Public Shared Sub SaveXML(ByVal path As String, ByVal obj As Object)
         Dim s As New XmlSerializer(obj.GetType)
+        If Not Directory.Exists(g.SettingsDir) Then Directory.CreateDirectory(g.SettingsDir)
 
         Using w As New XmlTextWriter(path, Encoding.UTF8)
             w.Formatting = Formatting.Indented

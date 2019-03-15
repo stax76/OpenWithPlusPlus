@@ -54,7 +54,7 @@ Public Class SearchForm
             Next
         End Using
 
-        If Not File.Exists(g.SettingsDir + "Paths.txt") Then
+        If Not File.Exists(g.PathsFile) Then
             Dim content = ""
 
             For Each i In Directory.GetFiles(Environment.SystemDirectory)
@@ -63,10 +63,10 @@ Public Class SearchForm
                 End If
             Next
 
-            File.WriteAllText(g.SettingsDir + "Paths.txt", content)
+            File.WriteAllText(g.PathsFile, content)
         End If
 
-        For Each i In File.ReadAllLines(g.SettingsDir + "Paths.txt")
+        For Each i In File.ReadAllLines(g.PathsFile)
             AddFile(i)
         Next
     End Sub
@@ -102,7 +102,7 @@ Public Class SearchForm
                 item.Path = value
                 item.Company = info.CompanyName
                 item.Name = GetName(info, value)
-                item.Arguments = "%items%"
+                item.Arguments = "%paths%"
 
                 AddToList(item)
             End If
@@ -181,7 +181,7 @@ Public Class SearchForm
     Private Sub bBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bBrowse.Click
         Using f As New OpenFileDialog
             If f.ShowDialog = DialogResult.OK Then
-                Using sw = File.AppendText(g.SettingsDir + "Paths.txt")
+                Using sw = File.AppendText(g.PathsFile)
                     sw.WriteLine(f.FileName)
                 End Using
 

@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Threading
 Imports Microsoft.Win32
@@ -320,6 +319,7 @@ Public Class MainForm
         '
         'ToolStripDropDownButton2
         '
+        Me.ToolStripDropDownButton2.AutoToolTip = False
         Me.ToolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.InstallToolStripMenuItem, Me.UninstallToolStripMenuItem})
         Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
@@ -331,13 +331,13 @@ Public Class MainForm
         'InstallToolStripMenuItem
         '
         Me.InstallToolStripMenuItem.Name = "InstallToolStripMenuItem"
-        Me.InstallToolStripMenuItem.Size = New System.Drawing.Size(285, 54)
+        Me.InstallToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
         Me.InstallToolStripMenuItem.Text = "Install"
         '
         'UninstallToolStripMenuItem
         '
         Me.UninstallToolStripMenuItem.Name = "UninstallToolStripMenuItem"
-        Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(285, 54)
+        Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
         Me.UninstallToolStripMenuItem.Text = "Uninstall"
         '
         'Label2
@@ -524,6 +524,9 @@ Public Class MainForm
 
         tbSearch.SetCue("Search", False)
 
+        Dim margin = tsbAdd.Margin
+        margin.Left = CInt(FontHeight * 0.33)
+        tsbAdd.Margin = margin
         g.LoadSettings()
 
         If g.Settings.Items.Count > 0 Then
@@ -542,8 +545,19 @@ Public Class MainForm
 
     <STAThread()>
     Public Shared Sub Main()
-        Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New MainForm)
+        If Environment.GetCommandLineArgs.Length > 1 Then
+            Dim args = Environment.GetCommandLineArgs.Skip(2)
+
+            Select Case Environment.GetCommandLineArgs(1)
+                Case "-CopyPaths"
+                    Clipboard.SetText(String.Join(BR, args.ToArray))
+                Case Else
+                    MsgError("A unknown command line switch was used.")
+            End Select
+        Else
+            Application.SetCompatibleTextRenderingDefault(False)
+            Application.Run(New MainForm)
+        End If
     End Sub
 
     Shared Sub ApplicationThreadException(sender As Object, e As ThreadExceptionEventArgs)
@@ -806,6 +820,7 @@ Public Class MainForm
         RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "Reload", 1)
         RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "SettingsLocation", g.SettingsDir + "Settings.xml")
         RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "ExeLocation", Application.ExecutablePath)
+        RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "ExeDir", Application.StartupPath + "\")
     End Sub
 
     Private Sub bnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnCancel.Click
@@ -822,9 +837,12 @@ Public Class MainForm
     End Sub
 
     Private Sub tsbRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbRemove.Click
+        Dim i = lv.SelectedIndices(0)
         TempItems.Remove(SelectedItem)
         lv.SelectedItems(0).Remove()
-        SelectFirst()
+        If i > lv.Items.Count - 1 Then i = i - 1
+        If i >= 0 Then lv.Items(i).Selected = True
+        UpdateControls()
     End Sub
 
     Private Sub tsbClone_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbClone.Click
@@ -835,9 +853,9 @@ Public Class MainForm
         tbArguments.Focus()
 
         If tbArguments.Text = "" Then
-            tbArguments.Text = "%items%"
+            tbArguments.Text = "%paths%"
         Else
-            tbArguments.Text += " %items%"
+            tbArguments.Text += " %paths%"
         End If
     End Sub
 
