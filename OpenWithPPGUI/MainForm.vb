@@ -43,7 +43,6 @@ Public Class MainForm
     Friend WithEvents tsbAdd As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbRemove As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbClone As System.Windows.Forms.ToolStripButton
-    Friend WithEvents cbSort As System.Windows.Forms.CheckBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
@@ -72,7 +71,6 @@ Public Class MainForm
         Me.tbFileTypes = New System.Windows.Forms.TextBox()
         Me.lExt = New System.Windows.Forms.Label()
         Me.cbAllFiles = New System.Windows.Forms.CheckBox()
-        Me.cbSort = New System.Windows.Forms.CheckBox()
         Me.cbRunAsAdmin = New System.Windows.Forms.CheckBox()
         Me.lv = New System.Windows.Forms.ListView()
         Me.tbSearch = New System.Windows.Forms.TextBox()
@@ -157,12 +155,12 @@ Public Class MainForm
         'cbDirectories
         '
         Me.cbDirectories.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.cbDirectories.Location = New System.Drawing.Point(20, 218)
+        Me.cbDirectories.Location = New System.Drawing.Point(20, 86)
         Me.cbDirectories.Margin = New System.Windows.Forms.Padding(20, 3, 3, 3)
         Me.cbDirectories.Name = "cbDirectories"
         Me.cbDirectories.Size = New System.Drawing.Size(600, 60)
         Me.cbDirectories.TabIndex = 0
-        Me.cbDirectories.Text = "Directories"
+        Me.cbDirectories.Text = "Show for directories"
         '
         'cbSubmenu
         '
@@ -196,28 +194,17 @@ Public Class MainForm
         '
         'cbAllFiles
         '
-        Me.cbAllFiles.Location = New System.Drawing.Point(20, 284)
+        Me.cbAllFiles.Location = New System.Drawing.Point(20, 152)
         Me.cbAllFiles.Margin = New System.Windows.Forms.Padding(20, 3, 3, 3)
         Me.cbAllFiles.Name = "cbAllFiles"
         Me.cbAllFiles.Size = New System.Drawing.Size(600, 60)
         Me.cbAllFiles.TabIndex = 3
-        Me.cbAllFiles.Text = "All Files"
+        Me.cbAllFiles.Text = "Show for all file types"
         Me.cbAllFiles.UseVisualStyleBackColor = True
-        '
-        'cbSort
-        '
-        Me.cbSort.Location = New System.Drawing.Point(20, 152)
-        Me.cbSort.Margin = New System.Windows.Forms.Padding(20, 3, 3, 3)
-        Me.cbSort.Name = "cbSort"
-        Me.cbSort.Size = New System.Drawing.Size(600, 60)
-        Me.cbSort.TabIndex = 2
-        Me.cbSort.Text = "Sort alphabetically"
-        Me.cbSort.UseVisualStyleBackColor = True
-        Me.cbSort.Visible = False
         '
         'cbRunAsAdmin
         '
-        Me.cbRunAsAdmin.Location = New System.Drawing.Point(20, 86)
+        Me.cbRunAsAdmin.Location = New System.Drawing.Point(20, 218)
         Me.cbRunAsAdmin.Margin = New System.Windows.Forms.Padding(20, 3, 3, 3)
         Me.cbRunAsAdmin.Name = "cbRunAsAdmin"
         Me.cbRunAsAdmin.Size = New System.Drawing.Size(600, 60)
@@ -331,13 +318,13 @@ Public Class MainForm
         'InstallToolStripMenuItem
         '
         Me.InstallToolStripMenuItem.Name = "InstallToolStripMenuItem"
-        Me.InstallToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
+        Me.InstallToolStripMenuItem.Size = New System.Drawing.Size(285, 54)
         Me.InstallToolStripMenuItem.Text = "Install"
         '
         'UninstallToolStripMenuItem
         '
         Me.UninstallToolStripMenuItem.Name = "UninstallToolStripMenuItem"
-        Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
+        Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(285, 54)
         Me.UninstallToolStripMenuItem.Text = "Uninstall"
         '
         'Label2
@@ -403,10 +390,9 @@ Public Class MainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MainTableLayoutPanel.SetColumnSpan(Me.PropsFlowLayoutPanel, 3)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbSubmenu)
-        Me.PropsFlowLayoutPanel.Controls.Add(Me.cbRunAsAdmin)
-        Me.PropsFlowLayoutPanel.Controls.Add(Me.cbSort)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbDirectories)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbAllFiles)
+        Me.PropsFlowLayoutPanel.Controls.Add(Me.cbRunAsAdmin)
         Me.PropsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.PropsFlowLayoutPanel.Location = New System.Drawing.Point(583, 383)
         Me.PropsFlowLayoutPanel.Name = "PropsFlowLayoutPanel"

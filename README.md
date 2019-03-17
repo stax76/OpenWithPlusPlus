@@ -66,14 +66,14 @@ Specifies the arguments that are passed to the program when the command is execu
 
 Specifies if the menu is created on top level or as sub menu
 
-### Run as admin
-
-Specifies that the command executes with elevated privilegs. When disable commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
-
-### Directories
+### Show for directories
 
 Specifies that the menu/command is shown when folders are selected or the folder background is clicked.
 
-### All Files
+### Show for all file types
 
 Specifies that the menu/command is shown for any type of selected files, this is usefull for a text editor for instance because files that contain text can have countless file extensions.
+
+### Run as admin
+
+Specifies that the command executes with elevated privilegs. When disable commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
