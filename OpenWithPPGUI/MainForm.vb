@@ -1,5 +1,7 @@
 ﻿Imports System.IO
+Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization.Formatters.Binary
+Imports System.Text
 Imports System.Threading
 Imports Microsoft.Win32
 
@@ -58,6 +60,11 @@ Public Class MainForm
     Friend WithEvents MainTableLayoutPanel As TableLayoutPanel
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents OpenSettingsFolderToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripDropDownButton3 As ToolStripDropDownButton
+    Friend WithEvents OpenWebsiteToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenHelpToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents tsMain As System.Windows.Forms.ToolStrip
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
@@ -80,10 +87,15 @@ Public Class MainForm
         Me.tsbClone = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.ReplaceInPathToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenSettingsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.InstallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UninstallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripDropDownButton3 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.OpenHelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenWebsiteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -244,7 +256,7 @@ Public Class MainForm
         Me.tsMain.Dock = System.Windows.Forms.DockStyle.None
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsMain.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAdd, Me.tsbRemove, Me.tsbClone, Me.ToolStripDropDownButton1, Me.ToolStripDropDownButton2})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAdd, Me.tsbRemove, Me.tsbClone, Me.ToolStripDropDownButton1, Me.ToolStripDropDownButton2, Me.ToolStripDropDownButton3})
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
         Me.tsMain.Size = New System.Drawing.Size(2092, 80)
@@ -285,7 +297,7 @@ Public Class MainForm
         '
         Me.ToolStripDropDownButton1.AutoToolTip = False
         Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReplaceInPathToolStripMenuItem, Me.OptionsToolStripMenuItem})
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReplaceInPathToolStripMenuItem, Me.OpenSettingsFolderToolStripMenuItem, Me.OptionsToolStripMenuItem})
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
@@ -297,6 +309,12 @@ Public Class MainForm
         Me.ReplaceInPathToolStripMenuItem.Name = "ReplaceInPathToolStripMenuItem"
         Me.ReplaceInPathToolStripMenuItem.Size = New System.Drawing.Size(600, 54)
         Me.ReplaceInPathToolStripMenuItem.Text = "Replace in path of all items..."
+        '
+        'OpenSettingsFolderToolStripMenuItem
+        '
+        Me.OpenSettingsFolderToolStripMenuItem.Name = "OpenSettingsFolderToolStripMenuItem"
+        Me.OpenSettingsFolderToolStripMenuItem.Size = New System.Drawing.Size(600, 54)
+        Me.OpenSettingsFolderToolStripMenuItem.Text = "Open settings folder..."
         '
         'OptionsToolStripMenuItem
         '
@@ -326,6 +344,35 @@ Public Class MainForm
         Me.UninstallToolStripMenuItem.Name = "UninstallToolStripMenuItem"
         Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(285, 54)
         Me.UninstallToolStripMenuItem.Text = "Uninstall"
+        '
+        'ToolStripDropDownButton3
+        '
+        Me.ToolStripDropDownButton3.AutoToolTip = False
+        Me.ToolStripDropDownButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripDropDownButton3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenHelpToolStripMenuItem, Me.OpenWebsiteToolStripMenuItem, Me.AboutToolStripMenuItem})
+        Me.ToolStripDropDownButton3.Image = CType(resources.GetObject("ToolStripDropDownButton3.Image"), System.Drawing.Image)
+        Me.ToolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripDropDownButton3.Name = "ToolStripDropDownButton3"
+        Me.ToolStripDropDownButton3.Size = New System.Drawing.Size(206, 77)
+        Me.ToolStripDropDownButton3.Text = "    Help    "
+        '
+        'OpenHelpToolStripMenuItem
+        '
+        Me.OpenHelpToolStripMenuItem.Name = "OpenHelpToolStripMenuItem"
+        Me.OpenHelpToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
+        Me.OpenHelpToolStripMenuItem.Text = "Open Help"
+        '
+        'OpenWebsiteToolStripMenuItem
+        '
+        Me.OpenWebsiteToolStripMenuItem.Name = "OpenWebsiteToolStripMenuItem"
+        Me.OpenWebsiteToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
+        Me.OpenWebsiteToolStripMenuItem.Text = "Open Website"
+        '
+        'AboutToolStripMenuItem
+        '
+        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(468, 54)
+        Me.AboutToolStripMenuItem.Text = "About"
         '
         'Label2
         '
@@ -500,6 +547,8 @@ Public Class MainForm
 
         AddHandler Application.ThreadException, AddressOf ApplicationThreadException
 
+        Text += " " + Application.ProductVersion.ToString
+
         lv.View = View.Details
         lv.Columns.Add("")
         lv.HeaderStyle = ColumnHeaderStyle.None
@@ -644,12 +693,13 @@ Public Class MainForm
             If f.ShowDialog() = DialogResult.OK Then
                 Dim item = DirectCast(f.lv.SelectedItems(0).Tag, ItemAttribute)
 
+                tbPath.Focus()
+                tbPath.Text = item.Path
+
                 If tbName.Text = "" Then
                     tbName.Focus()
                     tbName.Text = item.Name
                 End If
-
-                tbPath.Text = item.Path
             End If
         End Using
     End Sub
@@ -835,7 +885,7 @@ Public Class MainForm
         AddItem(CloneObject(Of ItemAttribute)(SelectedItem))
     End Sub
 
-    Private Sub bArguments_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnArguments.Click
+    Private Sub bnArguments_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnArguments.Click
         tbArguments.Focus()
 
         If tbArguments.Text = "" Then
@@ -906,5 +956,48 @@ Public Class MainForm
     Private Sub MainForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         tbSearch.Focus()
         tbArguments.HideSelection = True
+    End Sub
+
+    Private Sub OpenSettingsFolderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenSettingsFolderToolStripMenuItem.Click
+        Process.Start(g.SettingsDir)
+    End Sub
+
+    Private Sub OpenWebsiteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenWebsiteToolStripMenuItem.Click
+        Process.Start("https://github.com/stax76/OpenWithPlusPlus")
+    End Sub
+
+    Private Sub OpenHelpToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenHelpToolStripMenuItem.Click
+        Process.Start(GetAssociatedApplication(".txt"), Application.StartupPath + "\readme.md")
+    End Sub
+
+    Function GetAssociatedApplication(ext As String) As String
+        Dim c = 0UI
+
+        'ASSOCF_VERIFY, ASSOCSTR_EXECUTABLE
+        If 1 = AssocQueryString(&H40, 2, ext, Nothing, Nothing, c) Then
+            If c > 0 Then
+                Dim sb As New StringBuilder(CInt(c))
+
+                'ASSOCF_VERIFY, ASSOCSTR_EXECUTABLE
+                If 0 = AssocQueryString(&H40, 2, ext, Nothing, sb, c) Then
+                    Dim ret = sb.ToString
+                    If File.Exists(ret) Then Return ret
+                End If
+            End If
+        End If
+    End Function
+
+    <DllImport("Shlwapi.dll", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Shared Function AssocQueryString(
+        flags As UInteger,
+        str As UInteger,
+        pszAssoc As String,
+        pszExtra As String,
+        pszOut As StringBuilder,
+        ByRef pcchOut As UInteger) As UInteger
+    End Function
+
+    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
+        MsgInfo(Application.ProductName + " " + Application.ProductVersion.ToString + BR2 + "Copyright © Frank Skare" + BR2 + "MIT License")
     End Sub
 End Class
