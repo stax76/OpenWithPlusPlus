@@ -868,7 +868,7 @@ Public Class MainForm
     End Sub
 
     Private Sub tsbAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbAdd.Click
-        AddItem(New ItemAttribute)
+        AddItem(New ItemAttribute With {.Arguments = "%paths%"})
         tbSearch.Text = ""
     End Sub
 

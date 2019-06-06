@@ -20,21 +20,19 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRes
 	return _AtlModule.DllMain(dwReason, lpReserved); 
 }
 
-
-// Used to determine whether the DLL can be unloaded by OLE
+__control_entrypoint(DllExport)
 STDAPI DllCanUnloadNow(void)
 {
     return _AtlModule.DllCanUnloadNow();
 }
 
-
-// Returns a class factory to create an object of the requested type
-STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv)
+_Check_return_
+STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID FAR* ppv)
 {
     return _AtlModule.DllGetClassObject(rclsid, riid, ppv);
 }
 
-
+__control_entrypoint(DllExport)
 STDAPI DllRegisterServer(void)
 {
 	WCHAR szModuleName[MAX_PATH];
@@ -101,7 +99,7 @@ STDAPI DllRegisterServer(void)
 	return _AtlModule.DllRegisterServer(FALSE);
 }
 
-
+__control_entrypoint(DllExport)
 STDAPI DllUnregisterServer(void)
 {
 		REGISTRY_ENTRY re[] = {

@@ -86,21 +86,18 @@ HRESULT CreateRegKeyAndSetValue(REGISTRY_ENTRY *pRegistryEntry)
 	return hr;
 }
 
-
 HRESULT DeleteRegKeyOrValue(REGISTRY_ENTRY *re)
 {
 	if (re->pszValueName == NULL)
 	{
 		LONG lr = SHDeleteKey(re->hkeyRoot, re->pszKeyName);
-		if (lr != ERROR_SUCCESS)
-			return HRESULT_FROM_WIN32(lr);
+		if (lr != ERROR_SUCCESS) return HRESULT_FROM_WIN32(lr);
 	}
 	else
 	{
 		LONG lr = SHDeleteValue(re->hkeyRoot, re->pszKeyName, re->pszValueName);
-		if (lr != ERROR_SUCCESS)
-			return HRESULT_FROM_WIN32(lr);
+		if (lr != ERROR_SUCCESS) return HRESULT_FROM_WIN32(lr);
 	}
 
-	return E_FAIL;
+	return NOERROR;
 }
