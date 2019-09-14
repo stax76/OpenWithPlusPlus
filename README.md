@@ -4,6 +4,8 @@ Open with++ is a shell extension which adds a customizable context menu to the w
 
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/OpenWithPlusPlus.png)
 
+Warning: Certain shell extensions including Open with++ break certain items in the Win+X menu in Windows 10
+
 ## Help
 
 Open with++ allows to add customized context menu items in the Windows File Explorer either on top level or in a sub menu.

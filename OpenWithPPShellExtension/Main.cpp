@@ -16,9 +16,7 @@ STDMETHODIMP CMain::Initialize (
 	if (pDataObj)
 	{
 		if (FAILED(pDataObj->GetData(&fmt, &stg)))
-		{
 			return E_INVALIDARG;
-		}
 
 		int uNumFiles = DragQueryFile((HDROP)stg.hGlobal, 0xFFFFFFFF, NULL, 0);
 
@@ -67,7 +65,7 @@ BOOL FileExist(std::wstring path)
 	DWORD dwAttrib = GetFileAttributes(path.c_str());
 
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-			!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+           !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 BOOL DirectoryExist(std::wstring path)
@@ -244,7 +242,8 @@ STDMETHODIMP CMain::QueryContextMenu(
 	InsertMenu(popMenu, -1, MF_BYPOSITION, commandIndex, L"Customize Open with++");
 	EditIndex = commandIndex - uidFirstCmd;
 
-	return commandIndex - uidFirstCmd + 1;
+	return MAKE_HRESULT(SEVERITY_SUCCESS, 0, commandIndex - uidFirstCmd + 1);
+	//return commandIndex - uidFirstCmd + 1;
 }
 
 std::wstring JoinList(std::list<std::wstring>* l, const std::wstring &sep)
@@ -311,6 +310,10 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				{
 					wcscpy_s(szDir, s.c_str());
 					PathRemoveFileSpec(szDir);
+				}
+				else if (DirectoryExist(s))
+				{
+					wcscpy_s(szDir, s.c_str());
 				}
 			}
 
