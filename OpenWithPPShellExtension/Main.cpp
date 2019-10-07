@@ -1,5 +1,3 @@
-// Main.cpp : Implementation of CMain
-
 #include "stdafx.h"
 #include "Main.h"
 #include "Util.h"
@@ -10,7 +8,6 @@ STDMETHODIMP CMain::Initialize (
 {
 	FORMATETC fmt = {CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
 	STGMEDIUM stg;
-
 	ShellItems.clear();
 
 	if (pDataObj)
@@ -63,17 +60,14 @@ std::wstring GetExtNoDot(std::wstring pathName)
 BOOL FileExist(std::wstring path)
 {
 	DWORD dwAttrib = GetFileAttributes(path.c_str());
-
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-           !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 BOOL DirectoryExist(std::wstring path)
 {
 	DWORD dwAttrib = GetFileAttributes(path.c_str());
 
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-			(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 HRESULT CMain::LoadXML()
@@ -113,13 +107,17 @@ HRESULT CMain::LoadXML()
 		{
 			BSTR nodeName;
 			hr = itemField->get_nodeName(&nodeName);
-			if FAILED(hr) return hr;
+
+			if FAILED(hr)
+				return hr;
 
 			CComBSTR cNodeName(nodeName);
 			
 			BSTR nodeText;
 			hr = itemField->get_text(&nodeText);
-			if FAILED(hr) return hr;
+
+			if FAILED(hr)
+				return hr;
 
 			CComBSTR cNodeText(nodeText);
 
@@ -137,12 +135,12 @@ HRESULT CMain::LoadXML()
 				item->Directories = (cNodeText == L"true") ? true : false;
 			else if (cNodeName == L"RunAsAdmin")
 				item->RunAsAdmin = (cNodeText == L"true") ? true : false;
+			else if (cNodeName == L"HideWindow")
+				item->HideWindow = (cNodeText == L"true") ? true : false;
 			else if (cNodeName == L"Sort")
 				item->Sort = (cNodeText == L"true") ? true : false;
-			else if (cNodeName == L"AllFiles")
-				item->AllFiles = (cNodeText == L"true") ? true : false;
 		}
-		
+
 		Items.push_back(item);
 	}
 	return S_OK;
@@ -214,7 +212,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 	for (UINT i = 0; i < Items.size(); i++)
 	{
-		if ((Items[i]->AllFiles && isFile) || (Items[i]->Directories && isDirectory))
+		if ((Items[i]->FileTypes == L"*.*" && isFile) || (Items[i]->Directories && isDirectory))
 		{
 			Items[i]->CommandIndex = commandIndex - uidFirstCmd;
 
@@ -243,7 +241,6 @@ STDMETHODIMP CMain::QueryContextMenu(
 	EditIndex = commandIndex - uidFirstCmd;
 
 	return MAKE_HRESULT(SEVERITY_SUCCESS, 0, commandIndex - uidFirstCmd + 1);
-	//return commandIndex - uidFirstCmd + 1;
 }
 
 std::wstring JoinList(std::list<std::wstring>* l, const std::wstring &sep)
@@ -373,7 +370,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			shExecInfo.lpFile = path.c_str();
 			shExecInfo.lpParameters = args.c_str();
 			shExecInfo.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
-			shExecInfo.nShow = SW_NORMAL;
+			shExecInfo.nShow = Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
 			shExecInfo.hInstApp = NULL;
 
 			ShellExecuteEx(&shExecInfo);

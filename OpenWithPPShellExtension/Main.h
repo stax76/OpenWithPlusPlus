@@ -24,8 +24,8 @@ public:
 	bool SubMenu;
 	bool Directories;
 	bool RunAsAdmin;
+	bool HideWindow;
 	bool Sort;
-	bool AllFiles;
 
 	int CommandIndex;
 };

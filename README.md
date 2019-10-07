@@ -54,7 +54,7 @@ Specifies the name of the command.
 
 ### File Types
 
-Specifies for which file types the menu is shown.
+Specifies for which file types the menu is shown, all files are defined with *.* .
 
 ### Path
 
@@ -72,10 +72,10 @@ Specifies if the menu is created on top level or as sub menu
 
 Specifies that the menu/command is shown when folders are selected or the folder background is clicked.
 
-### Show for all file types
-
-Specifies that the menu/command is shown for any type of selected files, this is usefull for a text editor for instance because files that contain text can have countless file extensions.
-
 ### Run as admin
 
 Specifies that the command executes with elevated privilegs. When disable commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
+
+### Run hidden
+
+Runs the process with hidden window.

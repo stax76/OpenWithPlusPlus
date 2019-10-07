@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("Open with++")>
 <Assembly: AssemblyDescription("A shell extension to customize the Windows File Explorer context menu.")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyCompany("Frank Skare (stax76)")>
 <Assembly: AssemblyProduct("Open with++")>
 <Assembly: AssemblyCopyright("Copyright © 2008-2019 Frank Skare (stax76)")>
 <Assembly: AssemblyTrademark("")>

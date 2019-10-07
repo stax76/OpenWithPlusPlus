@@ -31,7 +31,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionInfer>On</OptionInfer>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -60,6 +60,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42108,42109</WarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\</OutputPath>
@@ -106,7 +108,6 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Native.vb" />
     <Compile Include="OptionsForm.Designer.vb">
@@ -119,12 +120,6 @@
       <DependentUpon>ReplaceForm.vb</DependentUpon>
     </Compile>
     <Compile Include="ReplaceForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SearchForm.designer.vb">
-      <DependentUpon>SearchForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SearchForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.vb">
@@ -165,9 +160,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ReplaceForm.resx">
       <DependentUpon>ReplaceForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SearchForm.resx">
-      <DependentUpon>SearchForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
