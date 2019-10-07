@@ -8,7 +8,7 @@ Feature requests and usage questions are welcome.
 
 Warning: Certain shell extensions including Open with++ break certain items in the [Win+X menu](https://www.digitalcitizen.life/simple-questions-what-winx-menu-how-access-it) in Windows 10
 
-![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/OpenWithPlusPlus.png)
+![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Main.png)
 
 ## Help
 
