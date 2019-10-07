@@ -116,12 +116,6 @@
     <Compile Include="OptionsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ReplaceForm.designer.vb">
-      <DependentUpon>ReplaceForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ReplaceForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -157,9 +151,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ReplaceForm.resx">
-      <DependentUpon>ReplaceForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

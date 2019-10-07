@@ -3,8 +3,8 @@ Partial Class OptionsForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -27,16 +27,16 @@ Partial Class OptionsForm
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tbMacros = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tbSettingDirectory = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'bnOK
         '
         Me.bnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bnOK.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.bnOK.Location = New System.Drawing.Point(1292, 845)
+        Me.bnOK.Location = New System.Drawing.Point(1292, 964)
         Me.bnOK.Margin = New System.Windows.Forms.Padding(15, 15, 0, 15)
         Me.bnOK.Name = "bnOK"
         Me.bnOK.Size = New System.Drawing.Size(230, 70)
@@ -48,7 +48,7 @@ Partial Class OptionsForm
         '
         Me.bnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.bnCancel.Location = New System.Drawing.Point(1537, 845)
+        Me.bnCancel.Location = New System.Drawing.Point(1537, 964)
         Me.bnCancel.Margin = New System.Windows.Forms.Padding(15)
         Me.bnCancel.Name = "bnCancel"
         Me.bnCancel.Size = New System.Drawing.Size(230, 70)
@@ -59,72 +59,79 @@ Partial Class OptionsForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(4, 20)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 20, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(204, 48)
+        Me.Label1.Size = New System.Drawing.Size(144, 48)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "   Macros:   "
+        Me.Label1.Text = "Macros:"
         '
         'tbMacros
         '
         Me.tbMacros.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tbMacros.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.SetColumnSpan(Me.tbMacros, 3)
+        Me.tbMacros.Location = New System.Drawing.Point(0, 48)
         Me.tbMacros.Margin = New System.Windows.Forms.Padding(0)
         Me.tbMacros.Multiline = True
         Me.tbMacros.Name = "tbMacros"
         Me.tbMacros.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.tbMacros.Size = New System.Drawing.Size(1555, 815)
+        Me.tbMacros.Size = New System.Drawing.Size(1782, 798)
         Me.tbMacros.TabIndex = 3
         Me.tbMacros.WordWrap = False
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.ColumnCount = 4
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.bnCancel, 3, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.bnOK, 2, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbSettingDirectory, 0, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.bnCancel, 2, 4)
+        Me.TableLayoutPanel1.Controls.Add(Me.bnOK, 1, 4)
         Me.TableLayoutPanel1.Controls.Add(Me.Label1, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Label2, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbMacros, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowCount = 5
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1782, 930)
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1782, 1049)
         Me.TableLayoutPanel1.TabIndex = 4
         '
-        'TableLayoutPanel2
+        'Label2
         '
-        Me.TableLayoutPanel2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(3, 846)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(311, 48)
+        Me.Label2.TabIndex = 5
+        Me.Label2.Text = "Settings Directory:"
+        '
+        'tbSettingDirectory
+        '
+        Me.tbSettingDirectory.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel2.ColumnCount = 1
-        Me.TableLayoutPanel1.SetColumnSpan(Me.TableLayoutPanel2, 3)
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.tbMacros, 0, 0)
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(212, 15)
-        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(0, 15, 15, 0)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 1
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1555, 815)
-        Me.TableLayoutPanel2.TabIndex = 4
+        Me.TableLayoutPanel1.SetColumnSpan(Me.tbSettingDirectory, 3)
+        Me.tbSettingDirectory.Location = New System.Drawing.Point(0, 894)
+        Me.tbSettingDirectory.Margin = New System.Windows.Forms.Padding(0)
+        Me.tbSettingDirectory.Name = "tbSettingDirectory"
+        Me.tbSettingDirectory.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.tbSettingDirectory.Size = New System.Drawing.Size(1782, 55)
+        Me.tbSettingDirectory.TabIndex = 6
+        Me.tbSettingDirectory.WordWrap = False
         '
         'OptionsForm
         '
-        Me.AcceptButton = Me.bnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(288.0!, 288.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.bnCancel
-        Me.ClientSize = New System.Drawing.Size(1782, 930)
+        Me.ClientSize = New System.Drawing.Size(1782, 1049)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -137,8 +144,6 @@ Partial Class OptionsForm
         Me.Text = "Options"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
-        Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.TableLayoutPanel2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -147,5 +152,6 @@ Partial Class OptionsForm
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents tbMacros As System.Windows.Forms.TextBox
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
+    Friend WithEvents tbSettingDirectory As TextBox
+    Friend WithEvents Label2 As Label
 End Class

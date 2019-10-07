@@ -1,7 +1,5 @@
 ﻿Imports System.IO
-Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization.Formatters.Binary
-Imports System.Text
 Imports System.Threading
 Imports Microsoft.Win32
 
@@ -9,7 +7,7 @@ Public Class MainForm
     Inherits Form
 
 #Region " Designer "
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
         If disposing Then
             If Not (components Is Nothing) Then
                 components.Dispose()
@@ -50,21 +48,16 @@ Public Class MainForm
     Friend WithEvents PropsFlowLayoutPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents bnPath As System.Windows.Forms.Button
     Friend WithEvents bnArguments As System.Windows.Forms.Button
-    Friend WithEvents ToolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents OptionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ReplaceInPathToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripDropDownButton2 As ToolStripDropDownButton
-    Friend WithEvents InstallToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents UninstallToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MainTableLayoutPanel As TableLayoutPanel
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents OpenSettingsFolderToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripDropDownButton3 As ToolStripDropDownButton
-    Friend WithEvents OpenWebsiteToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents miOpenWebsite As ToolStripMenuItem
+    Friend WithEvents miAbout As ToolStripMenuItem
     Friend WithEvents bnFileTypes As Button
     Friend WithEvents cbHideWindow As CheckBox
+    Friend WithEvents tsbInstallUninstall As ToolStripButton
+    Friend WithEvents tsbOptions As ToolStripButton
     Friend WithEvents tsMain As System.Windows.Forms.ToolStrip
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
@@ -83,17 +76,12 @@ Public Class MainForm
         Me.tsMain = New System.Windows.Forms.ToolStrip()
         Me.tsbAdd = New System.Windows.Forms.ToolStripButton()
         Me.tsbRemove = New System.Windows.Forms.ToolStripButton()
+        Me.tsbOptions = New System.Windows.Forms.ToolStripButton()
         Me.tsbClone = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.ReplaceInPathToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenSettingsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.InstallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UninstallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tsbInstallUninstall = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripDropDownButton3 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.OpenWebsiteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.miOpenWebsite = New System.Windows.Forms.ToolStripMenuItem()
+        Me.miAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.laPath = New System.Windows.Forms.Label()
         Me.laName = New System.Windows.Forms.Label()
         Me.laArgs = New System.Windows.Forms.Label()
@@ -247,7 +235,7 @@ Public Class MainForm
         Me.tsMain.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsMain.ImageScalingSize = New System.Drawing.Size(48, 48)
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAdd, Me.tsbRemove, Me.tsbClone, Me.ToolStripDropDownButton1, Me.ToolStripDropDownButton2, Me.ToolStripDropDownButton3})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAdd, Me.tsbRemove, Me.tsbClone, Me.tsbInstallUninstall, Me.tsbOptions, Me.ToolStripDropDownButton3})
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
         Me.tsMain.Size = New System.Drawing.Size(2364, 80)
@@ -274,6 +262,16 @@ Public Class MainForm
         Me.tsbRemove.Size = New System.Drawing.Size(212, 74)
         Me.tsbRemove.Text = "   Remove   "
         '
+        'tsbOptions
+        '
+        Me.tsbOptions.AutoToolTip = False
+        Me.tsbOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbOptions.Margin = New System.Windows.Forms.Padding(0, 3, 0, 3)
+        Me.tsbOptions.Name = "tsbOptions"
+        Me.tsbOptions.Size = New System.Drawing.Size(209, 74)
+        Me.tsbOptions.Text = "   Options   "
+        '
         'tsbClone
         '
         Me.tsbClone.AutoToolTip = False
@@ -284,80 +282,38 @@ Public Class MainForm
         Me.tsbClone.Size = New System.Drawing.Size(215, 74)
         Me.tsbClone.Text = "     Clone     "
         '
-        'ToolStripDropDownButton1
+        'tsbInstallUninstall
         '
-        Me.ToolStripDropDownButton1.AutoToolTip = False
-        Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReplaceInPathToolStripMenuItem, Me.OpenSettingsFolderToolStripMenuItem, Me.OptionsToolStripMenuItem})
-        Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
-        Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
-        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(222, 71)
-        Me.ToolStripDropDownButton1.Text = "     Tools    "
-        '
-        'ReplaceInPathToolStripMenuItem
-        '
-        Me.ReplaceInPathToolStripMenuItem.Name = "ReplaceInPathToolStripMenuItem"
-        Me.ReplaceInPathToolStripMenuItem.Size = New System.Drawing.Size(670, 66)
-        Me.ReplaceInPathToolStripMenuItem.Text = "Replace in path of all items..."
-        '
-        'OpenSettingsFolderToolStripMenuItem
-        '
-        Me.OpenSettingsFolderToolStripMenuItem.Name = "OpenSettingsFolderToolStripMenuItem"
-        Me.OpenSettingsFolderToolStripMenuItem.Size = New System.Drawing.Size(670, 66)
-        Me.OpenSettingsFolderToolStripMenuItem.Text = "Open settings folder..."
-        '
-        'OptionsToolStripMenuItem
-        '
-        Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(670, 66)
-        Me.OptionsToolStripMenuItem.Text = "Options..."
-        '
-        'ToolStripDropDownButton2
-        '
-        Me.ToolStripDropDownButton2.AutoToolTip = False
-        Me.ToolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripDropDownButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.InstallToolStripMenuItem, Me.UninstallToolStripMenuItem})
-        Me.ToolStripDropDownButton2.Image = CType(resources.GetObject("ToolStripDropDownButton2.Image"), System.Drawing.Image)
-        Me.ToolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripDropDownButton2.Name = "ToolStripDropDownButton2"
-        Me.ToolStripDropDownButton2.Size = New System.Drawing.Size(315, 71)
-        Me.ToolStripDropDownButton2.Text = " Install/Uninstall "
-        '
-        'InstallToolStripMenuItem
-        '
-        Me.InstallToolStripMenuItem.Name = "InstallToolStripMenuItem"
-        Me.InstallToolStripMenuItem.Size = New System.Drawing.Size(602, 66)
-        Me.InstallToolStripMenuItem.Text = "Install Shell Extension"
-        '
-        'UninstallToolStripMenuItem
-        '
-        Me.UninstallToolStripMenuItem.Name = "UninstallToolStripMenuItem"
-        Me.UninstallToolStripMenuItem.Size = New System.Drawing.Size(602, 66)
-        Me.UninstallToolStripMenuItem.Text = "Uninstall Shell Extension"
+        Me.tsbInstallUninstall.AutoToolTip = False
+        Me.tsbInstallUninstall.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tsbInstallUninstall.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbInstallUninstall.Margin = New System.Windows.Forms.Padding(0, 3, 0, 3)
+        Me.tsbInstallUninstall.Name = "tsbInstallUninstall"
+        Me.tsbInstallUninstall.Size = New System.Drawing.Size(268, 74)
+        Me.tsbInstallUninstall.Text = "Install/Uninstall"
         '
         'ToolStripDropDownButton3
         '
         Me.ToolStripDropDownButton3.AutoToolTip = False
         Me.ToolStripDropDownButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripDropDownButton3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenWebsiteToolStripMenuItem, Me.AboutToolStripMenuItem})
+        Me.ToolStripDropDownButton3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.miOpenWebsite, Me.miAbout})
         Me.ToolStripDropDownButton3.Image = CType(resources.GetObject("ToolStripDropDownButton3.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton3.Name = "ToolStripDropDownButton3"
         Me.ToolStripDropDownButton3.Size = New System.Drawing.Size(206, 71)
         Me.ToolStripDropDownButton3.Text = "    Help    "
         '
-        'OpenWebsiteToolStripMenuItem
+        'miOpenWebsite
         '
-        Me.OpenWebsiteToolStripMenuItem.Name = "OpenWebsiteToolStripMenuItem"
-        Me.OpenWebsiteToolStripMenuItem.Size = New System.Drawing.Size(346, 66)
-        Me.OpenWebsiteToolStripMenuItem.Text = "Website"
+        Me.miOpenWebsite.Name = "miOpenWebsite"
+        Me.miOpenWebsite.Size = New System.Drawing.Size(538, 66)
+        Me.miOpenWebsite.Text = "Website"
         '
-        'AboutToolStripMenuItem
+        'miAbout
         '
-        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(346, 66)
-        Me.AboutToolStripMenuItem.Text = "About"
+        Me.miAbout.Name = "miAbout"
+        Me.miAbout.Size = New System.Drawing.Size(538, 66)
+        Me.miAbout.Text = "About"
         '
         'laPath
         '
@@ -541,8 +497,8 @@ Public Class MainForm
 
 #End Region
 
-    Private SelectedItem As ItemAttribute
-    Private TempItems As New List(Of ItemAttribute)
+    Private SelectedItem As Item
+    Private TempItems As New List(Of Item)
     Private DLLPath As String = Path.Combine(Application.StartupPath, "OpenWithPPShellExtension.dll")
 
     Public Sub New()
@@ -559,15 +515,18 @@ Public Class MainForm
         lv.Sorting = SortOrder.Ascending
         lv.HideSelection = False
         Native.HideFocus(lv.Handle)
+
         SetCue(tbSearch, "Search", False)
+        tbSearch.Focus()
 
         Dim margin = tsbAdd.Margin
         margin.Left = CInt(FontHeight * 0.33)
         tsbAdd.Margin = margin
+
         g.LoadSettings()
 
         If g.Settings.Items.Count > 0 Then
-            TempItems = CloneObject(Of List(Of ItemAttribute))(g.Settings.Items)
+            TempItems = CloneObject(Of List(Of Item))(g.Settings.Items)
 
             For Each i In TempItems
                 lv.Items.Add(i.Name).Tag = i
@@ -577,7 +536,6 @@ Public Class MainForm
         SetColumnWidths()
         SelectFirst()
         Native.SetWindowTheme(lv.Handle, "explorer", Nothing)
-        tbSearch.Focus()
     End Sub
 
     <STAThread()>
@@ -587,7 +545,7 @@ Public Class MainForm
     End Sub
 
     Shared Sub ApplicationThreadException(sender As Object, e As ThreadExceptionEventArgs)
-        MsgError(e.Exception.Message)
+        MsgError(e.Exception.ToString)
     End Sub
 
     Sub SelectFirst()
@@ -609,7 +567,7 @@ Public Class MainForm
         lv.Columns(0).Width = lv.Width - scrollbarWidth - 5
     End Sub
 
-    Public Shared Function CloneObject(Of T)(ByVal o As Object) As T
+    Public Shared Function CloneObject(Of T)(o As Object) As T
         Using ms As New MemoryStream
             Dim bf As New BinaryFormatter
             bf.Serialize(ms, o)
@@ -618,14 +576,14 @@ Public Class MainForm
         End Using
     End Function
 
-    Sub tbName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbName.TextChanged
+    Sub tbName_TextChanged(sender As Object, e As EventArgs) Handles tbName.TextChanged
         If tbName.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.Name = tbName.Text
             lv.SelectedItems(0).Text = tbName.Text
         End If
     End Sub
 
-    Sub tbExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbFileTypes.TextChanged
+    Sub tbExt_TextChanged(sender As Object, e As EventArgs) Handles tbFileTypes.TextChanged
         If tbFileTypes.Focused AndAlso Not SelectedItem Is Nothing Then
             Dim value = tbFileTypes.Text.ToLower
             If value.Contains(",") Then value = value.Replace(",", " ")
@@ -639,7 +597,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Function SolveMacros(ByVal value As String) As String
+    Function SolveMacros(value As String) As String
         For Each macro In g.Settings.Macros
             If value.Contains(macro.Name) Then
                 value = value.Replace(macro.Name, macro.Value)
@@ -649,31 +607,31 @@ Public Class MainForm
         Return value
     End Function
 
-    Sub cbSubmenu_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbSubmenu.CheckedChanged
+    Sub cbSubmenu_CheckedChanged(sender As Object, e As EventArgs) Handles cbSubmenu.CheckedChanged
         If cbSubmenu.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.SubMenu = cbSubmenu.Checked
         End If
     End Sub
 
-    Sub cbRunAsAdmin_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbRunAsAdmin.CheckedChanged
+    Sub cbRunAsAdmin_CheckedChanged(sender As Object, e As EventArgs) Handles cbRunAsAdmin.CheckedChanged
         If cbRunAsAdmin.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.RunAsAdmin = cbRunAsAdmin.Checked
         End If
     End Sub
 
-    Sub tbPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbPath.TextChanged
+    Sub tbPath_TextChanged(sender As Object, e As EventArgs) Handles tbPath.TextChanged
         If tbPath.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.Path = tbPath.Text
         End If
     End Sub
 
-    Sub tbArgs_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbArguments.TextChanged
+    Sub tbArgs_TextChanged(sender As Object, e As EventArgs) Handles tbArguments.TextChanged
         If tbArguments.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.Arguments = tbArguments.Text
         End If
     End Sub
 
-    Sub cbDirectories_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbDirectories.CheckedChanged
+    Sub cbDirectories_CheckedChanged(sender As Object, e As EventArgs) Handles cbDirectories.CheckedChanged
         If cbDirectories.Focused AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.Directories = cbDirectories.Checked
         End If
@@ -689,7 +647,7 @@ Public Class MainForm
         End Using
     End Sub
 
-    Sub AddItem(ByVal item As ItemAttribute)
+    Sub AddItem(item As Item)
         Dim lvi = lv.Items.Add(item.Name)
         lvi.Tag = item
         lvi.Selected = True
@@ -698,7 +656,7 @@ Public Class MainForm
         UpdateControls()
     End Sub
 
-    Private Sub lv_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lv.KeyUp
+    Private Sub lv_KeyUp(sender As Object, e As KeyEventArgs) Handles lv.KeyUp
         If e.KeyData = Keys.Delete AndAlso tsbRemove.Enabled Then
             tsbRemove.PerformClick()
         End If
@@ -706,13 +664,13 @@ Public Class MainForm
         UpdateControls()
     End Sub
 
-    Private Sub lv_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles lv.MouseUp
+    Private Sub lv_MouseUp(sender As Object, e As MouseEventArgs) Handles lv.MouseUp
         UpdateControls()
     End Sub
 
     Sub UpdateControls()
         If lv.SelectedItems.Count > 0 Then
-            SelectedItem = DirectCast(lv.SelectedItems(0).Tag, ItemAttribute)
+            SelectedItem = DirectCast(lv.SelectedItems(0).Tag, Item)
         Else
             SelectedItem = Nothing
         End If
@@ -774,7 +732,7 @@ Public Class MainForm
         tsbClone.Enabled = Not SelectedItem Is Nothing
     End Sub
 
-    Private Sub tbSearch_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles tbSearch.KeyDown
+    Private Sub tbSearch_KeyDown(sender As Object, e As KeyEventArgs) Handles tbSearch.KeyDown
         If lv.SelectedItems.Count > 0 Then
             Dim index = lv.SelectedItems(0).Index
 
@@ -800,7 +758,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub tbSearch_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbSearch.TextChanged
+    Private Sub tbSearch_TextChanged(sender As Object, e As EventArgs) Handles tbSearch.TextChanged
         lv.BeginUpdate()
         lv.Items.Clear()
 
@@ -822,7 +780,7 @@ Public Class MainForm
         lv.EndUpdate()
     End Sub
 
-    Private Sub bnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnOK.Click
+    Private Sub bnOK_Click(sender As Object, e As EventArgs) Handles bnOK.Click
         g.Settings.Items = TempItems
         g.Settings.Items.Sort()
 
@@ -836,22 +794,22 @@ Public Class MainForm
     End Sub
 
     Sub WriteRegistryValues()
-        RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "Reload", 1)
-        RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "SettingsLocation", g.SettingsDir + "Settings.xml")
-        RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "ExeLocation", Application.ExecutablePath)
-        RegistryHelp.Write(Registry.CurrentUser, "Software\OpenWithPP", "ExeDir", Application.StartupPath + "\")
+        RegistryHelp.SetValue(Registry.CurrentUser, "Software\OpenWithPP", "Reload", 1)
+        RegistryHelp.SetValue(Registry.CurrentUser, "Software\OpenWithPP", "SettingsLocation", g.SettingsDir + "Settings.xml")
+        RegistryHelp.SetValue(Registry.CurrentUser, "Software\OpenWithPP", "ExeLocation", Application.ExecutablePath)
+        RegistryHelp.SetValue(Registry.CurrentUser, "Software\OpenWithPP", "ExeDir", Application.StartupPath + "\")
     End Sub
 
-    Private Sub bnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnCancel.Click
+    Private Sub bnCancel_Click(sender As Object, e As EventArgs) Handles bnCancel.Click
         Close()
     End Sub
 
-    Private Sub tsbAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbAdd.Click
-        AddItem(New ItemAttribute With {.Arguments = "%paths%"})
+    Private Sub tsbAdd_Click(sender As Object, e As EventArgs) Handles tsbAdd.Click
+        AddItem(New Item With {.Arguments = "%paths%"})
         tbSearch.Text = ""
     End Sub
 
-    Private Sub tsbRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbRemove.Click
+    Private Sub tsbRemove_Click(sender As Object, e As EventArgs) Handles tsbRemove.Click
         Dim i = lv.SelectedIndices(0)
         TempItems.Remove(SelectedItem)
         lv.SelectedItems(0).Remove()
@@ -860,74 +818,17 @@ Public Class MainForm
         UpdateControls()
     End Sub
 
-    Private Sub tsbClone_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsbClone.Click
-        AddItem(CloneObject(Of ItemAttribute)(SelectedItem))
+    Private Sub tsbClone_Click(sender As Object, e As EventArgs) Handles tsbClone.Click
+        AddItem(CloneObject(Of Item)(SelectedItem))
     End Sub
 
-    Private Sub bnArguments_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnArguments.Click
+    Private Sub bnArguments_Click(sender As Object, e As EventArgs) Handles bnArguments.Click
         tbArguments.Focus()
         tbArguments.Text = (tbArguments.Text.Trim + " %paths%").Trim
     End Sub
 
-    Private Sub bnPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles bnPath.Click
+    Private Sub bnPath_Click(sender As Object, e As EventArgs) Handles bnPath.Click
         tbPath_DoubleClick()
-    End Sub
-
-    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OptionsToolStripMenuItem.Click
-        Using form As New OptionsForm
-            If form.ShowDialog = DialogResult.OK Then
-                g.Settings.Macros.Clear()
-                Dim a = form.tbMacros.Text.Split({BR}, StringSplitOptions.RemoveEmptyEntries)
-
-                For Each i In a
-                    If i <> "" AndAlso i.Contains("=") Then
-                        Dim a2 = i.Split("="c)
-
-                        If a2.Length > 1 AndAlso a2(0) <> "" AndAlso a2(1) <> "" Then
-                            g.Settings.Macros.Add(New Macro() With {.Name = a2(0).Trim, .Value = a2(1).Trim})
-                        End If
-                    End If
-                Next
-            End If
-        End Using
-    End Sub
-
-    Private Sub ReplaceInPathToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReplaceInPathToolStripMenuItem.Click
-        Using form As New ReplaceForm
-            If form.ShowDialog = DialogResult.OK Then
-                If form.tbSearch.Text <> "" Then
-                    For Each i In TempItems
-                        If i.Path.Contains(form.tbSearch.Text) Then
-                            If Msg("Replace following item?" + BR2 + i.Name + BR2 + i.Path, Application.ProductName, MessageBoxIcon.Question, MessageBoxButtons.OKCancel) = DialogResult.OK Then
-                                i.Path = i.Path.Replace(form.tbSearch.Text, form.tbReplace.Text)
-                            End If
-                        End If
-                    Next
-                End If
-
-                UpdateControls()
-            End If
-        End Using
-    End Sub
-
-    Private Sub InstallToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles InstallToolStripMenuItem.Click
-        Using proc As New Process
-            proc.StartInfo.Verb = "runas"
-            proc.StartInfo.FileName = "regsvr32"
-            proc.StartInfo.Arguments = """" + DLLPath + """"
-            proc.Start()
-        End Using
-
-        WriteRegistryValues()
-    End Sub
-
-    Private Sub UninstallToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UninstallToolStripMenuItem.Click
-        Using proc As New Process
-            proc.StartInfo.Verb = "runas"
-            proc.StartInfo.FileName = "regsvr32"
-            proc.StartInfo.Arguments = "/u """ + DLLPath + """"
-            proc.Start()
-        End Using
     End Sub
 
     Private Sub MainForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
@@ -935,42 +836,11 @@ Public Class MainForm
         tbArguments.HideSelection = True
     End Sub
 
-    Private Sub OpenSettingsFolderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenSettingsFolderToolStripMenuItem.Click
-        Process.Start(g.SettingsDir)
-    End Sub
-
-    Private Sub OpenWebsiteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenWebsiteToolStripMenuItem.Click
+    Private Sub miOpenWebsite_Click(sender As Object, e As EventArgs) Handles miOpenWebsite.Click
         Process.Start("https://github.com/stax76/OpenWithPlusPlus")
     End Sub
 
-    Function GetAssociatedApplication(ext As String) As String
-        Dim c = 0UI
-
-        'ASSOCF_VERIFY, ASSOCSTR_EXECUTABLE
-        If 1 = AssocQueryString(&H40, 2, ext, Nothing, Nothing, c) Then
-            If c > 0 Then
-                Dim sb As New StringBuilder(CInt(c))
-
-                'ASSOCF_VERIFY, ASSOCSTR_EXECUTABLE
-                If 0 = AssocQueryString(&H40, 2, ext, Nothing, sb, c) Then
-                    Dim ret = sb.ToString
-                    If File.Exists(ret) Then Return ret
-                End If
-            End If
-        End If
-    End Function
-
-    <DllImport("Shlwapi.dll", CharSet:=CharSet.Unicode)>
-    Shared Function AssocQueryString(
-        flags As UInteger,
-        str As UInteger,
-        pszAssoc As String,
-        pszExtra As String,
-        pszOut As StringBuilder,
-        ByRef pcchOut As UInteger) As UInteger
-    End Function
-
-    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
+    Private Sub miAbout_Click(sender As Object, e As EventArgs) Handles miAbout.Click
         MsgInfo(Application.ProductName + " " + Application.ProductVersion.ToString + BR2 + "Copyright © 2008-2019 Frank Skare (stax76)" + BR2 + "MIT License")
     End Sub
 
@@ -985,8 +855,71 @@ Public Class MainForm
         End If
     End Sub
 
-    Sub SetCue(ByVal tb As TextBox, ByVal value As String, ByVal hideWhenFocused As Boolean)
+    Sub SetCue(tb As TextBox, value As String, hideWhenFocused As Boolean)
         Const EM_SETCUEBANNER = &H1501
         Native.SendMessage(tb.Handle, EM_SETCUEBANNER, If(hideWhenFocused, 0, 1), value)
+    End Sub
+
+    Private Sub tsbOptions_Click(sender As Object, e As EventArgs) Handles tsbOptions.Click
+        Using form As New OptionsForm
+            If form.ShowDialog = DialogResult.OK Then
+                g.Settings.Macros.Clear()
+                Dim lines = form.tbMacros.Text.Split({BR}, StringSplitOptions.RemoveEmptyEntries)
+
+                For Each line In lines
+                    If line.Contains("=") Then
+                        g.Settings.Macros.Add(New Macro() With {
+                                              .Name = line.Substring(0, line.IndexOf("=")).Trim,
+                                              .Value = line.Substring(line.IndexOf("=") + 1).Trim})
+                    End If
+                Next
+
+                If Directory.Exists(form.tbSettingDirectory.Text) Then
+                    g.SettingsDir = form.tbSettingDirectory.Text
+
+                    If Not g.SettingsDir.EndsWith("\") Then
+                        g.SettingsDir += "\"
+                    End If
+                Else
+                    MsgError("Settings directory does not exist.")
+                End If
+            End If
+        End Using
+    End Sub
+
+    Private Sub tsbInstallUninstall_Click(sender As Object, e As EventArgs) Handles tsbInstallUninstall.Click
+        If tsbInstallUninstall.Text = "   Install   " Then
+            If Msg("Confirm to install the Shell Extension.", "Install Shell Extension",
+                   MessageBoxIcon.None, MessageBoxButtons.OKCancel) = DialogResult.OK Then
+
+                Using proc As New Process
+                    proc.StartInfo.Verb = "runas"
+                    proc.StartInfo.FileName = "regsvr32"
+                    proc.StartInfo.Arguments = """" + DLLPath + """"
+                    proc.Start()
+                End Using
+            End If
+        Else
+            If Msg("Confirm to uninstall the Shell Extension and afterwards reboot, logout or restart the relevant processes.",
+                   "Uninstall Shell Extension", MessageBoxIcon.None, MessageBoxButtons.OKCancel) = DialogResult.OK Then
+
+                Using proc As New Process
+                    proc.StartInfo.Verb = "runas"
+                    proc.StartInfo.FileName = "regsvr32"
+                    proc.StartInfo.Arguments = "/u """ + DLLPath + """"
+                    proc.Start()
+                End Using
+            End If
+        End If
+    End Sub
+
+    Private Sub MainForm_Activated(sender As Object, e As EventArgs) Handles Me.Activated
+        Using key = Registry.ClassesRoot.OpenSubKey("CLSID\{E7B8ACF5-FC18-4f0d-BC50-D0184481A5DC}")
+            If key Is Nothing Then
+                tsbInstallUninstall.Text = "   Install   "
+            Else
+                tsbInstallUninstall.Text = "   Uninstall   "
+            End If
+        End Using
     End Sub
 End Class

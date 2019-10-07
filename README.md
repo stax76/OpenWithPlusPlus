@@ -2,6 +2,10 @@
 
 Open with++ is a shell extension which adds a customizable context menu to the windows file explorer.
 
+It allows to execute a command line on the selected files and folders.
+
+Feature requests and usage questions are welcome.
+
 Warning: Certain shell extensions including Open with++ break certain items in the [Win+X menu](https://www.digitalcitizen.life/simple-questions-what-winx-menu-how-access-it) in Windows 10
 
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/OpenWithPlusPlus.png)
@@ -46,7 +50,7 @@ Allows to define macros to be used as File Types.
 
 ### Install/Uninstall
 
-Installs/Uninstalls the shell extension. It is however only unloaded from the explorer process after a reboot or after the explorer is restarted which can easily be achieved with the task manager. Once the libaray is unloaded it can be moved or deleted.
+Installs/Uninstalls the shell extension. Uninstall requires a reboot, logout or restarting the relevant processes manually, Windows File Explorer can be restarted with the task manager.
 
 ### Name
 
@@ -58,7 +62,7 @@ Specifies for which file types the menu is shown, all files are defined with *.*
 
 ### Path
 
-Specifies the program to be used for opening the selected files or folders. If the program file resides on the system path, you can enter just the file name. If not, enter the full path of the program. You can also use environment variables to specify program which will be replaced with corresponding variable value when executing the command (for example, "%windir%\explorer.exe").
+Specifies the program to be used for opening the selected files or folders.
 
 ### Arguments
 
@@ -79,3 +83,9 @@ Specifies that the command executes with elevated privilegs. When disable comman
 ### Run hidden
 
 Runs the process with hidden window.
+
+## Frequently Ask Questions
+
+Does Open with++ set the working directory?
+
+Yes, it's set to the directory of the selected files or folders.

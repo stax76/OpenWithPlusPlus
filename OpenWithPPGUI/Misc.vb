@@ -8,26 +8,77 @@ Imports Microsoft.VisualBasic
 
 Public Class g
     Public Shared Settings As AppSettings
-    Public Shared SettingsDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\Open with++\"
+
+    Private Shared SettingsDirValue As String
+
+    Public Shared Property SettingsDir As String
+        Get
+            If SettingsDirValue = "" Then
+                SettingsDirValue = RegistryHelp.GetString(Registry.CurrentUser, "Software\OpenWithPP", "SettingsDir")
+
+                If Not Directory.Exists(SettingsDirValue) Then
+                    SettingsDirValue = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\Open with++\"
+
+                    If Not Directory.Exists(SettingsDirValue) Then
+                        Directory.CreateDirectory(SettingsDirValue)
+                    End If
+                End If
+
+                If Not SettingsDirValue.EndsWith("\") Then
+                    SettingsDirValue += "\"
+                End If
+            End If
+
+            Return SettingsDirValue
+        End Get
+        Set(value As String)
+            SettingsDirValue = value
+            RegistryHelp.SetValue(Registry.CurrentUser, "Software\OpenWithPP", "SettingsDir", value)
+        End Set
+    End Property
 
     Public Shared Sub LoadSettings()
         If File.Exists(SettingsDir + "Settings.xml") Then
-            g.Settings = XMLSerializerHelp.LoadXML(Of AppSettings)(SettingsDir + "Settings.xml")
+            g.Settings = LoadXML(Of AppSettings)(SettingsDir + "Settings.xml")
+
+            'backward compatibility
+            For Each item In g.Settings.Items
+                If item.AllFiles Then
+                    item.FileTypesDisplay = "*.*"
+                    item.AllFiles = False
+                End If
+            Next
         Else
             g.Settings = New AppSettings
-        End If
-
-        If g.Settings.Macros.Count = 0 Then
-            g.Settings.Macros.Add(New Macro() With {.Name = "%video%", .Value = "mpg avi vob mp4 d2v divx mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%video%", .Value = "mpg avi vob mp4 d2v mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part"})
             g.Settings.Macros.Add(New Macro() With {.Name = "%audio%", .Value = "mp2 mp3 ac3 wav w64 m4a dts dtsma dtshr dtshd eac3 thd thd+ac3 ogg mka aac opus flac mpa"})
             g.Settings.Macros.Add(New Macro() With {.Name = "%subtitle%", .Value = "sub sup idx ass aas srt"})
-            g.Settings.Macros.Add(New Macro() With {.Name = "%image%", .Value = "png jpg gif bmp"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%image%", .Value = "png jpg jpeg gif bmp"})
         End If
     End Sub
 
     Public Shared Sub SaveSettings()
-        XMLSerializerHelp.SaveXML(SettingsDir + "Settings.xml", g.Settings)
+        If Not Directory.Exists(SettingsDir) Then
+            Directory.CreateDirectory(SettingsDir)
+        End If
+
+        SaveXML(SettingsDir + "Settings.xml", g.Settings)
     End Sub
+
+    Public Shared Sub SaveXML(path As String, obj As Object)
+        Using writer As New XmlTextWriter(path, Encoding.UTF8)
+            writer.Formatting = Formatting.Indented
+            Dim serializer As New XmlSerializer(obj.GetType)
+            serializer.Serialize(writer, obj)
+        End Using
+    End Sub
+
+    Public Shared Function LoadXML(Of T)(path As String) As T
+        Using reader As New XmlTextReader(path)
+            Dim serializer As New XmlSerializer(GetType(T))
+            Return DirectCast(serializer.Deserialize(reader), T)
+        End Using
+    End Function
 End Class
 
 <Serializable()>
@@ -35,8 +86,8 @@ Public Class AppSettings
     Public Sub New()
     End Sub
 
-    <XmlArrayItem("Item", GetType(ItemAttribute))>
-    Public Items As New List(Of ItemAttribute)
+    <XmlArrayItem("Item", GetType(Item))>
+    Public Items As New List(Of Item)
 
     <XmlArrayItem("Macro", GetType(Macro))>
     Public Macros As New List(Of Macro)
@@ -48,8 +99,7 @@ Public Class Macro
 End Class
 
 <Serializable()>
-Public Class ItemAttribute
-    Inherits Attribute
+Public Class Item
     Implements IComparable
 
     Public Name As String = ""
@@ -61,32 +111,10 @@ Public Class ItemAttribute
     Public Directories As Boolean
     Public RunAsAdmin As Boolean
     Public HideWindow As Boolean
+    Public AllFiles As Boolean
 
-    Public Function CompareTo(ByVal obj As Object) As Integer Implements System.IComparable.CompareTo
-        Return Name.CompareTo(DirectCast(obj, ItemAttribute).Name)
-    End Function
-End Class
-
-Public Class XMLSerializerHelp
-    Public Shared Sub SaveXML(ByVal path As String, ByVal obj As Object)
-        Dim serializer As New XmlSerializer(obj.GetType)
-
-        If Not Directory.Exists(g.SettingsDir) Then
-            Directory.CreateDirectory(g.SettingsDir)
-        End If
-
-        Using writer As New XmlTextWriter(path, Encoding.UTF8)
-            writer.Formatting = Formatting.Indented
-            serializer.Serialize(writer, obj)
-        End Using
-    End Sub
-
-    Public Shared Function LoadXML(Of T)(ByVal path As String) As T
-        Dim serializer As New XmlSerializer(GetType(T))
-
-        Using reader As New XmlTextReader(path)
-            Return DirectCast(serializer.Deserialize(reader), T)
-        End Using
+    Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
+        Return Name.CompareTo(DirectCast(obj, Item).Name)
     End Function
 End Class
 
@@ -94,78 +122,55 @@ Public Module MainModule
     Public Const BR As String = vbCrLf
     Public Const BR2 As String = vbCrLf + vbCrLf
 
-    Sub MsgInfo(ByVal text As String)
-        Msg(text, Application.ProductName, MessageBoxIcon.Information)
+    Sub MsgInfo(text As Object)
+        Msg(text, Nothing, MessageBoxIcon.Information)
     End Sub
 
-    Sub MsgError(ByVal text As String)
-        Msg(text, Application.ProductName, MessageBoxIcon.Error)
+    Sub MsgError(text As Object)
+        Msg(text, Nothing, MessageBoxIcon.Error)
     End Sub
 
-    Sub MsgWarn(ByVal text As String)
-        Msg(text, Application.ProductName, MessageBoxIcon.Warning)
+    Sub MsgWarn(text As Object)
+        Msg(text, Nothing, MessageBoxIcon.Warning)
     End Sub
 
-    Function Msg(ByVal text As String,
-                 ByVal title As String,
-                 ByVal icon As MessageBoxIcon) As DialogResult
-
+    Function Msg(text As Object, title As String, icon As MessageBoxIcon) As DialogResult
         Return Msg(text, title, icon, MessageBoxButtons.OK)
     End Function
 
-    Function Msg(ByVal text As String,
-                 ByVal title As String,
-                 ByVal icon As MessageBoxIcon,
-                 ByVal buttons As MessageBoxButtons) As DialogResult
+    Function Msg(text As Object,
+                 title As String,
+                 icon As MessageBoxIcon,
+                 buttons As MessageBoxButtons) As DialogResult
 
-        Return MessageBox.Show(text, title, buttons, icon)
+        If title = "" Then title = Application.ProductName
+        Return MessageBox.Show(CStr(text), title, buttons, icon)
     End Function
 End Module
 
 Public Class RegistryHelp
-    Shared Sub Write(ByVal obj As RegistryKey, ByVal key As String, ByVal name As String, ByVal value As Object)
-        Dim k = obj.OpenSubKey(key, True)
+    Shared Sub SetValue(key As RegistryKey, subKeyName As String, valueName As String, value As Object)
+        Dim subKey = key.OpenSubKey(subKeyName, True)
 
-        If k Is Nothing Then
-            k = obj.CreateSubKey(key, RegistryKeyPermissionCheck.ReadWriteSubTree)
+        If subKey Is Nothing Then
+            subKey = key.CreateSubKey(subKeyName, RegistryKeyPermissionCheck.ReadWriteSubTree)
         End If
 
-        k.SetValue(name, value)
-        k.Close()
+        subKey.SetValue(valueName, value)
+        subKey.Close()
     End Sub
 
-    Public Shared Sub DeleteKey(ByVal rootKey As RegistryKey, ByVal key As String)
-        Dim k = rootKey.OpenSubKey(key)
-
-        If Not k Is Nothing Then
-            Dim names = k.GetSubKeyNames
-            k.Close()
-
-            For Each i In names
-                DeleteKey(rootKey, key + "\" + i)
-            Next
-
-            rootKey.DeleteSubKey(key, True)
-        End If
-    End Sub
-
-    Public Shared Sub DeleteValue(ByVal rootKey As RegistryKey, ByVal key As String, ByVal value As String)
-        Using k = rootKey.OpenSubKey(key)
-            k.DeleteValue(value, False)
-        End Using
-    End Sub
-
-    Public Shared Function GetString(ByVal rootKey As RegistryKey, ByVal key As String, ByVal name As String) As String
+    Public Shared Function GetString(rootKey As RegistryKey, key As String, name As String) As String
         Return GetValue(Of String)(rootKey, key, name)
     End Function
 
-    Public Shared Function GetValue(Of T)(ByVal rootKey As RegistryKey, ByVal key As String, ByVal name As String) As T
-        Using k = rootKey.OpenSubKey(key)
-            If Not k Is Nothing Then
-                Dim r = k.GetValue(name)
+    Public Shared Function GetValue(Of T)(rootKey As RegistryKey, subKeyName As String, valueName As String) As T
+        Using subKey = rootKey.OpenSubKey(subKeyName)
+            If Not subKey Is Nothing Then
+                Dim value = subKey.GetValue(valueName)
 
-                If Not r Is Nothing Then
-                    Return DirectCast(r, T)
+                If Not value Is Nothing Then
+                    Return DirectCast(value, T)
                 End If
             End If
         End Using

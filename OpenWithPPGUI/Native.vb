@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 
 Public Class Native
-    Shared Function MAKEWPARAM(ByVal low As Int32, ByVal high As Int32) As Int32
+    Shared Function MAKEWPARAM(low As Int32, high As Int32) As Int32
         Return (low And &HFFFF) Or (high << 16)
     End Function
 
@@ -11,23 +11,21 @@ Public Class Native
     End Sub
 
     <DllImport("user32", CharSet:=CharSet.Unicode)>
-    Shared Function SendMessage(ByVal hWnd As IntPtr,
-                                ByVal Msg As Int32,
-                                ByVal wParam As Integer,
-                                ByVal lParam As Integer) As IntPtr
+    Shared Function SendMessage(hWnd As IntPtr,
+                                Msg As Int32,
+                                wParam As Integer,
+                                lParam As Integer) As IntPtr
     End Function
 
     <DllImport("user32", CharSet:=CharSet.Unicode)>
-    Shared Function SendMessage(ByVal hWnd As IntPtr,
-                                ByVal msg As Integer,
-                                ByVal wParam As Integer,
+    Shared Function SendMessage(hWnd As IntPtr,
+                                msg As Integer,
+                                wParam As Integer,
                                 <MarshalAs(UnmanagedType.LPWStr)>
-                                ByVal lParam As String) As IntPtr
+                                lParam As String) As IntPtr
     End Function
 
     <DllImport("uxtheme", CharSet:=CharSet.Unicode)>
-    Shared Function SetWindowTheme(ByVal hWnd As IntPtr,
-                                   ByVal pszSubAppName As String,
-                                   ByVal pszSubIdList As String) As Integer
+    Shared Function SetWindowTheme(hWnd As IntPtr, pszSubAppName As String, pszSubIdList As String) As Integer
     End Function
 End Class
