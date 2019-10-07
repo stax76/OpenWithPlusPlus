@@ -12,21 +12,17 @@ Warning: Certain shell extensions including Open with++ break certain items in t
 
 ## Help
 
-Open with++ allows to add customized context menu items in the Windows File Explorer either on top level or in a sub menu.
+Open with++ allows to add customized context menu items in the Windows File Explorer either on top level or in a sub menu. Open with++ is a context menu shell extension that allows you to quickly open the selected files or folders with the customized commands. It adds a menu on top level or as submenu with customized menu items to the shell context menu when right clicking files or folders in Windows File Explorer.
 
-Open with++ is a context menu shell extension that allows you to quickly open the selected files or folders with the customized commands. It adds a menu on top level or as submenu with customized menu items to the shell context menu when right clicking files or folders in Windows File Explorer. Open with++ also provides some predefined commands, such as CMD and PowerShell.
+## Setup
 
-Holding down Control or Shift key while selecting the command from the Open with++, Open with++ will execute the selected command with administrative privileges.
+The requirements are Windows 7 x64 or higher and .NET Framework 4.8. Start the application and click on the Install button in the toolbar.
 
-To customize the commands in Open with++ menu, right click a file or folder in Windows File Explorer, then choose "Open with++ > Customize Open with++" from Open with++ submenu.
+## Usage
 
-The location where Open with++ saves it's settings is:
+Holding down the Control or Shift key while selecting the command from the Open with++ menu will execute the selected command with administrative privileges.
 
-C:\Users\user\AppData\Roaming\Open with++\Settings.xml
-
-There are a few defaults commands included, for suggestions about defaults please use the issue tracker at:
-
-https://github.com/stax76/OpenWithPlusPlus/issues
+To customize the commands of Open with++, right click a file or folder in Windows File Explorer, then choose "Open with++ > Customize Open with++" from Open with++ submenu.
 
 ### Add
 
@@ -38,15 +34,11 @@ Removes the selected command from Open with++ menu.
 
 ### Clone
 
-Dublicates a command.
-
-### Tools > Replace in paths of all items
-
-Allows to search and replaces in all files in one go.
+Dublicates the selected command.
 
 ### Tools > Options
 
-Allows to define macros to be used as File Types.
+Allows to define macros, usable in the File Type property.
 
 ### Install/Uninstall
 
@@ -58,7 +50,7 @@ Specifies the name of the command.
 
 ### File Types
 
-Specifies for which file types the menu is shown, all files are defined with *.* .
+Specifies for which file types the menu is shown, all files are defined with *.* . The options dialog defines macros for common file types.
 
 ### Path
 
@@ -66,19 +58,19 @@ Specifies the program to be used for opening the selected files or folders.
 
 ### Arguments
 
-Specifies the arguments that are passed to the program when the command is executed, such as command line switches. You can also use environment variables and the predefined variable %paths% which expands to the paths of the selected files or folders. Each path is enclosed in double quotation marks and separated by a space.
+Specifies the arguments that are passed to the program when the command is executed, such as command line switches. You can use the predefined variable %paths% which expands to the paths of the selected files or folders. Each path is enclosed in double quotation marks and separated by a space.
 
 ### Show in sub menu
 
-Specifies if the menu is created on top level or as sub menu
+Specifies if the menu is created on top level or as sub menu.
 
 ### Show for directories
 
-Specifies that the menu/command is shown when folders are selected or the folder background is clicked.
+Specifies that the menu command is shown when folders or the folder background is selected.
 
 ### Run as admin
 
-Specifies that the command executes with elevated privilegs. When disable commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
+Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
 
 ### Run hidden
 
