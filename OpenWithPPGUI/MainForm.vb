@@ -921,5 +921,7 @@ Public Class MainForm
                 tsbInstallUninstall.Text = "   Uninstall   "
             End If
         End Using
+
+        Debug.WriteLine(Height)
     End Sub
 End Class
