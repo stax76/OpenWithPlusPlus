@@ -49,7 +49,7 @@ Specifies the name of the command.
 
 ### File Types
 
-Specifies for which file types the menu is shown, all files are defined with *.* . The options dialog defines macros for common file types.
+Specifies for which file types the menu is shown, all files are defined with `*.*`. The options dialog defines macros for common file types.
 
 ### Path
 
