@@ -13,7 +13,9 @@ Feature requests and usage questions are welcome.
 
 ## Setup
 
-The requirements are Windows 7 x64 or higher and .NET Framework 4.8. Start the application and click on the Install button in the toolbar.
+The requirements are Windows 7 x64 or higher and .NET Framework 4.8.
+
+Start the application and click on the Install button in the toolbar.
 
 ## Usage
 
