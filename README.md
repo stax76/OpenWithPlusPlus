@@ -1,19 +1,15 @@
 
 # Open with++
 
-Open with++ is a shell extension which adds a customizable context menu to the Windows File Explorer.
+Warning: Certain shell extensions including Open with++ break certain items in the [Win+X menu](https://www.digitalcitizen.life/simple-questions-what-winx-menu-how-access-it) in Windows 10.
 
-It allows to execute a command line on the selected files and folders.
+Open with++ is a shell extension which adds a customizable context menu to the Windows File Explorer. It allows to execute a command line on the selected files and folders. A common task is to open files with an application like using the regular Open with menu.
 
 Feature requests and usage questions are welcome.
 
-Warning: Certain shell extensions including Open with++ break certain items in the [Win+X menu](https://www.digitalcitizen.life/simple-questions-what-winx-menu-how-access-it) in Windows 10.
+## Screenshot
 
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Main.png)
-
-## Help
-
-Open with++ allows to add customized context menu items in the Windows File Explorer either on top level or in a sub menu. Open with++ is a context menu shell extension that allows you to quickly open the selected files or folders with the customized commands. It adds a menu on top level or as submenu with customized menu items to the shell context menu when right clicking files or folders in Windows File Explorer.
 
 ## Setup
 
