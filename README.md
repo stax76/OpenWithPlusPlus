@@ -146,7 +146,6 @@ To execute a selected PowerShell script use:
 
 A common task is copying the paths of the selected files and folders to the clipboard, this can be achieved with a simple PowerShell script:
 
-Code:
 ```Set-Clipboard ($args -join "`r`n")```
 
 **Name**: Copy Paths  
