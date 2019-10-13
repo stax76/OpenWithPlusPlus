@@ -1,3 +1,4 @@
+
 # Open with++
 
 Open with++ is a shell extension which adds a customizable context menu to the Windows File Explorer.
@@ -76,8 +77,87 @@ Specifies that the command executes with elevated privilegs. When disabled comma
 
 Runs the process with hidden window.
 
-## Frequently Ask Questions
+## Tips & Tricks
 
-Does Open with++ set the working directory?
+- Holding down the Control or Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
+- Whenever a command is executed Open with++ sets the working directory to the directory of the files and folders that are selected in Windows File Explorer.
 
-Yes, it's set to the directory of the selected files or folders.
+## Configuration Suggestions
+
+### Visual Studio Code
+
+Visual Studio Code is not only great for code and markup but due to its fast load times also great as general text editor, in my opinion it's far superior to Notepad++ and also better than Sublime Text.
+
+**Name**: Visual Studio Code  
+**File Types**: `*.*`  
+**Path**: C:\Program Files\Microsoft VS Code\Code.exe  
+**Arguments**: %paths%  
+**Show for directories**: checked
+
+### MediaInfo
+
+If you use StaxRip for video encoding then you might have noticed that it has a MediaInfo GUI with certain advantages over the official MediaInfo GUI, it's searchable and supports High DPI.
+
+**Name**: MediaInfo
+**File Types**: %audio% %video% %subtitle% %image%
+**Path**: D:\your path here\StaxRip.exe
+**Arguments**: -mediainfo %paths%
+
+### PowerShell
+
+Open with++ will always set the working directory to the directory of Windows File Explorer.
+
+I recommend using the new Windows Terminal instead of PowerShell and CMD.
+
+**Name**: PowerShell  
+**Path**: powershell  
+**Arguments**: -nologo  
+**Show for directories**: checked
+
+### CMD
+
+Open with++ will always set the working directory to the directory of Windows File Explorer.
+
+I recommend using the new Windows Terminal instead of PowerShell and CMD.
+
+**Name**: CMD  
+**Path**: cmd  
+**Show in submenu**: checked  
+**Show for directories**: checked
+
+### Windows Terminal
+
+Open with++ will always set the working directory to the directory of Windows File Explorer. In the current preview of Windows Terminal set the following setting:
+
+    "startingDirectory" : null
+
+**Name**: Windows Terminal
+**Path**: wt
+**Show for directories**: checked
+
+### Execute
+
+To execute a selected PowerShell script use:
+
+**Name**: Execute  
+**File Types**: ps1  
+**Path**: powershell  
+**Arguments**: -nologo -noexit -file %paths%
+
+### Copy Paths
+
+A common task is copying the paths of the selected files and folders to the clipboard, this can be achieved with a simple PowerShell script:
+
+Code:
+```Set-Clipboard ($args -join "`r`n")```
+
+**Name**: Copy Paths  
+**File Types**: `*.*`
+**Path**: powershell  
+**Arguments**: `-file "D:\copy paths.ps1" %paths%`
+**Show for directories**: checked  
+**Run hidden**: checked
+
+### Your help
+
+If you know other common commands that might be interesting for Open with++ users then please create an issue on the tracker.

@@ -766,10 +766,10 @@ Public Class MainForm
 
         For Each i In TempItems
             If tbSearch.Text = "" OrElse
-                i.Name.Contains(query) OrElse
-                i.Path.Contains(query) OrElse
-                i.FileTypes.Contains(query) OrElse
-                i.Arguments.Contains(query) Then
+                i.Name.ToLower.Contains(query) OrElse
+                i.Path.ToLower.Contains(query) OrElse
+                i.FileTypes.ToLower.Contains(query) OrElse
+                i.Arguments.ToLower.Contains(query) Then
 
                 lv.Items.Add(i.Name).Tag = i
             End If
@@ -921,7 +921,5 @@ Public Class MainForm
                 tsbInstallUninstall.Text = "   Uninstall   "
             End If
         End Using
-
-        Debug.WriteLine(Height)
     End Sub
 End Class
