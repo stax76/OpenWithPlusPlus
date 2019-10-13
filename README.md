@@ -94,44 +94,44 @@ Visual Studio Code is not only great for code and markup but due to its fast loa
 
 ### MediaInfo
 
-If you use StaxRip for video encoding then you might have noticed that it has a MediaInfo GUI with certain advantages over the official MediaInfo GUI, it's searchable and supports High DPI.
+If you use StaxRip for video encoding then you might want to use it's MediaInfo GUI from Explorer because it supports High DPI and it's searchable.
 
-**Name**: MediaInfo
-**File Types**: %audio% %video% %subtitle% %image%
-**Path**: D:\your path here\StaxRip.exe
-**Arguments**: -mediainfo %paths%
+**Name**: MediaInfo  
+**File Types**: %audio% %video% %subtitle% %image%  
+**Path**: D:\your path here\StaxRip.exe  
+**Arguments**: -mediainfo %paths%  
 
 ### PowerShell
 
 Open with++ will always set the working directory to the directory of Windows File Explorer.
 
-I recommend using the new Windows Terminal instead of PowerShell and CMD.
+I recommend using the new [Windows Terminal](https://github.com/microsoft/terminal).
 
 **Name**: PowerShell  
 **Path**: powershell  
 **Arguments**: -nologo  
-**Show for directories**: checked
+**Show for directories**: checked  
 
 ### CMD
 
 Open with++ will always set the working directory to the directory of Windows File Explorer.
 
-I recommend using the new Windows Terminal instead of PowerShell and CMD.
+I recommend using PowerShell and the new [Windows Terminal](https://github.com/microsoft/terminal).
 
 **Name**: CMD  
 **Path**: cmd  
 **Show in submenu**: checked  
-**Show for directories**: checked
+**Show for directories**: checked  
 
 ### Windows Terminal
 
-Open with++ will always set the working directory to the directory of Windows File Explorer. In the current preview of Windows Terminal set the following setting:
+Open with++ will always set the working directory to the directory of Explorer. In the current preview of Windows Terminal set the following setting:
 
     "startingDirectory" : null
 
-**Name**: Windows Terminal
-**Path**: wt
-**Show for directories**: checked
+**Name**: Windows Terminal  
+**Path**: wt  
+**Show for directories**: checked  
 
 ### Execute
 
@@ -140,7 +140,7 @@ To execute a selected PowerShell script use:
 **Name**: Execute  
 **File Types**: ps1  
 **Path**: powershell  
-**Arguments**: -nologo -noexit -file %paths%
+**Arguments**: -nologo -noexit -file %paths%  
 
 ### Copy Paths
 
@@ -150,11 +150,11 @@ Code:
 ```Set-Clipboard ($args -join "`r`n")```
 
 **Name**: Copy Paths  
-**File Types**: `*.*`
+**File Types**: `*.*`  
 **Path**: powershell  
-**Arguments**: `-file "D:\copy paths.ps1" %paths%`
+**Arguments**: `-file "D:\copy paths.ps1" %paths%`  
 **Show for directories**: checked  
-**Run hidden**: checked
+**Run hidden**: checked  
 
 ### Your help
 
