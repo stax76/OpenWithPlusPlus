@@ -105,7 +105,7 @@ If you use StaxRip for video encoding then you might want to use it's MediaInfo 
 
 Open with++ will always set the working directory to the directory of Windows File Explorer.
 
-I recommend using the new [Windows Terminal](https://github.com/microsoft/terminal).
+I recommend using the new [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701?activetab=pivot:overviewtab).
 
 **Name**: PowerShell  
 **Path**: powershell  
@@ -116,7 +116,7 @@ I recommend using the new [Windows Terminal](https://github.com/microsoft/termin
 
 Open with++ will always set the working directory to the directory of Windows File Explorer.
 
-I recommend using PowerShell and the new [Windows Terminal](https://github.com/microsoft/terminal).
+I recommend using PowerShell and the new [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701?activetab=pivot:overviewtab).
 
 **Name**: CMD  
 **Path**: cmd  
