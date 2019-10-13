@@ -17,9 +17,9 @@ The requirements are Windows 7 x64 or higher and .NET Framework 4.8. Start the a
 
 ## Usage
 
-Holding down the Control or Shift key while selecting the command from the Open with++ menu will execute the selected command with administrative privileges.
+To customize the commands of Open with++, right click a file or folder in Windows File Explorer, then choose "Open with++ > Customize Open with++" from Open with++ submenu. Example commands are listed under [Configuration Suggestions](#configuration-suggestions).
 
-To customize the commands of Open with++, right click a file or folder in Windows File Explorer, then choose "Open with++ > Customize Open with++" from Open with++ submenu.
+## GUI Elements
 
 ### Add
 
