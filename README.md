@@ -35,9 +35,9 @@ Removes the selected command from Open with++ menu.
 
 Dublicates the selected command.
 
-### Tools > Options
+### Options
 
-Allows to define macros, usable in the File Type property.
+Allows to define a custom settings folder and macros that are usable in the File Type property.
 
 ### Install/Uninstall
 
