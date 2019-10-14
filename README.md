@@ -88,13 +88,13 @@ Runs the process with hidden window.
 ## Tips & Tricks
 
 - Holding down the Control or Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
-- Whenever a command is executed Open with++ sets the working directory to the directory of the files and folders that are selected in Windows File Explorer.
+- Whenever a command is executed Open with++ sets the working directory to the directory of the selected files or folders.
 
 ## Configuration Suggestions
 
 ### Visual Studio Code
 
-Visual Studio Code is not only great for code and markup but due to its fast load times also great as general text editor, in my opinion it's far superior to Notepad++ and also better than Sublime Text.
+Visual Studio Code is not only great for code and markup but also as general text editor.
 
 **Name**: Visual Studio Code  
 **File Types**: `*.*`  
@@ -104,7 +104,7 @@ Visual Studio Code is not only great for code and markup but due to its fast loa
 
 ### MediaInfo
 
-If you use StaxRip for video encoding then you might want to use it's MediaInfo GUI from Explorer because it supports High DPI and it's searchable.
+Use the MediaInfo GUI of StaxRip.
 
 **Name**: MediaInfo  
 **File Types**: %audio% %video% %subtitle% %image%  
@@ -113,7 +113,7 @@ If you use StaxRip for video encoding then you might want to use it's MediaInfo 
 
 ### PowerShell
 
-Open with++ will always set the working directory to the directory of Windows File Explorer.
+Select a folder or folder background to start PowerShell at the given folder.
 
 I recommend using the new [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701?activetab=pivot:overviewtab).
 
@@ -124,9 +124,7 @@ I recommend using the new [Windows Terminal](https://www.microsoft.com/en-us/p/w
 
 ### CMD
 
-Open with++ will always set the working directory to the directory of Windows File Explorer.
-
-I recommend using PowerShell and the new [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701?activetab=pivot:overviewtab).
+Select a folder or folder background to start CMD at the given folder.
 
 **Name**: CMD  
 **Path**: cmd  
@@ -135,7 +133,9 @@ I recommend using PowerShell and the new [Windows Terminal](https://www.microsof
 
 ### Windows Terminal
 
-Open with++ will always set the working directory to the directory of Explorer. In the current preview of Windows Terminal set the following setting:
+Select a folder or folder background to start Windows Terminal at the given folder.
+
+In the Windows Terminal settings define the following:
 
     "startingDirectory" : null
 
@@ -145,7 +145,7 @@ Open with++ will always set the working directory to the directory of Explorer. 
 
 ### Execute
 
-To execute a selected PowerShell script use:
+Execute a PowerShell script.
 
 **Name**: Execute  
 **File Types**: ps1  
@@ -154,9 +154,11 @@ To execute a selected PowerShell script use:
 
 ### Copy Paths
 
-A common task is copying the paths of the selected files and folders to the clipboard, this can be achieved with a simple PowerShell script:
+A common task is copying the paths of the selected files and folders to the clipboard, this can be achieved with a PowerShell script:
 
-```Set-Clipboard ($args -join "`r`n")```
+```PowerShell
+Set-Clipboard ($args -join "`r`n")
+```
 
 **Name**: Copy Paths  
 **File Types**: `*.*`  
@@ -175,6 +177,8 @@ Open media files with the mpv.net media player.
 **Arguments**: %paths%  
 
 ### Chrome
+
+Open files in Google Chrome.
 
 **Name**: Chrome  
 **File Types**: pdf htm html  
