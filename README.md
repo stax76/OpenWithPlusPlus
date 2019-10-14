@@ -59,7 +59,7 @@ The options dialog defines macros for common file types:
 %image% = png jpg jpeg gif bmp ico
 ```
 
-media files: `%audio% %video% %image%`  
+Media files: `%audio% %video% %image%`  
 
 ### Path
 
