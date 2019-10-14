@@ -49,7 +49,21 @@ Specifies the name of the command.
 
 ### File Types
 
-Specifies for which file types the menu is shown, all files are defined with `*.*`. The options dialog defines macros for common file types.
+Specifies for which file types the menu is shown.
+
+All files: `*.*`
+txt and md: `txt md`
+
+The options dialog defines macros for common file types:
+
+```
+%video% = mpg avi vob mp4 d2v divx mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part vpy rar crdownload
+%audio% = mp2 mp3 ac3 wav w64 m4a dts dtsma dtshr dtshd eac3 thd thd+ac3 ogg mka aac opus flac mpa
+%subtitle% = sub sup idx ass aas srt
+%image% = png jpg jpeg gif bmp ico
+```
+
+media files: `%audio% %video% %image%`
 
 ### Path
 
@@ -154,6 +168,15 @@ A common task is copying the paths of the selected files and folders to the clip
 **Arguments**: `-file "D:\copy paths.ps1" %paths%`  
 **Show for directories**: checked  
 **Run hidden**: checked  
+
+### mpv.net
+
+Open media files with the mpv.net media player.
+
+**Name**: mpv.net  
+**File Types**: %audio% %video% %image%  
+**Path**: C:\Program Files\mpv.net\mpvnet.exe  
+**Arguments**: %paths%  
 
 ### Your help
 
