@@ -173,3 +173,10 @@ Open media files with the mpv.net media player.
 **File Types**: %audio% %video% %image%  
 **Path**: C:\Program Files\mpv.net\mpvnet.exe  
 **Arguments**: %paths%  
+
+### Chrome
+
+**Name**: Chrome  
+**File Types**: pdf htm html  
+**Path**: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  
+**Arguments**: %paths%  
