@@ -3,8 +3,6 @@
 
 Open with++ is a shell extension which adds a customizable context menu to the Windows File Explorer. It allows to execute a command line on the selected files and folders. A common task is to open files with an application like using the regular Open with menu.
 
-Feature requests and usage questions are welcome.
-
 ## Screenshot
 
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Main.png)
@@ -175,7 +173,3 @@ Open media files with the mpv.net media player.
 **File Types**: %audio% %video% %image%  
 **Path**: C:\Program Files\mpv.net\mpvnet.exe  
 **Arguments**: %paths%  
-
-### Your help
-
-If you know other common commands that might be interesting for Open with++ users then please create an issue on the tracker.
