@@ -51,8 +51,8 @@ Specifies the name of the command.
 
 Specifies for which file types the menu is shown.
 
-All files: `*.*`
-txt and md: `txt md`
+All files: `*.*`  
+txt and md: `txt md`  
 
 The options dialog defines macros for common file types:
 
@@ -63,7 +63,7 @@ The options dialog defines macros for common file types:
 %image% = png jpg jpeg gif bmp ico
 ```
 
-media files: `%audio% %video% %image%`
+media files: `%audio% %video% %image%`  
 
 ### Path
 
