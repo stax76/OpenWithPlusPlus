@@ -267,7 +267,7 @@ std::wstring JoinList(std::list<std::wstring>* l, const std::wstring &sep)
 STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 {
 	if (HIWORD(pCmdInfo->lpVerb) != 0)
-		return S_OK;
+		return E_FAIL;
 
 	HWND hwnd = GetActiveWindow();
 	WORD id = LOWORD(pCmdInfo->lpVerb);
@@ -374,6 +374,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			shExecInfo.hInstApp = NULL;
 
 			ShellExecuteEx(&shExecInfo);
+			return S_OK;
 		}
 	}
 
@@ -397,9 +398,10 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 		shExecInfo.hInstApp = NULL;
 
 		ShellExecuteEx(&shExecInfo);
+		return S_OK;
 	}
 
-	return S_OK;
+	return E_FAIL;
 }
 
 STDMETHODIMP CMain::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT* pwReserved, LPSTR pszName, UINT cchMax)

@@ -1,8 +1,7 @@
 function Remove($path) {
     if (Test-Path $path) {
         Remove-Item $path -Recurse -Force
-    } else {
-        Write-Host "Path don't exist: $path"
+        Write-Host "Deleted: $path" -ForegroundColor Green
     }
 }
 
