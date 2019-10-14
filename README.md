@@ -176,6 +176,15 @@ Open media files with the mpv.net media player.
 **Path**: C:\Program Files\mpv.net\mpvnet.exe  
 **Arguments**: %paths%  
 
+### Add to mpv.net playlist
+
+Open media files with the mpv.net media player.
+
+**Name**: Add to mpv.net playlist  
+**File Types**: %audio% %video% %image%  
+**Path**: C:\Program Files\mpv.net\mpvnet.exe  
+**Arguments**: --queue %paths%  
+
 ### Chrome
 
 Open files in Google Chrome.
