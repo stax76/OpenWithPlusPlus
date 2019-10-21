@@ -104,12 +104,12 @@ Visual Studio Code is not only great for code and markup but also as general tex
 
 ### MediaInfo
 
-Use the MediaInfo GUI of StaxRip.
+Showing MediaInfo using [MediaInfo.NET](https://github.com/stax76/MediaInfo.NET).
 
 **Name**: MediaInfo  
 **File Types**: %audio% %video% %subtitle% %image%  
-**Path**: D:\your path here\StaxRip.exe  
-**Arguments**: -mediainfo %paths%  
+**Path**: D:\your path here\MediaInfoNET.exe  
+**Arguments**: %paths%  
 
 ### PowerShell
 
