@@ -125,7 +125,7 @@ Runs the process with hidden window.
 
 ### Visual Studio Code
 
-Visual Studio Code is not only great for code and markup but also as general text editor.
+Open files or a directory with Visual Studio Code.
 
 **Name**: `Visual Studio Code`  
 **File Types**: `*.*`  
@@ -137,7 +137,7 @@ Visual Studio Code is not only great for code and markup but also as general tex
 
 ### MediaInfo.NET
 
-Showing media info using [MediaInfo.NET](https://github.com/stax76/MediaInfo.NET).
+Show media info using [MediaInfo.NET](https://github.com/stax76/MediaInfo.NET).
 
 **Name**: `MediaInfo.NET`  
 **File Types**: `%audio% %video% %subtitle% %image%`  
@@ -196,7 +196,7 @@ Open with++ includes a Windows Terminal ICO file, this icon can be used to creat
 
 ### Copy Paths
 
-A common task is copying the paths of the selected files and folders to the clipboard, this can be achieved with a PowerShell one-liner:
+Copy the paths of selected files and folders to the clipboard, it can be achieved with a PowerShell one-liner:
 
 ```PowerShell
 Set-Clipboard ($args -join "`r`n")
