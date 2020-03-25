@@ -1,3 +1,4 @@
+
 #include "StdAfx.h"
 #include "Util.h"
 
@@ -24,27 +25,18 @@ REGISTRY_ENTRY GetRegEntry(
 
 HRESULT CreateRegKeyAndSetValue(REGISTRY_ENTRY *pRegistryEntry)
 {
-	HRESULT hr = E_INVALIDARG;
+	HRESULT hr = E_FAIL;
 
 	if (pRegistryEntry != NULL)
 	{
-		// create the key, or obtain its handle if it already exists
 		HKEY hKey;
-		LONG lr = RegCreateKeyExW(pRegistryEntry->hkeyRoot,
-								  pRegistryEntry->pszKeyName, 
-								  0, 
-								  NULL, 
-								  REG_OPTION_NON_VOLATILE,
-								  KEY_ALL_ACCESS, 
-								  NULL, 
-								  &hKey, 
-								  NULL);
+		LSTATUS ls = RegCreateKeyExW(pRegistryEntry->hkeyRoot, pRegistryEntry->pszKeyName,
+			0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, NULL);
 
-		hr = HRESULT_FROM_WIN32(lr);
+		hr = HRESULT_FROM_WIN32(ls);
 
 		if (SUCCEEDED(hr))
 		{
-			// extract the data from the struct according to its type
 			LPBYTE pData = NULL;
 			DWORD cbData = 0;
 			hr = S_OK;
@@ -68,15 +60,10 @@ HRESULT CreateRegKeyAndSetValue(REGISTRY_ENTRY *pRegistryEntry)
 
 			if (SUCCEEDED(hr))
 			{
-				// attempt to set the value
-				lr = RegSetValueExW(hKey,
-									pRegistryEntry->pszValueName,
-									0,
-									pRegistryEntry->dwType,
-									pData,
-									cbData);
+				ls = RegSetValueExW(hKey, pRegistryEntry->pszValueName, 0,
+					pRegistryEntry->dwType, pData, cbData);
 
-				hr = HRESULT_FROM_WIN32(lr);
+				hr = HRESULT_FROM_WIN32(ls);
 			}
 
 			RegCloseKey(hKey);
@@ -86,18 +73,23 @@ HRESULT CreateRegKeyAndSetValue(REGISTRY_ENTRY *pRegistryEntry)
 	return hr;
 }
 
-HRESULT DeleteRegKeyOrValue(REGISTRY_ENTRY *re)
+
+HRESULT DeleteRegKeyOrValue(REGISTRY_ENTRY* re)
 {
-	if (re->pszValueName == NULL)
+	if (!re->pszValueName)
 	{
-		LONG lr = SHDeleteKey(re->hkeyRoot, re->pszKeyName);
-		if (lr != ERROR_SUCCESS) return HRESULT_FROM_WIN32(lr);
+		LSTATUS ls = SHDeleteKey(re->hkeyRoot, re->pszKeyName);
+
+		if (ls)
+			return HRESULT_FROM_WIN32(ls);
 	}
 	else
 	{
-		LONG lr = SHDeleteValue(re->hkeyRoot, re->pszKeyName, re->pszValueName);
-		if (lr != ERROR_SUCCESS) return HRESULT_FROM_WIN32(lr);
+		LSTATUS ls = SHDeleteValue(re->hkeyRoot, re->pszKeyName, re->pszValueName);
+
+		if (ls)
+			return HRESULT_FROM_WIN32(ls);
 	}
 
-	return NOERROR;
+	return S_OK;
 }

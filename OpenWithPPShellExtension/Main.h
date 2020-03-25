@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <initguid.h>
@@ -10,15 +11,18 @@
 EXTERN_C const CLSID CLSID_Main;
 
 // {E7B8ACF5-FC18-4f0d-BC50-D0184481A5DC}
-DEFINE_GUID(CLSID_Main,
-0xe7b8acf5, 0xfc18, 0x4f0d, 0xbc, 0x50, 0xd0, 0x18, 0x44, 0x81, 0xa5, 0xdc);
+DEFINE_GUID(CLSID_Main, 0xe7b8acf5, 0xfc18, 0x4f0d, 0xbc, 0x50, 0xd0, 0x18, 0x44, 0x81, 0xa5, 0xdc);
 
 class Item
 {
 public:
+	HBITMAP Icon = NULL;
+
 	std::wstring Name;
 	std::wstring Path;
 	std::wstring Arguments;
+	std::wstring WorkingDirectory;
+	std::wstring IconFile;
 	std::wstring FileTypes;
 
 	bool SubMenu;
@@ -28,6 +32,9 @@ public:
 	bool Sort;
 
 	int CommandIndex;
+	int IconIndex;
+
+	~Item();
 };
 
 std::list<std::wstring> ShellItems;
@@ -42,9 +49,13 @@ class ATL_NO_VTABLE CMain :
 	public IShellExtInit,
 	public IContextMenu
 {
+
 private:
+
 	HRESULT LoadXML();
+
 public:
+
 	CMain()
 	{
 	}

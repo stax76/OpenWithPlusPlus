@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿
+Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.Text
@@ -7,11 +8,11 @@ Imports Microsoft.Win32
 Imports Microsoft.VisualBasic
 
 Public Class g
-    Public Shared Settings As AppSettings
+    Shared Property Settings As AppSettings
 
     Private Shared SettingsDirValue As String
 
-    Public Shared Property SettingsDir As String
+    Shared Property SettingsDir As String
         Get
             If SettingsDirValue = "" Then
                 SettingsDirValue = RegistryHelp.GetString(Registry.CurrentUser, "Software\OpenWithPP", "SettingsDir")
@@ -37,7 +38,7 @@ Public Class g
         End Set
     End Property
 
-    Public Shared Sub LoadSettings()
+    Shared Sub LoadSettings()
         If File.Exists(SettingsDir + "Settings.xml") Then
             g.Settings = LoadXML(Of AppSettings)(SettingsDir + "Settings.xml")
 
@@ -57,7 +58,7 @@ Public Class g
         End If
     End Sub
 
-    Public Shared Sub SaveSettings()
+    Shared Sub SaveSettings()
         If Not Directory.Exists(SettingsDir) Then
             Directory.CreateDirectory(SettingsDir)
         End If
@@ -65,7 +66,7 @@ Public Class g
         SaveXML(SettingsDir + "Settings.xml", g.Settings)
     End Sub
 
-    Public Shared Sub SaveXML(path As String, obj As Object)
+    Shared Sub SaveXML(path As String, obj As Object)
         Using writer As New XmlTextWriter(path, Encoding.UTF8)
             writer.Formatting = Formatting.Indented
             Dim serializer As New XmlSerializer(obj.GetType)
@@ -73,7 +74,7 @@ Public Class g
         End Using
     End Sub
 
-    Public Shared Function LoadXML(Of T)(path As String) As T
+    Shared Function LoadXML(Of T)(path As String) As T
         Using reader As New XmlTextReader(path)
             Dim serializer As New XmlSerializer(GetType(T))
             Return DirectCast(serializer.Deserialize(reader), T)
@@ -102,16 +103,19 @@ End Class
 Public Class Item
     Implements IComparable
 
-    Public Name As String = ""
-    Public Path As String = ""
+    Public AllFiles As Boolean
     Public Arguments As String = ""
+    Public Directories As Boolean
     Public FileTypes As String = ""
     Public FileTypesDisplay As String = ""
-    Public SubMenu As Boolean = True
-    Public Directories As Boolean
-    Public RunAsAdmin As Boolean
     Public HideWindow As Boolean
-    Public AllFiles As Boolean
+    Public IconFile As String = ""
+    Public IconIndex As Integer
+    Public Name As String = ""
+    Public Path As String = ""
+    Public RunAsAdmin As Boolean
+    Public SubMenu As Boolean = True
+    Public WorkingDirectory As String = ""
 
     Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
         Return Name.CompareTo(DirectCast(obj, Item).Name)
@@ -138,12 +142,13 @@ Public Module MainModule
         Return Msg(text, title, icon, MessageBoxButtons.OK)
     End Function
 
-    Function Msg(text As Object,
-                 title As String,
-                 icon As MessageBoxIcon,
+    Function Msg(text As Object, title As String, icon As MessageBoxIcon,
                  buttons As MessageBoxButtons) As DialogResult
 
-        If title = "" Then title = Application.ProductName
+        If title = "" Then
+            title = Application.ProductName
+        End If
+
         Return MessageBox.Show(CStr(text), title, buttons, icon)
     End Function
 End Module
@@ -160,11 +165,11 @@ Public Class RegistryHelp
         subKey.Close()
     End Sub
 
-    Public Shared Function GetString(rootKey As RegistryKey, key As String, name As String) As String
+    Shared Function GetString(rootKey As RegistryKey, key As String, name As String) As String
         Return GetValue(Of String)(rootKey, key, name)
     End Function
 
-    Public Shared Function GetValue(Of T)(rootKey As RegistryKey, subKeyName As String, valueName As String) As T
+    Shared Function GetValue(Of T)(rootKey As RegistryKey, subKeyName As String, valueName As String) As T
         Using subKey = rootKey.OpenSubKey(subKeyName)
             If Not subKey Is Nothing Then
                 Dim value = subKey.GetValue(valueName)
