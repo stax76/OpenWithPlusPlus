@@ -93,7 +93,11 @@ The working directory the process will use, if not specified the working directo
 
 ### Icon
 
-Supported file types are ICO, EXE and DLL. EXE and DLL files can contain different icons, Open with++ will show a dialog that allows to choose which icon in the EXE or DLL file to use. [IrfanView](https://www.irfanview.com/) can be used to create icons.
+Supported file types are ICO, EXE and DLL. EXE and DLL files can contain different icons, Open with++ will show a dialog that allows to choose which icon in the EXE or DLL file to use.
+
+[IrfanView](https://www.irfanview.com/) can be used to create icons.
+
+[Here is an article](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons) that shows which Windows DLLs contain icon resources.
 
 
 ### Show in sub menu
