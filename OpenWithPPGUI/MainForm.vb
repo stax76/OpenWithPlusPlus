@@ -98,8 +98,8 @@ Public Class MainForm
         Me.bnPath = New System.Windows.Forms.Button()
         Me.bnArguments = New System.Windows.Forms.Button()
         Me.PropsFlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
-        Me.cbHideWindow = New System.Windows.Forms.CheckBox()
         Me.cbHidden = New System.Windows.Forms.CheckBox()
+        Me.cbHideWindow = New System.Windows.Forms.CheckBox()
         Me.tlpMain = New System.Windows.Forms.TableLayoutPanel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.tlpSearch = New System.Windows.Forms.TableLayoutPanel()
@@ -171,7 +171,6 @@ Public Class MainForm
         '
         'cbDirectories
         '
-        Me.cbDirectories.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.cbDirectories.Location = New System.Drawing.Point(25, 86)
         Me.cbDirectories.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
         Me.cbDirectories.Name = "cbDirectories"
@@ -181,7 +180,6 @@ Public Class MainForm
         '
         'cbSubmenu
         '
-        Me.cbSubmenu.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.cbSubmenu.Location = New System.Drawing.Point(25, 20)
         Me.cbSubmenu.Margin = New System.Windows.Forms.Padding(25, 20, 3, 3)
         Me.cbSubmenu.Name = "cbSubmenu"
@@ -404,16 +402,6 @@ Public Class MainForm
         Me.PropsFlowLayoutPanel.Size = New System.Drawing.Size(1718, 415)
         Me.PropsFlowLayoutPanel.TabIndex = 16
         '
-        'cbHideWindow
-        '
-        Me.cbHideWindow.Location = New System.Drawing.Point(25, 284)
-        Me.cbHideWindow.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
-        Me.cbHideWindow.Name = "cbHideWindow"
-        Me.cbHideWindow.Size = New System.Drawing.Size(600, 60)
-        Me.cbHideWindow.TabIndex = 2
-        Me.cbHideWindow.Text = "Run hidden"
-        Me.cbHideWindow.UseVisualStyleBackColor = True
-        '
         'cbHidden
         '
         Me.cbHidden.Location = New System.Drawing.Point(25, 152)
@@ -423,6 +411,16 @@ Public Class MainForm
         Me.cbHidden.TabIndex = 3
         Me.cbHidden.Text = "Show only if Ctrl key is pressed"
         Me.cbHidden.UseVisualStyleBackColor = True
+        '
+        'cbHideWindow
+        '
+        Me.cbHideWindow.Location = New System.Drawing.Point(25, 284)
+        Me.cbHideWindow.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
+        Me.cbHideWindow.Name = "cbHideWindow"
+        Me.cbHideWindow.Size = New System.Drawing.Size(600, 60)
+        Me.cbHideWindow.TabIndex = 2
+        Me.cbHideWindow.Text = "Run hidden"
+        Me.cbHideWindow.UseVisualStyleBackColor = True
         '
         'tlpMain
         '
@@ -786,23 +784,38 @@ Public Class MainForm
 
         If Not SelectedItem Is Nothing Then
             PropsFlowLayoutPanel.Enabled = True
+
             tbFileTypes.Enabled = True
             tbName.Enabled = True
             tbPath.Enabled = True
             tbArguments.Enabled = True
-            bnArguments.Enabled = True
             tbWorkingDirectory.Enabled = True
-            bnWorkingDirectory.Enabled = True
             tbIcon.Enabled = True
-            bnIcon.Enabled = True
+
             bnFileTypes.Enabled = True
             bnPath.Enabled = True
+            bnArguments.Enabled = True
+            bnWorkingDirectory.Enabled = True
+            bnIcon.Enabled = True
+
             laArgs.Enabled = True
-            laExt.Enabled = True
             laName.Enabled = True
+            laExt.Enabled = True
             laPath.Enabled = True
+            laWorkingDirectory.Enabled = True
+            laIcon.Enabled = True
 
             tbName.Text = SelectedItem.Name
+            tbPath.Text = SelectedItem.Path
+            tbArguments.Text = SelectedItem.Arguments
+            tbWorkingDirectory.Text = SelectedItem.WorkingDirectory
+            tbIcon.Text = SelectedItem.IconFile
+
+            cbSubmenu.Checked = SelectedItem.SubMenu
+            cbDirectories.Checked = SelectedItem.Directories
+            cbRunAsAdmin.Checked = SelectedItem.RunAsAdmin
+            cbHideWindow.Checked = SelectedItem.HideWindow
+            cbHidden.Checked = SelectedItem.Hidden
 
             If SelectedItem.FileTypesDisplay = "" Then
                 tbFileTypes.Text = SelectedItem.FileTypes
@@ -810,48 +823,45 @@ Public Class MainForm
                 tbFileTypes.Text = SelectedItem.FileTypesDisplay
             End If
 
-            tbPath.Text = SelectedItem.Path
-            tbArguments.Text = SelectedItem.Arguments
-            tbWorkingDirectory.Text = SelectedItem.WorkingDirectory
-            tbIcon.Text = SelectedItem.IconFile
-
             If SelectedItem.IconFile.ToLower.EndsWith(".exe") OrElse
                 SelectedItem.IconFile.ToLower.EndsWith(".dll") Then
 
                 tbIcon.Text += "," & SelectedItem.IconIndex
             End If
-
-            cbSubmenu.Checked = SelectedItem.SubMenu
-            cbDirectories.Checked = SelectedItem.Directories
-            cbRunAsAdmin.Checked = SelectedItem.RunAsAdmin
-            cbHideWindow.Checked = SelectedItem.HideWindow
-            cbHidden.Checked = SelectedItem.Hidden
         Else
             PropsFlowLayoutPanel.Enabled = False
+
             tbArguments.Enabled = False
             tbFileTypes.Enabled = False
             tbName.Enabled = False
             tbPath.Enabled = False
+            tbWorkingDirectory.Enabled = False
+            tbIcon.Enabled = False
+
             bnArguments.Enabled = False
             bnPath.Enabled = False
-            tbWorkingDirectory.Enabled = False
             bnWorkingDirectory.Enabled = False
-            tbIcon.Enabled = False
             bnIcon.Enabled = False
             bnFileTypes.Enabled = False
+
+            laWorkingDirectory.Enabled = False
+            laIcon.Enabled = False
             laArgs.Enabled = False
             laExt.Enabled = False
             laName.Enabled = False
             laPath.Enabled = False
+
             cbDirectories.Checked = False
             cbSubmenu.Checked = False
             cbRunAsAdmin.Checked = False
             cbHideWindow.Checked = False
+            cbHidden.Checked = False
 
             tbName.Text = ""
             tbFileTypes.Text = ""
             tbPath.Text = ""
             tbArguments.Text = ""
+            tbIcon.Text = ""
         End If
 
         tsbRemove.Enabled = Not SelectedItem Is Nothing
