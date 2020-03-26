@@ -29,6 +29,7 @@ public:
 	bool Directories;
 	bool RunAsAdmin;
 	bool HideWindow;
+	bool Hidden;
 	bool Sort;
 
 	int CommandIndex;
@@ -37,9 +38,9 @@ public:
 	~Item();
 };
 
-std::list<std::wstring> ShellItems;
-std::vector<Item*> Items;
-int EditIndex;
+std::list<std::wstring> g_ShellItems;
+std::vector<Item*> g_Items;
+int g_EditCommandIndex;
 
 // CMain
 

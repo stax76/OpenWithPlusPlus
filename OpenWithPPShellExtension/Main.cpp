@@ -167,10 +167,10 @@ BOOL DirectoryExist(std::wstring path)
 
 HRESULT CMain::LoadXML()
 {
-	for (Item* item : Items)
+	for (Item* item : g_Items)
 		delete item;
 
-	Items.clear();
+	g_Items.clear();
 
 	TCHAR path[MAX_PATH];
 	SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,
@@ -251,11 +251,13 @@ HRESULT CMain::LoadXML()
 				item->RunAsAdmin = (cNodeText == L"true") ? true : false;
 			else if (cNodeName == L"HideWindow")
 				item->HideWindow = (cNodeText == L"true") ? true : false;
+			else if (cNodeName == L"Hidden")
+				item->Hidden = (cNodeText == L"true") ? true : false;
 			else if (cNodeName == L"Sort")
 				item->Sort = (cNodeText == L"true") ? true : false;
 		}
 
-		Items.push_back(item);
+		g_Items.push_back(item);
 	}
 
 	return S_OK;
@@ -269,7 +271,7 @@ STDMETHODIMP CMain::Initialize(
 {
 	FORMATETC fmt = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
 	STGMEDIUM stg;
-	ShellItems.clear();
+	g_ShellItems.clear();
 
 	if (pDataObj)
 	{
@@ -288,7 +290,7 @@ STDMETHODIMP CMain::Initialize(
 		{
 			TCHAR buf[MAX_PATH];
 			DragQueryFile((HDROP)stg.hGlobal, i, buf, MAX_PATH);
-			ShellItems.push_back(buf);
+			g_ShellItems.push_back(buf);
 		}
 
 		ReleaseStgMedium(&stg);
@@ -300,7 +302,7 @@ STDMETHODIMP CMain::Initialize(
 		if (!SHGetPathFromIDList(pidlFolder, buf))
 			return E_FAIL;
 
-		ShellItems.push_back(buf);
+		g_ShellItems.push_back(buf);
 	}
 	else
 		return E_FAIL;
@@ -312,7 +314,7 @@ STDMETHODIMP CMain::Initialize(
 STDMETHODIMP CMain::QueryContextMenu(
 	HMENU hmenu, UINT uMenuIndex, UINT uidFirstCmd, UINT uidLastCmd, UINT uFlags)
 {
-	if (Items.size() == 0 || SHRegGetBoolUSValue(
+	if (g_Items.size() == 0 || SHRegGetBoolUSValue(
 		L"Software\\" PRODUCT_NAME, L"Reload", FALSE, TRUE))
 	{
 		REGISTRY_ENTRY re = GetRegEntry(HKEY_CURRENT_USER,
@@ -329,47 +331,52 @@ STDMETHODIMP CMain::QueryContextMenu(
 	}
 
 	UINT command = uidFirstCmd;
-	HMENU popMenu = CreatePopupMenu();
+	HMENU subMenu = CreatePopupMenu();
+
 	bool addSubSep = false;
+	bool isCtrlPressed = GetKeyState(VK_CONTROL) < 0;
+	bool isFile = FileExist(*g_ShellItems.begin());
+	bool isDirectory = !isFile && DirectoryExist(*g_ShellItems.begin());
 
-	BOOL isFile = FileExist(*ShellItems.begin());
-	BOOL isDirectory = !isFile && DirectoryExist(*ShellItems.begin());
+	g_EditCommandIndex = -1;
 
-	int res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION | MF_POPUP, (UINT_PTR)popMenu, L"Open with++");
+	int res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION | MF_POPUP, (UINT_PTR)subMenu, L"Open with++");
+	int subMenuIndex = uMenuIndex;
 
 	if (!res)
 		return E_FAIL;
 
 	uMenuIndex += 1;
 
-	for (UINT i = 0; i < Items.size(); i++)
+	for (UINT i = 0; i < g_Items.size(); i++)
 	{
-		Items[i]->CommandIndex = -1;
-		std::wstring ext = GetExtNoDot(*ShellItems.begin());
+		g_Items[i]->CommandIndex = -1;
+		std::wstring ext = GetExtNoDot(*g_ShellItems.begin());
 
-		if (isFile && Items[i]->FileTypes != L"" && ext != L"" &&
-			(L" " + Items[i]->FileTypes + L" ").find(L" " + ext + L" ") != std::wstring::npos)
+		if (isFile && g_Items[i]->FileTypes != L"" && ext != L""
+			&& (L" " + g_Items[i]->FileTypes + L" ").find(L" " + ext + L" ") != std::wstring::npos
+			&& (!g_Items[i]->Hidden || (g_Items[i]->Hidden && isCtrlPressed)))
 		{
-			Items[i]->CommandIndex = command - uidFirstCmd;
+			g_Items[i]->CommandIndex = command - uidFirstCmd;
 
-			if (Items[i]->SubMenu)
+			if (g_Items[i]->SubMenu)
 			{
-				res = InsertMenu(popMenu, -1, MF_BYPOSITION, command, Items[i]->Name.c_str());
+				res = InsertMenu(subMenu, -1, MF_BYPOSITION, command, g_Items[i]->Name.c_str());
 
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, Items[i]);
+				SetIcon(hmenu, command, g_Items[i]);
 				addSubSep = true;
 			}
 			else
 			{
-				res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION, command, Items[i]->Name.c_str());
+				res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION, command, g_Items[i]->Name.c_str());
 
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, Items[i]);
+				SetIcon(hmenu, command, g_Items[i]);
 				uMenuIndex += 1;
 			}
 
@@ -379,37 +386,39 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 	if (addSubSep)
 	{
-		addSubSep = false;
-		res = InsertMenu(popMenu, -1, MF_BYPOSITION | MF_SEPARATOR, command, L"");
+		res = InsertMenu(subMenu, -1, MF_BYPOSITION | MF_SEPARATOR, command, NULL);
 
 		if (!res)
 			return E_FAIL;
 	}
 
-	for (UINT i = 0; i < Items.size(); i++)
-	{
-		if ((Items[i]->FileTypes == L"*.*" && isFile) || (Items[i]->Directories && isDirectory))
-		{
-			Items[i]->CommandIndex = command - uidFirstCmd;
+	bool addSubSep2 = false;
 
-			if (Items[i]->SubMenu)
+	for (UINT i = 0; i < g_Items.size(); i++)
+	{
+		if ((g_Items[i]->FileTypes == L"*.*" && isFile) || (g_Items[i]->Directories && isDirectory)
+			&& (!g_Items[i]->Hidden || (g_Items[i]->Hidden && isCtrlPressed)))
+		{
+			g_Items[i]->CommandIndex = command - uidFirstCmd;
+
+			if (g_Items[i]->SubMenu)
 			{
-				res = InsertMenu(popMenu, -1, MF_BYPOSITION, command, Items[i]->Name.c_str());
+				res = InsertMenu(subMenu, -1, MF_BYPOSITION, command, g_Items[i]->Name.c_str());
 
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, Items[i]);
-				addSubSep = true;
+				SetIcon(hmenu, command, g_Items[i]);
+				addSubSep2 = true;
 			}
 			else
 			{
-				res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION, command, Items[i]->Name.c_str());
+				res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION, command, g_Items[i]->Name.c_str());
 
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, Items[i]);
+				SetIcon(hmenu, command, g_Items[i]);
 				uMenuIndex += 1;
 			}
 
@@ -417,21 +426,26 @@ STDMETHODIMP CMain::QueryContextMenu(
 		}
 	}
 
-	if (addSubSep)
+	if (addSubSep2)
 	{
-		addSubSep = false;
-		res = InsertMenu(popMenu, -1, MF_BYPOSITION | MF_SEPARATOR, command, L"");
+		res = InsertMenu(subMenu, -1, MF_BYPOSITION | MF_SEPARATOR, command, NULL);
 
 		if (!res)
 			return E_FAIL;
 	}
 
-	res = InsertMenu(popMenu, -1, MF_BYPOSITION, command, L"Customize Open with++");
+	if (addSubSep || addSubSep2)
+	{
+		res = InsertMenu(subMenu, -1, MF_BYPOSITION, command, L"Customize Open with++");
 
-	if (!res)
-		return E_FAIL;
+		if (!res)
+			return E_FAIL;
 
-	EditIndex = command - uidFirstCmd;
+		g_EditCommandIndex = command - uidFirstCmd;
+	}
+	else
+		DeleteMenu(hmenu, subMenuIndex, MF_BYPOSITION);
+
 	return MAKE_HRESULT(SEVERITY_SUCCESS, 0, command - uidFirstCmd + 1);
 }
 
@@ -444,18 +458,18 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 	HWND hwnd = GetActiveWindow();
 	WORD id = LOWORD(pCmdInfo->lpVerb);
 
-	for (UINT i = 0; i < Items.size(); i++)
+	for (UINT i = 0; i < g_Items.size(); i++)
 	{
-		if (id == Items[i]->CommandIndex)
+		if (id == g_Items[i]->CommandIndex)
 		{
 			PROCESS_INFORMATION pi = {0};
 			STARTUPINFO si = {sizeof(si)};
 
-			std::wstring args = Items[i]->Arguments;
+			std::wstring args = g_Items[i]->Arguments;
 
 			if (args.find(L"%items%") != std::wstring::npos)
 			{
-				std::wstring joined = L"\"" + JoinList(&ShellItems, L"\" \"") + L"\"";
+				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
 				CString argh = args.c_str();
 				argh.Replace(L"%items%", joined.c_str());
 				args = argh.GetBuffer();
@@ -463,7 +477,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (args.find(L"%paths%") != std::wstring::npos)
 			{
-				std::wstring joined = L"\"" + JoinList(&ShellItems, L"\" \"") + L"\"";
+				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
 				CString argh = args.c_str();
 				argh.Replace(L"%paths%", joined.c_str());
 				args = argh.GetBuffer();
@@ -471,9 +485,9 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			WCHAR szDir[MAX_PATH];
 
-			if (ShellItems.size() > 0)
+			if (g_ShellItems.size() > 0)
 			{
-				std::wstring firstItem = *ShellItems.begin();
+				std::wstring firstItem = *g_ShellItems.begin();
 
 				if (FileExist(firstItem))
 				{
@@ -488,13 +502,10 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			std::wstring verb;
 
-			if (Items[i]->RunAsAdmin ||
-				(GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_SHIFT) < 0))
-			{	
+			if (g_Items[i]->RunAsAdmin || GetKeyState(VK_SHIFT) < 0)
 				verb = L"runas";
-			}
 
-			std::wstring path = Items[i]->Path;
+			std::wstring path = g_Items[i]->Path;
 			std::wstring var(L"%");
 
 			if (path.find(var) != std::string::npos)
@@ -542,12 +553,12 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			shExecInfo.lpFile = path.c_str();
 			shExecInfo.lpParameters = args.c_str();
 
-			if (Items[i]->WorkingDirectory.length() == 0)
+			if (g_Items[i]->WorkingDirectory.length() == 0)
 				shExecInfo.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
 			else
-				shExecInfo.lpDirectory = Items[i]->WorkingDirectory.c_str();
+				shExecInfo.lpDirectory = g_Items[i]->WorkingDirectory.c_str();
 
-			shExecInfo.nShow = Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
+			shExecInfo.nShow = g_Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
 			shExecInfo.hInstApp = NULL;
 
 			ShellExecuteEx(&shExecInfo);
@@ -555,7 +566,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 		}
 	}
 
-	if (id == EditIndex)
+	if (id == g_EditCommandIndex)
 	{
 		TCHAR path[MAX_PATH];
 		SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,

@@ -110,9 +110,14 @@ Specifies if the menu is created on top level or as sub menu.
 Specifies that the menu command is shown when folders or the folder background is selected.
 
 
+### Show only if Ctrl key is pressed
+
+The menu item is only visible if the Control key is pressed.
+
+
 ### Run as admin
 
-Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Control or Shift key while selecting the command from the Open with++ menu.
+Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Shift key while selecting the command from the Open with++ menu.
 
 
 ### Run hidden
@@ -122,7 +127,7 @@ Runs the process with hidden window.
 
 ## Tips & Tricks
 
-- Holding down the Control or Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
+- Holding down the Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
 
 
 ## Configuration Suggestions

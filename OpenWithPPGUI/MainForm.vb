@@ -67,6 +67,7 @@ Public Class MainForm
     Friend WithEvents bnIcon As Button
     Friend WithEvents tbIcon As TextBox
     Friend WithEvents laIcon As Label
+    Friend WithEvents cbHidden As CheckBox
     Friend WithEvents tsMain As System.Windows.Forms.ToolStrip
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
@@ -98,6 +99,7 @@ Public Class MainForm
         Me.bnArguments = New System.Windows.Forms.Button()
         Me.PropsFlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.cbHideWindow = New System.Windows.Forms.CheckBox()
+        Me.cbHidden = New System.Windows.Forms.CheckBox()
         Me.tlpMain = New System.Windows.Forms.TableLayoutPanel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.tlpSearch = New System.Windows.Forms.TableLayoutPanel()
@@ -209,7 +211,7 @@ Public Class MainForm
         '
         'cbRunAsAdmin
         '
-        Me.cbRunAsAdmin.Location = New System.Drawing.Point(25, 152)
+        Me.cbRunAsAdmin.Location = New System.Drawing.Point(25, 218)
         Me.cbRunAsAdmin.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
         Me.cbRunAsAdmin.Name = "cbRunAsAdmin"
         Me.cbRunAsAdmin.Size = New System.Drawing.Size(600, 60)
@@ -227,7 +229,7 @@ Public Class MainForm
         Me.lv.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.lv.Name = "lv"
         Me.tlpMain.SetRowSpan(Me.lv, 6)
-        Me.lv.Size = New System.Drawing.Size(518, 815)
+        Me.lv.Size = New System.Drawing.Size(518, 880)
         Me.lv.TabIndex = 1
         Me.lv.UseCompatibleStateImageBehavior = False
         '
@@ -392,24 +394,35 @@ Public Class MainForm
         Me.tlpMain.SetColumnSpan(Me.PropsFlowLayoutPanel, 3)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbSubmenu)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbDirectories)
+        Me.PropsFlowLayoutPanel.Controls.Add(Me.cbHidden)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbRunAsAdmin)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbHideWindow)
         Me.PropsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.PropsFlowLayoutPanel.Location = New System.Drawing.Point(536, 643)
         Me.PropsFlowLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.PropsFlowLayoutPanel.Name = "PropsFlowLayoutPanel"
-        Me.PropsFlowLayoutPanel.Size = New System.Drawing.Size(1718, 350)
+        Me.PropsFlowLayoutPanel.Size = New System.Drawing.Size(1718, 415)
         Me.PropsFlowLayoutPanel.TabIndex = 16
         '
         'cbHideWindow
         '
-        Me.cbHideWindow.Location = New System.Drawing.Point(25, 218)
+        Me.cbHideWindow.Location = New System.Drawing.Point(25, 284)
         Me.cbHideWindow.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
         Me.cbHideWindow.Name = "cbHideWindow"
         Me.cbHideWindow.Size = New System.Drawing.Size(600, 60)
         Me.cbHideWindow.TabIndex = 2
         Me.cbHideWindow.Text = "Run hidden"
         Me.cbHideWindow.UseVisualStyleBackColor = True
+        '
+        'cbHidden
+        '
+        Me.cbHidden.Location = New System.Drawing.Point(25, 152)
+        Me.cbHidden.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
+        Me.cbHidden.Name = "cbHidden"
+        Me.cbHidden.Size = New System.Drawing.Size(600, 60)
+        Me.cbHidden.TabIndex = 3
+        Me.cbHidden.Text = "Show only if Ctrl key is pressed"
+        Me.cbHidden.UseVisualStyleBackColor = True
         '
         'tlpMain
         '
@@ -453,7 +466,7 @@ Public Class MainForm
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpMain.Size = New System.Drawing.Size(2254, 1104)
+        Me.tlpMain.Size = New System.Drawing.Size(2254, 1169)
         Me.tlpMain.TabIndex = 17
         '
         'FlowLayoutPanel1
@@ -464,7 +477,7 @@ Public Class MainForm
         Me.tlpMain.SetColumnSpan(Me.FlowLayoutPanel1, 2)
         Me.FlowLayoutPanel1.Controls.Add(Me.bnOK)
         Me.FlowLayoutPanel1.Controls.Add(Me.bnCancel)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(1758, 993)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(1758, 1058)
         Me.FlowLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(496, 111)
@@ -564,7 +577,7 @@ Public Class MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(288.0!, 288.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(2254, 1104)
+        Me.ClientSize = New System.Drawing.Size(2254, 1169)
         Me.Controls.Add(Me.tlpMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -676,8 +689,14 @@ Public Class MainForm
     Sub tbFileTypes_TextChanged(sender As Object, e As EventArgs) Handles tbFileTypes.TextChanged
         If Not BlockEvents AndAlso Not SelectedItem Is Nothing Then
             Dim value = tbFileTypes.Text.ToLower
-            If value.Contains(",") Then value = value.Replace(",", " ")
-            If value.Contains(";") Then value = value.Replace(";", " ")
+
+            If value.Contains(",") Then
+                value = value.Replace(",", " ")
+            End If
+
+            If value.Contains(";") Then
+                value = value.Replace(";", " ")
+            End If
 
             While value.Contains("  ")
                 value = value.Replace("  ", " ")
@@ -806,6 +825,7 @@ Public Class MainForm
             cbDirectories.Checked = SelectedItem.Directories
             cbRunAsAdmin.Checked = SelectedItem.RunAsAdmin
             cbHideWindow.Checked = SelectedItem.HideWindow
+            cbHidden.Checked = SelectedItem.Hidden
         Else
             PropsFlowLayoutPanel.Enabled = False
             tbArguments.Enabled = False
@@ -877,7 +897,7 @@ Public Class MainForm
                 i.Name.ToLower.Contains(query) OrElse
                 i.Path.ToLower.Contains(query) OrElse
                 i.WorkingDirectory.ToLower.Contains(query) OrElse
-                i.FileTypes.ToLower.Contains(query) OrElse
+                i.FileTypesDisplay.ToLower.Contains(query) OrElse
                 i.Arguments.ToLower.Contains(query) Then
 
                 lv.Items.Add(i.Name).Tag = i
@@ -969,6 +989,12 @@ Public Class MainForm
     Sub cbHideWindow_CheckedChanged(sender As Object, e As EventArgs) Handles cbHideWindow.CheckedChanged
         If Not BlockEvents AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.HideWindow = cbHideWindow.Checked
+        End If
+    End Sub
+
+    Private Sub cbHidden_CheckedChanged(sender As Object, e As EventArgs) Handles cbHidden.CheckedChanged
+        If Not BlockEvents AndAlso Not SelectedItem Is Nothing Then
+            SelectedItem.Hidden = cbHidden.Checked
         End If
     End Sub
 

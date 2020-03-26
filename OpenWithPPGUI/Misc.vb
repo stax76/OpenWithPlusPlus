@@ -109,6 +109,7 @@ Public Class Item
     Public FileTypes As String = ""
     Public FileTypesDisplay As String = ""
     Public HideWindow As Boolean
+    Public Hidden As Boolean
     Public IconFile As String = ""
     Public IconIndex As Integer
     Public Name As String = ""
