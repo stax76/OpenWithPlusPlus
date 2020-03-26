@@ -1,7 +1,7 @@
 
 # Open with++
 
-Open with++ is a shell extension which adds a customizable context menu to the Windows File Explorer. It allows to execute a command line on the selected files and folders. A common task is to open files with an application like using the regular Open with menu.
+Open with++ is a shell extension that allows to add command line driven custom menu items to the Windows File Explorer context menu.
 
 
 ## Screenshots
@@ -9,6 +9,7 @@ Open with++ is a shell extension which adds a customizable context menu to the W
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Main.png)
 
 ![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Menu.png)
+
 
 ## Setup
 
