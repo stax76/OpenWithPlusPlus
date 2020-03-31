@@ -37,9 +37,9 @@ STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID
 __control_entrypoint(DllExport)
 STDAPI DllRegisterServer(void)
 {
-	WCHAR szModuleName[MAX_PATH];
+	WCHAR szModuleName[500];
 
-    if (!GetModuleFileNameW(g_hmodThis, szModuleName, ARRAYSIZE(szModuleName)))
+    if (!GetModuleFileNameW(g_hmodThis, szModuleName, std::size(szModuleName)))
         return HRESULT_FROM_WIN32(GetLastError());
 
 	REGISTRY_ENTRY regEntries[] = {

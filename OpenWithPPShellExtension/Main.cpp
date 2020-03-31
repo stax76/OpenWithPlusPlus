@@ -165,7 +165,7 @@ HRESULT CMain::LoadXML()
 
 	g_Items.clear();
 
-	WCHAR path[MAX_PATH];
+	WCHAR path[500];
 	SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"SettingsLocation", path, NULL);
 
 	if (!FileExist(path))
@@ -280,8 +280,8 @@ STDMETHODIMP CMain::Initialize(
 
 		for (int i = 0; i < uNumFiles; i++)
 		{
-			WCHAR buffer[MAX_PATH];
-			DragQueryFile((HDROP)stg.hGlobal, i, buffer, MAX_PATH);
+			WCHAR buffer[500];
+			DragQueryFile((HDROP)stg.hGlobal, i, buffer, std::size(buffer));
 			g_ShellItems.push_back(buffer);
 		}
 
@@ -289,7 +289,7 @@ STDMETHODIMP CMain::Initialize(
 	}
 	else if (pidlFolder)
 	{
-		WCHAR buffer[MAX_PATH];
+		WCHAR buffer[500];
 
 		if (!SHGetPathFromIDList(pidlFolder, buffer))
 			return E_FAIL;
@@ -461,20 +461,20 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			if (args.find(L"%items%") != std::wstring::npos)
 			{
 				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
-				ATL::CString argh = args.c_str();
-				argh.Replace(L"%items%", joined.c_str());
-				args = argh.GetBuffer();
+				ATL::CString value = args.c_str();
+				value.Replace(L"%items%", joined.c_str());
+				args = value.GetBuffer();
 			}
 
 			if (args.find(L"%paths%") != std::wstring::npos)
 			{
 				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
-				ATL::CString argh = args.c_str();
-				argh.Replace(L"%paths%", joined.c_str());
-				args = argh.GetBuffer();
+				ATL::CString value = args.c_str();
+				value.Replace(L"%paths%", joined.c_str());
+				args = value.GetBuffer();
 			}
 
-			WCHAR szDir[MAX_PATH];
+			WCHAR szDir[500];
 
 			if (g_ShellItems.size() > 0)
 			{
@@ -501,8 +501,8 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (path.find(var) != std::string::npos)
 			{
-				TCHAR szEnvPath[MAX_PATH];
-				DWORD result = ExpandEnvironmentStrings(path.c_str(), szEnvPath, MAX_PATH);
+				WCHAR szEnvPath[500];
+				DWORD result = ExpandEnvironmentStrings(path.c_str(), szEnvPath, std::size(szEnvPath));
 
 				if (result)
 				{
@@ -513,8 +513,8 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (args.find(var) != std::string::npos)
 			{
-				TCHAR szEnvArgs[MAX_PATH];
-				DWORD result = ExpandEnvironmentStrings(args.c_str(), szEnvArgs, MAX_PATH);
+				WCHAR szEnvArgs[900];
+				DWORD result = ExpandEnvironmentStrings(args.c_str(), szEnvArgs, std::size(szEnvArgs));
 
 				if (result)
 				{
@@ -527,56 +527,52 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (guiExe == path)
 			{
-				TCHAR exeDir[MAX_PATH];
-				SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,
-					L"ExeDir", exeDir, NULL);
-
-				std::wstring exeDirString(exeDir);
-				path = exeDirString + guiExe;
+				WCHAR szExeDir[500];
+				SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeDir", szExeDir, NULL);
+				std::wstring exeDir(szExeDir);
+				path = exeDir + guiExe;
 			}
 
-			SHELLEXECUTEINFO shExecInfo;
+			SHELLEXECUTEINFO info;
 
-			shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-			shExecInfo.fMask = NULL;
-			shExecInfo.hwnd = hwnd;
-			shExecInfo.lpVerb = verb.c_str();
-			shExecInfo.lpFile = path.c_str();
-			shExecInfo.lpParameters = args.c_str();
+			info.cbSize = sizeof(SHELLEXECUTEINFO);
+			info.fMask = NULL;
+			info.hwnd = hwnd;
+			info.lpVerb = verb.c_str();
+			info.lpFile = path.c_str();
+			info.lpParameters = args.c_str();
 
 			if (g_Items[i]->WorkingDirectory.length() == 0)
-				shExecInfo.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
+				info.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
 			else
-				shExecInfo.lpDirectory = g_Items[i]->WorkingDirectory.c_str();
+				info.lpDirectory = g_Items[i]->WorkingDirectory.c_str();
 
-			shExecInfo.nShow = g_Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
-			shExecInfo.hInstApp = NULL;
+			info.nShow = g_Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
+			info.hInstApp = NULL;
 
-			ShellExecuteEx(&shExecInfo);
+			ShellExecuteEx(&info);
 			return S_OK;
 		}
 	}
 
 	if (id == g_EditCommandIndex)
 	{
-		TCHAR path[MAX_PATH];
-		SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,
-			L"ExeLocation", path, NULL);
+		WCHAR path[500];
+		SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeLocation", path, NULL);
 
-		SHELLEXECUTEINFO shExecInfo;
+		SHELLEXECUTEINFO info;
 
-		shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+		info.cbSize = sizeof(SHELLEXECUTEINFO);
+		info.fMask = NULL;
+		info.hwnd = hwnd;
+		info.lpVerb = NULL;
+		info.lpFile = path;
+		info.lpParameters = NULL;
+		info.lpDirectory = NULL;
+		info.nShow = SW_NORMAL;
+		info.hInstApp = NULL;
 
-		shExecInfo.fMask = NULL;
-		shExecInfo.hwnd = hwnd;
-		shExecInfo.lpVerb = NULL;
-		shExecInfo.lpFile = path;
-		shExecInfo.lpParameters = NULL;
-		shExecInfo.lpDirectory = NULL;
-		shExecInfo.nShow = SW_NORMAL;
-		shExecInfo.hInstApp = NULL;
-
-		ShellExecuteEx(&shExecInfo);
+		ShellExecuteEx(&info);
 		return S_OK;
 	}
 
