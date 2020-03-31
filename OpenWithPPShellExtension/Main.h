@@ -1,12 +1,9 @@
 
 #pragma once
 
-#include <initguid.h>
+#include "Util.h"
+#include "Common.h"
 
-#include <list>
-#include <vector>
-#include <algorithm>
-#include <string>
 
 EXTERN_C const CLSID CLSID_Main;
 
@@ -45,8 +42,8 @@ int g_EditCommandIndex;
 // CMain
 
 class ATL_NO_VTABLE CMain :
-	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CMain, &CLSID_Main>,
+	public ATL::CComObjectRootEx<ATL::CComSingleThreadModel>,
+	public ATL::CComCoClass<CMain, &CLSID_Main>,
 	public IShellExtInit,
 	public IContextMenu
 {

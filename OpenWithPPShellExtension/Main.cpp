@@ -1,9 +1,6 @@
 
 #include "stdafx.h"
 #include "Main.h"
-#include "Util.h"
-#include "atlstr.h"
-#include "wincodec.h"
 
 
 Item::~Item()
@@ -22,7 +19,7 @@ BOOL FileExist(std::wstring file)
 		return false;
 
 	DWORD dwAttrib = GetFileAttributes(file.c_str());
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+	return dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 
@@ -87,7 +84,7 @@ HBITMAP ConvertIconToBitmap(HICON hicon)
 }
 
 
-HRESULT SetIcon(HMENU menu, UINT command, Item* item)
+HRESULT SetIcon(HMENU menu, UINT position, UINT flags, Item* item)
 {
 	if (!FileExist(item->IconFile))
 		return S_OK;
@@ -95,8 +92,7 @@ HRESULT SetIcon(HMENU menu, UINT command, Item* item)
 	if (!item->Icon)
 	{
 		HICON iconSmall;
-		HICON iconLarge = NULL;
-		int res = ExtractIconEx(item->IconFile.c_str(), item->IconIndex, &iconLarge, &iconSmall, 1);
+		int res = ExtractIconEx(item->IconFile.c_str(), item->IconIndex, NULL, &iconSmall, 1);
 
 		if (!res)
 			return E_FAIL;
@@ -106,16 +102,13 @@ HRESULT SetIcon(HMENU menu, UINT command, Item* item)
 		if (iconSmall)
 			DestroyIcon(iconSmall);
 
-		if (iconLarge)
-			DestroyIcon(iconLarge);
-
 		if (!bmp)
 			return E_FAIL;
 
 		item->Icon = bmp;
 	}
 
-	int res = SetMenuItemBitmaps(menu, command, MF_BYCOMMAND, item->Icon, item->Icon);
+	int res = SetMenuItemBitmaps(menu, position, flags, item->Icon, item->Icon);
 
 	if (!res)
 		return E_FAIL;
@@ -172,46 +165,45 @@ HRESULT CMain::LoadXML()
 
 	g_Items.clear();
 
-	TCHAR path[MAX_PATH];
-	SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME,
-		L"SettingsLocation", path, NULL);
+	WCHAR path[MAX_PATH];
+	SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"SettingsLocation", path, NULL);
 
 	if (!FileExist(path))
 		return E_FAIL;
 
-	CComPtr<IXMLDOMDocument> doc;
+	ATL::CComPtr<IXMLDOMDocument> doc;
 	HRESULT hr = doc.CoCreateInstance(__uuidof(DOMDocument));
 
 	if (FAILED(hr))
 		return hr;
 
 	VARIANT_BOOL success;
-	hr = doc->load(CComVariant(path), &success);
+	hr = doc->load(ATL::CComVariant(path), &success);
 
 	if (FAILED(hr))
 		return hr;
 	
-	CComPtr<IXMLDOMNodeList> items;
-	hr = doc->selectNodes(CComBSTR(L"AppSettings/Items/Item"), &items);
+	ATL::CComPtr<IXMLDOMNodeList> items;
+	hr = doc->selectNodes(ATL::CComBSTR(L"AppSettings/Items/Item"), &items);
 
 	if (FAILED(hr))
 		return hr;
 
-	IXMLDOMNode *itemNode;
+	IXMLDOMNode* itemNode;
 
-	while (!items->nextNode(&itemNode))
+	while (S_OK == items->nextNode(&itemNode))
 	{
 		Item* item = new Item();
 		
-		CComPtr<IXMLDOMNodeList> itemFields;
+		ATL::CComPtr<IXMLDOMNodeList> itemFields;
 		hr = itemNode->get_childNodes(&itemFields);
 
 		if FAILED(hr)
 			hr;
 
-		IXMLDOMNode *itemField;
+		IXMLDOMNode* itemField;
 
-		while (!itemFields->nextNode(&itemField))
+		while (S_OK == itemFields->nextNode(&itemField))
 		{
 			BSTR nodeName;
 			hr = itemField->get_nodeName(&nodeName);
@@ -219,7 +211,7 @@ HRESULT CMain::LoadXML()
 			if FAILED(hr)
 				return hr;
 
-			CComBSTR cNodeName(nodeName);
+			ATL::CComBSTR cNodeName(nodeName);
 			
 			BSTR nodeText;
 			hr = itemField->get_text(&nodeText);
@@ -227,7 +219,7 @@ HRESULT CMain::LoadXML()
 			if FAILED(hr)
 				return hr;
 
-			CComBSTR cNodeText(nodeText);
+			ATL::CComBSTR cNodeText(nodeText);
 
 			if (cNodeName == L"Name")
 				item->Name = cNodeText;
@@ -280,7 +272,7 @@ STDMETHODIMP CMain::Initialize(
 
 		int uNumFiles = DragQueryFile((HDROP)stg.hGlobal, 0xFFFFFFFF, NULL, 0);
 
-		if (0 == uNumFiles)
+		if (!uNumFiles)
 		{
 			ReleaseStgMedium(&stg);
 			return E_INVALIDARG;
@@ -288,21 +280,21 @@ STDMETHODIMP CMain::Initialize(
 
 		for (int i = 0; i < uNumFiles; i++)
 		{
-			TCHAR buf[MAX_PATH];
-			DragQueryFile((HDROP)stg.hGlobal, i, buf, MAX_PATH);
-			g_ShellItems.push_back(buf);
+			WCHAR buffer[MAX_PATH];
+			DragQueryFile((HDROP)stg.hGlobal, i, buffer, MAX_PATH);
+			g_ShellItems.push_back(buffer);
 		}
 
 		ReleaseStgMedium(&stg);
 	}
 	else if (pidlFolder)
 	{
-		TCHAR buf[MAX_PATH];
+		WCHAR buffer[MAX_PATH];
 
-		if (!SHGetPathFromIDList(pidlFolder, buf))
+		if (!SHGetPathFromIDList(pidlFolder, buffer))
 			return E_FAIL;
 
-		g_ShellItems.push_back(buf);
+		g_ShellItems.push_back(buffer);
 	}
 	else
 		return E_FAIL;
@@ -314,12 +306,11 @@ STDMETHODIMP CMain::Initialize(
 STDMETHODIMP CMain::QueryContextMenu(
 	HMENU hmenu, UINT uMenuIndex, UINT uidFirstCmd, UINT uidLastCmd, UINT uFlags)
 {
-	if (g_Items.size() == 0 || SHRegGetBoolUSValue(
+	if (!g_Items.size() || SHRegGetBoolUSValue(
 		L"Software\\" PRODUCT_NAME, L"Reload", FALSE, TRUE))
 	{
 		REGISTRY_ENTRY re = GetRegEntry(HKEY_CURRENT_USER,
-			L"Software\\" PRODUCT_NAME, L"Reload",
-			NULL, REG_DWORD, 0);
+			L"Software\\" PRODUCT_NAME, L"Reload", NULL, REG_DWORD, 0);
 
 		if (FAILED(CreateRegKeyAndSetValue(&re)))
 			return E_FAIL;
@@ -366,7 +357,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, g_Items[i]);
+				SetIcon(hmenu, command, MF_BYCOMMAND, g_Items[i]);
 				addSubSep = true;
 			}
 			else
@@ -376,7 +367,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, g_Items[i]);
+				SetIcon(hmenu, uMenuIndex, MF_BYPOSITION, g_Items[i]);
 				uMenuIndex += 1;
 			}
 
@@ -408,7 +399,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, g_Items[i]);
+				SetIcon(hmenu, command, MF_BYCOMMAND, g_Items[i]);
 				addSubSep2 = true;
 			}
 			else
@@ -418,7 +409,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 				if (!res)
 					return E_FAIL;
 
-				SetIcon(hmenu, command, g_Items[i]);
+				SetIcon(hmenu, uMenuIndex, MF_BYPOSITION, g_Items[i]);
 				uMenuIndex += 1;
 			}
 
@@ -470,7 +461,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			if (args.find(L"%items%") != std::wstring::npos)
 			{
 				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
-				CString argh = args.c_str();
+				ATL::CString argh = args.c_str();
 				argh.Replace(L"%items%", joined.c_str());
 				args = argh.GetBuffer();
 			}
@@ -478,7 +469,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			if (args.find(L"%paths%") != std::wstring::npos)
 			{
 				std::wstring joined = L"\"" + JoinList(&g_ShellItems, L"\" \"") + L"\"";
-				CString argh = args.c_str();
+				ATL::CString argh = args.c_str();
 				argh.Replace(L"%paths%", joined.c_str());
 				args = argh.GetBuffer();
 			}

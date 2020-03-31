@@ -1,3 +1,4 @@
+
 ; OpenWithPPShellExtension.def : Declares the module parameters.
 
 LIBRARY      "OpenWithPPShellExtension.dll"

@@ -1067,7 +1067,7 @@ Public Class MainForm
 
                 Using proc As New Process
                     proc.StartInfo.Verb = "runas"
-                    proc.StartInfo.FileName = "regsvr32"
+                    proc.StartInfo.FileName = "regsvr32.exe"
                     proc.StartInfo.Arguments = "/u """ + DLLPath + """"
                     proc.Start()
                 End Using

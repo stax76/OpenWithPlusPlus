@@ -1,12 +1,13 @@
 
 #include "stdafx.h"
+#include "Common.h"
 #include "Util.h"
 
 
 HMODULE g_hmodThis;
 
 
-class COpenWithPPShellExtensionModule : public CAtlDllModuleT< COpenWithPPShellExtensionModule >
+class COpenWithPPShellExtensionModule : public ATL::CAtlDllModuleT< COpenWithPPShellExtensionModule >
 {
 public :
 };
