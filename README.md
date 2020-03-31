@@ -82,7 +82,7 @@ Specifies the program to be used for opening the selected files or folders.
 Specifies the arguments that are passed to the program when the command is executed. You can use the predefined variable %paths% which expands to the paths of the selected files or folders. Do not enclose the %paths% macro in quotes as Open with++ adds them automatically when the macro is expanded, each path is enclosed in double quotation marks and separated by a space.
 
 
-### WorkingDirectory
+### Working Directory
 
 The working directory the process will use, if not specified the working directory will be set to the directory of the selected files or folders.
 
@@ -113,12 +113,12 @@ The menu item is only visible if the Control key is pressed.
 
 ### Run as admin
 
-Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Shift key while selecting the command from the Open with++ menu.
+Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Shift key while selecting the menu command.
 
 
 ### Run hidden
 
-Runs the process with hidden window.
+Runs the process with hidden window. Useful to hide terminal tools like PowerShell.
 
 
 ## Tips & Tricks
