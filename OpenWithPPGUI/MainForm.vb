@@ -1051,18 +1051,20 @@ Public Class MainForm
 
     Sub tsbInstallUninstall_Click(sender As Object, e As EventArgs) Handles tsbInstallUninstall.Click
         If tsbInstallUninstall.Text = "   Install   " Then
-            If Msg("Confirm to install the Shell Extension.", "Install Shell Extension",
+            If Msg("Confirm to install the Shell Extension." + BR2 +
+                   "After the installation the Open with++ location cannot be moved.", "Install Shell Extension",
                    MessageBoxIcon.None, MessageBoxButtons.OKCancel) = DialogResult.OK Then
 
                 Using proc As New Process
                     proc.StartInfo.Verb = "runas"
-                    proc.StartInfo.FileName = "regsvr32"
+                    proc.StartInfo.FileName = "regsvr32.exe"
                     proc.StartInfo.Arguments = """" + DLLPath + """"
                     proc.Start()
                 End Using
             End If
         Else
-            If Msg("Confirm to uninstall the Shell Extension and afterwards reboot, logout or restart the relevant processes.",
+            If Msg("Confirm to uninstall the Shell Extension." + BR2 +
+                   "Afterwards it's necessary to reboot (or to restart the relevant processes).",
                    "Uninstall Shell Extension", MessageBoxIcon.None, MessageBoxButtons.OKCancel) = DialogResult.OK Then
 
                 Using proc As New Process
