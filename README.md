@@ -13,7 +13,7 @@ Open with++ is a shell extension that allows to add command line driven custom m
 
 ## Setup
 
-The requirements are Windows 7 x64 or higher and .NET Framework 4.8.
+The requirements are Windows 7 x64 or higher, [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) and [Visual C++ 2019 Redistributable](https://support.microsoft.com/en-gb/help/2977003/the-latest-supported-visual-c-downloads).
 
 Start the application and click on the Install button in the toolbar.
 
