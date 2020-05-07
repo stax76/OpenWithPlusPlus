@@ -216,9 +216,9 @@ Set-Clipboard ($args -join "`r`n")
 **Run hidden**: `checked`  
 
 
-### mpv.net
+### Play with mpv.net
 
-Open media files with mpv.net media player.
+Play media files with the mpv.net media player.
 
 **Name**: `mpv.net`  
 **File Types**: `%audio% %video% %image%`  
