@@ -381,6 +381,8 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 		if (!res)
 			return E_FAIL;
+
+		command += 1;
 	}
 
 	bool addSubSep2 = false;
@@ -423,6 +425,8 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 		if (!res)
 			return E_FAIL;
+
+		command += 1;
 	}
 
 	if (addSubSep || addSubSep2)
