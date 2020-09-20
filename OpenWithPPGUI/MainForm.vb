@@ -1085,6 +1085,9 @@ Public Class MainForm
                 tsbInstallUninstall.Text = "   Uninstall   "
             End If
         End Using
+
+        tbPath_TextChanged(Nothing, Nothing)
+        tbIcon_TextChanged(Nothing, Nothing)
     End Sub
 
     Sub bnWorkingDirectory_Click(sender As Object, e As EventArgs) Handles bnWorkingDirectory.Click
