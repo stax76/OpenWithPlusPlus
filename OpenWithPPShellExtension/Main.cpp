@@ -86,13 +86,24 @@ HBITMAP ConvertIconToBitmap(HICON hicon)
 
 HRESULT SetIcon(HMENU menu, UINT position, UINT flags, Item* item)
 {
-	if (!FileExists(item->IconFile))
+	std::wstring path(item->IconFile);
+
+	if (path.find(L"%") != std::string::npos)
+	{
+		WCHAR szPath[500];
+		DWORD result = ExpandEnvironmentStrings(path.c_str(), szPath, std::size(szPath));
+
+		if (result)
+			path = szPath;
+	}
+
+	if (!FileExists(path))
 		return S_OK;
 
 	if (!item->Icon)
 	{
 		HICON iconSmall;
-		int res = ExtractIconEx(item->IconFile.c_str(), item->IconIndex, NULL, &iconSmall, 1);
+		int res = ExtractIconEx(path.c_str(), item->IconIndex, NULL, &iconSmall, 1);
 
 		if (!res)
 			return E_FAIL;
@@ -492,23 +503,6 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				args = value.GetBuffer();
 			}
 
-			WCHAR szDir[500];
-
-			if (g_ShellItems.size() > 0)
-			{
-				std::wstring firstItem = *g_ShellItems.begin();
-
-				if (FileExists(firstItem))
-				{
-					wcscpy_s(szDir, firstItem.c_str());
-					PathRemoveFileSpec(szDir);
-				}
-				else if (DirectoryExist(firstItem))
-				{
-					wcscpy_s(szDir, firstItem.c_str());
-				}
-			}
-
 			std::wstring verb;
 
 			if (g_Items[i]->RunAsAdmin || GetKeyState(VK_SHIFT) < 0)
@@ -519,26 +513,20 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (path.find(var) != std::string::npos)
 			{
-				WCHAR szEnvPath[500];
-				DWORD result = ExpandEnvironmentStrings(path.c_str(), szEnvPath, std::size(szEnvPath));
+				WCHAR szPath[500];
+				DWORD result = ExpandEnvironmentStrings(path.c_str(), szPath, std::size(szPath));
 
 				if (result)
-				{
-					std::wstring newPath(szEnvPath);
-					path = newPath;
-				}
+					path = szPath;
 			}
 
 			if (args.find(var) != std::string::npos)
 			{
-				WCHAR szEnvArgs[900];
-				DWORD result = ExpandEnvironmentStrings(args.c_str(), szEnvArgs, std::size(szEnvArgs));
+				WCHAR szArgs[900];
+				DWORD result = ExpandEnvironmentStrings(args.c_str(), szArgs, std::size(szArgs));
 
 				if (result)
-				{
-					std::wstring newArgs(szEnvArgs);
-					args = newArgs;
-				}
+					args = szArgs;
 			}
 
 			std::wstring guiExe(L"OpenWithPPGUI.exe");
@@ -561,9 +549,40 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			info.lpParameters = args.c_str();
 
 			if (g_Items[i]->WorkingDirectory.length() == 0)
+			{
+				WCHAR szDir[500];
+
+				if (g_ShellItems.size() > 0)
+				{
+					std::wstring firstItem = *g_ShellItems.begin();
+
+					if (FileExists(firstItem))
+					{
+						wcscpy_s(szDir, firstItem.c_str());
+						PathRemoveFileSpec(szDir);
+					}
+					else if (DirectoryExist(firstItem))
+					{
+						wcscpy_s(szDir, firstItem.c_str());
+					}
+				}
+
 				info.lpDirectory = DirectoryExist(szDir) ? szDir : NULL;
+			}
 			else
+			{
+				if (g_Items[i]->WorkingDirectory.find(var) != std::string::npos)
+				{
+					WCHAR szWorkingDirectory[500];
+					DWORD result = ExpandEnvironmentStrings(
+						g_Items[i]->WorkingDirectory.c_str(), szWorkingDirectory, std::size(szWorkingDirectory));
+
+					if (result)
+						g_Items[i]->WorkingDirectory = szWorkingDirectory;
+				}
+
 				info.lpDirectory = g_Items[i]->WorkingDirectory.c_str();
+			}
 
 			info.nShow = g_Items[i]->HideWindow ? SW_HIDE : SW_NORMAL;
 			info.hInstApp = NULL;

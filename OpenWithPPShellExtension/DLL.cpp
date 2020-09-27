@@ -19,6 +19,14 @@ COpenWithPPShellExtensionModule _AtlModule;
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 	g_hmodThis = (HMODULE)hInstance;
+
+	WCHAR szModuleName[500];
+
+	if (!GetModuleFileNameW(g_hmodThis, szModuleName, std::size(szModuleName)))
+		return HRESULT_FROM_WIN32(GetLastError());
+
+	PathRemoveFileSpec(szModuleName);
+	SetEnvironmentVariable(L"OpenWithPPDir", szModuleName);
 	return _AtlModule.DllMain(dwReason, lpReserved); 
 }
 

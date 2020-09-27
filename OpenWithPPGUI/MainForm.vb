@@ -733,12 +733,6 @@ Public Class MainForm
         If Not BlockEvents AndAlso Not SelectedItem Is Nothing Then
             SelectedItem.Path = tbPath.Text
         End If
-
-        If tbPath.Text.Contains(":\") AndAlso Not File.Exists(tbPath.Text) Then
-            tbPath.BackColor = Color.OrangeRed
-        Else
-            tbPath.ResetBackColor()
-        End If
     End Sub
 
     Sub tbArgs_TextChanged(sender As Object, e As EventArgs) Handles tbArguments.TextChanged
@@ -1031,8 +1025,8 @@ Public Class MainForm
                 For Each line In lines
                     If line.Contains("=") Then
                         g.Settings.Macros.Add(New Macro() With {
-                                              .Name = line.Substring(0, line.IndexOf("=")).Trim,
-                                              .Value = line.Substring(line.IndexOf("=") + 1).Trim})
+                            .Name = line.Substring(0, line.IndexOf("=")).Trim,
+                            .Value = line.Substring(line.IndexOf("=") + 1).Trim})
                     End If
                 Next
 
@@ -1085,9 +1079,6 @@ Public Class MainForm
                 tsbInstallUninstall.Text = "   Uninstall   "
             End If
         End Using
-
-        tbPath_TextChanged(Nothing, Nothing)
-        tbIcon_TextChanged(Nothing, Nothing)
     End Sub
 
     Sub bnWorkingDirectory_Click(sender As Object, e As EventArgs) Handles bnWorkingDirectory.Click
@@ -1132,24 +1123,13 @@ Public Class MainForm
                 match = Regex.Match(tbIcon.Text, "^(.+),(\d+)$")
             End If
 
-            If File.Exists(tbIcon.Text) Then
-                SelectedItem.IconFile = tbIcon.Text
-                SelectedItem.IconIndex = 0
-            ElseIf match.Success Then
+            If match.Success Then
                 SelectedItem.IconFile = match.Groups(1).Value
                 SelectedItem.IconIndex = CInt(match.Groups(2).Value)
             Else
-                SelectedItem.IconFile = ""
+                SelectedItem.IconFile = tbIcon.Text
                 SelectedItem.IconIndex = 0
             End If
-        End If
-
-        Dim iconFile = If(match.Success, match.Groups(1).Value, tbIcon.Text)
-
-        If iconFile <> "" AndAlso Not File.Exists(iconFile) Then
-            tbIcon.BackColor = Color.OrangeRed
-        Else
-            tbIcon.ResetBackColor()
         End If
     End Sub
 End Class

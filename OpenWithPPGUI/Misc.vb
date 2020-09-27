@@ -51,7 +51,7 @@ Public Class g
             Next
         Else
             g.Settings = New AppSettings
-            g.Settings.Macros.Add(New Macro() With {.Name = "%video%", .Value = "mpg avi vob mp4 d2v mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part"})
+            g.Settings.Macros.Add(New Macro() With {.Name = "%video%", .Value = "mpg avi vob mp4 d2v mkv avs 264 mov wmv part flv ifo h264 asf webm mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part"})
             g.Settings.Macros.Add(New Macro() With {.Name = "%audio%", .Value = "mp2 mp3 ac3 wav w64 m4a dts dtsma dtshr dtshd eac3 thd thd+ac3 ogg mka aac opus flac mpa"})
             g.Settings.Macros.Add(New Macro() With {.Name = "%subtitle%", .Value = "sub sup idx ass aas srt"})
             g.Settings.Macros.Add(New Macro() With {.Name = "%image%", .Value = "png jpg jpeg gif bmp"})

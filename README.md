@@ -61,12 +61,12 @@ txt and md: `txt md`
 The options dialog defines macros for common file types:
 
 ```
-%video% = mpg avi vob mp4 d2v divx mkv avs 264 mov wmv part flv ifo h264 asf webm dgi mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part vpy rar crdownload
+%video% = mpg avi vob mp4 d2v divx mkv avs 264 mov wmv part flv ifo h264 asf webm mpeg mpv y4m avc hevc 265 h265 m2v m2ts vpy mts webm ts m4v part vpy rar crdownload
 %audio% = mp2 mp3 ac3 wav w64 m4a dts dtsma dtshr dtshd eac3 thd thd+ac3 ogg mka aac opus flac mpa
 %subtitle% = sub sup idx ass aas srt
 %image% = png jpg jpeg gif bmp ico
 ```
-
+W
 Media files: `%audio% %video% %image%`  
 
 Macros are only supported in the File Types property.
@@ -76,20 +76,25 @@ Macros are only supported in the File Types property.
 
 Specifies the program to be used for opening the selected files or folders.
 
+Environment variables get expanded.
 
 ### Arguments
 
 Specifies the arguments that are passed to the program when the command is executed. You can use the predefined variable %paths% which expands to the paths of the selected files or folders. Do not enclose the %paths% macro in quotes as Open with++ adds them automatically when the macro is expanded, each path is enclosed in double quotation marks and separated by a space.
 
+Environment variables get expanded.
 
 ### Working Directory
 
 The working directory the process will use, if not specified the working directory will be set to the directory of the selected files or folders.
 
+Environment variables get expanded.
 
 ### Icon
 
 Supported file types are ICO, EXE and DLL. EXE and DLL files can contain different icons, Open with++ will show a dialog that allows to choose which icon in the EXE or DLL file to use.
+
+Environment variables get expanded.
 
 [IrfanView](https://www.irfanview.com/) can be used to create icons.
 
@@ -123,8 +128,11 @@ Runs the process with hidden window. Useful to hide terminal tools like PowerShe
 
 ## Tips & Tricks
 
-- Holding down the Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
+Holding down the Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
 
+Path, Arguments, Working Directory and Icon support the usage of environment variables.
+
+The location of Open with++ is available as environment variable %OpenWithPPDir%.
 
 ## Configuration Suggestions
 
@@ -169,7 +177,7 @@ Start CMD at the given folder.
 **Name**: `Command Prompt`  
 **Path**: `cmd.exe`  
 **Show in submenu**: `checked`  
-**Icon**: `C:\Windows\System32\cmd.exe,0`  
+**Icon**: `cmd.exe,0`  
 
 
 ### Windows Terminal
