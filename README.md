@@ -6,9 +6,9 @@ Open with++ is a shell extension that allows to add command line driven custom m
 
 ## Screenshots
 
-![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Main.png)
+![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/img/Main.png)
 
-![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/Menu.png)
+![](https://raw.githubusercontent.com/stax76/OpenWithPlusPlus/master/img/Menu.png)
 
 
 ## Setup
