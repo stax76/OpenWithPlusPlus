@@ -187,14 +187,13 @@ Start Windows Terminal at the given folder.
 In the Windows Terminal settings define:
 
 ```
-"commandline"       : "powershell.exe -nologo",
 "startingDirectory" : null,
 ```
 
 **Name**: `Windows Terminal`  
 **Path**: `wt.exe`  
 **Show for directories**: `checked`  
-**Icon**: `D:\Apps\OpenWithPlusPlus\Icons\Windows Terminal.ico`  
+**Icon**: `%OpenWithPPDir%\Icons\Windows Terminal.ico`  
 
 Open with++ includes a Windows Terminal ICO file, this icon can be used to create a shortcute in order to pin it to the start menu, in the shortcut settings the working directory can be set, something the original UWP start menu entry does not allow.
 
@@ -204,7 +203,7 @@ Open with++ includes a Windows Terminal ICO file, this icon can be used to creat
 **Name**: `Execute`  
 **File Types**: `ps1`  
 **Path**: `wt.exe`  
-**Arguments**: `powershell.exe -nologo -noexit -file %paths%`  
+**Arguments**: `-- powershell.exe -NoLogo -NoExit -ExecutionPolicy Unrestricted -File %paths%`  
 **Icon**: `D:\Apps\OpenWithPlusPlus\Icons\Windows Terminal.ico`  
 
 
