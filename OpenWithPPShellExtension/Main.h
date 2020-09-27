@@ -38,6 +38,7 @@ public:
 std::list<std::wstring> g_ShellItems;
 std::vector<Item*> g_Items;
 int g_EditCommandIndex;
+Item IconItem;
 
 // CMain
 

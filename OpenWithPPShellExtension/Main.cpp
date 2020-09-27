@@ -13,7 +13,7 @@ Item::~Item()
 }
 
 
-BOOL FileExist(std::wstring file)
+BOOL FileExists(std::wstring file)
 {
 	if (file.length() == 0)
 		return false;
@@ -86,7 +86,7 @@ HBITMAP ConvertIconToBitmap(HICON hicon)
 
 HRESULT SetIcon(HMENU menu, UINT position, UINT flags, Item* item)
 {
-	if (!FileExist(item->IconFile))
+	if (!FileExists(item->IconFile))
 		return S_OK;
 
 	if (!item->Icon)
@@ -168,7 +168,7 @@ HRESULT CMain::LoadXML()
 	WCHAR path[500];
 	SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"SettingsLocation", path, NULL);
 
-	if (!FileExist(path))
+	if (!FileExists(path))
 		return E_FAIL;
 
 	ATL::CComPtr<IXMLDOMDocument> doc;
@@ -319,6 +319,14 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 		if (FAILED(hr))
 			return hr;
+
+		WCHAR szExeDir[500];
+		SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeDir", szExeDir, NULL);
+		std::wstring exeDir(szExeDir);
+		std::wstring iconPath = exeDir + L"Icons\\Main.ico";
+
+		if (FileExists(iconPath))
+			IconItem.IconFile = iconPath;
 	}
 
 	UINT command = uidFirstCmd;
@@ -326,7 +334,7 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 	bool addSubSep = false;
 	bool isCtrlPressed = GetKeyState(VK_CONTROL) < 0;
-	bool isFile = FileExist(*g_ShellItems.begin());
+	bool isFile = FileExists(*g_ShellItems.begin());
 	bool isDirectory = !isFile && DirectoryExist(*g_ShellItems.begin());
 
 	g_EditCommandIndex = -1;
@@ -336,6 +344,9 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 	if (!res)
 		return E_FAIL;
+
+	if (FileExists(IconItem.IconFile))
+		SetIcon(hmenu, uMenuIndex, MF_BYPOSITION, &IconItem);
 
 	uMenuIndex += 1;
 
@@ -436,6 +447,9 @@ STDMETHODIMP CMain::QueryContextMenu(
 		if (!res)
 			return E_FAIL;
 
+		if (FileExists(IconItem.IconFile))
+			SetIcon(subMenu, command, MF_BYCOMMAND, &IconItem);
+
 		g_EditCommandIndex = command - uidFirstCmd;
 	}
 	else
@@ -484,7 +498,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			{
 				std::wstring firstItem = *g_ShellItems.begin();
 
-				if (FileExist(firstItem))
+				if (FileExists(firstItem))
 				{
 					wcscpy_s(szDir, firstItem.c_str());
 					PathRemoveFileSpec(szDir);
