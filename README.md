@@ -184,7 +184,7 @@ Start CMD at the given folder.
 
 Start Windows Terminal at the given folder.
 
-In the Windows Terminal settings define:
+In the Windows Terminal profile settings define:
 
 ```
 "startingDirectory" : null,
