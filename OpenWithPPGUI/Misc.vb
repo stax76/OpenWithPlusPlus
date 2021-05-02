@@ -108,8 +108,9 @@ Public Class Item
     Public Directories As Boolean
     Public FileTypes As String = ""
     Public FileTypesDisplay As String = ""
-    Public HideWindow As Boolean
+    Public Filter As String = ""
     Public Hidden As Boolean
+    Public HideWindow As Boolean
     Public IconFile As String = ""
     Public IconIndex As Integer
     Public Name As String = ""
@@ -118,7 +119,7 @@ Public Class Item
     Public SubMenu As Boolean = True
     Public WorkingDirectory As String = ""
 
-    Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
+    Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
         Return Name.CompareTo(DirectCast(obj, Item).Name)
     End Function
 End Class

@@ -1,7 +1,8 @@
 
 # Open with++
 
-Open with++ is a shell extension that allows to add command line driven custom menu items to the Windows File Explorer context menu.
+Open with++ is a shell extension that allows to add command line driven
+custom menu items to the Windows File Explorer context menu.
 
 
 ## Screenshots
@@ -15,7 +16,7 @@ Open with++ is a shell extension that allows to add command line driven custom m
 
 The requirements are Windows 7 x64 or higher, [.NET Framework 4.8 x64](https://dotnet.microsoft.com/download/dotnet-framework/net48) and [Visual C++ 2019 Redistributable x64](https://support.microsoft.com/en-gb/help/2977003/the-latest-supported-visual-c-downloads).
 
-Start the application and click on the Install button in the toolbar.
+Start the application and click on the Install button. Don't move the folder after installation.
 
 
 ## GUI Elements
@@ -43,7 +44,10 @@ Allows to define a custom settings folder and macros that are usable in the File
 
 ### Install/Uninstall
 
-Installs/Uninstalls the shell extension. Uninstall requires a reboot, logout or restarting the relevant processes manually, Windows File Explorer can be restarted with the task manager. Common processes which load context menu shell extensions are Windows File Explorer and [Everything](https://www.voidtools.com/).
+Installs/Uninstalls the shell extension. Uninstall requires a reboot,
+logout or restarting the relevant processes manually, Windows File Explorer can be
+restarted with the task manager. Common processes which load context menu shell extensions
+are Windows File Explorer and [Everything](https://www.voidtools.com/).
 
 
 ### Name
@@ -76,29 +80,43 @@ Macros are only supported in the File Types property.
 
 Specifies the program to be used for opening the selected files or folders.
 
-Environment variables get expanded.
+Environment variables and relative paths are supported.
 
 ### Arguments
 
-Specifies the arguments that are passed to the program when the command is executed. You can use the predefined variable %paths% which expands to the paths of the selected files or folders. Do not enclose the %paths% macro in quotes as Open with++ adds them automatically when the macro is expanded, each path is enclosed in double quotation marks and separated by a space.
+Specifies the arguments that are passed to the program when the command is executed.
+You can use the predefined variable %paths% which expands to the paths of the selected
+files or folders. Do not enclose the %paths% macro in quotes because Open with++ adds them
+automatically when the macro is expanded, each path is enclosed in double quotation marks
+and separated by a space.
+
+To get the filename without extension for a single file there is a %filename-no-ext% variable.
 
 Environment variables get expanded.
 
 ### Working Directory
 
-The working directory the process will use, if not specified the working directory will be set to the directory of the selected files or folders.
+The working directory the process will use, if not specified the working directory
+will be set to the directory of the selected files or folders.
 
 Environment variables get expanded.
 
 ### Icon
 
-Supported file types are ICO, EXE and DLL. EXE and DLL files can contain different icons, Open with++ will show a dialog that allows to choose which icon in the EXE or DLL file to use.
+Supported file types are ICO, EXE and DLL. EXE and DLL files can contain different icons,
+Open with++ will show a dialog that allows to choose which icon in the EXE or DLL file to use.
 
-Environment variables get expanded.
+Environment variables and relative paths are supported.
 
 [IrfanView](https://www.irfanview.com/) can be used to create icons.
 
-[Here is an article](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons) that shows which Windows DLLs contain icon resources.
+[Here is an article](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons) that
+shows which Windows DLLs contain icon resources.
+
+
+### Regex Filter
+
+Show the menu only when selected files and folders match to a regex expression.
 
 
 ### Show in sub menu
@@ -118,7 +136,9 @@ The menu item is only visible if the Control key is pressed.
 
 ### Run as admin
 
-Specifies that the command executes with elevated privilegs. When disabled commands can still be executed with elevated privilegs by holding down Shift key while selecting the menu command.
+Specifies that the command executes with elevated privilegs.
+When disabled commands can still be executed with elevated privilegs
+by holding down Shift key while selecting the menu command.
 
 
 ### Run hidden
@@ -128,11 +148,16 @@ Runs the process with hidden window. Useful to hide terminal tools like PowerShe
 
 ## Tips & Tricks
 
-Holding down the Shift key while selecting a command from the Open with++ menu will execute the command with elevated privileges.
+Holding down the Shift key while selecting a command from the Open with++ menu
+will execute the command with elevated privileges.
 
 Path, Arguments, Working Directory and Icon support the usage of environment variables.
 
 The location of Open with++ is available as environment variable %OpenWithPPDir%.
+
+The easiest way to change the path of many items is editing
+the settings xml file directly with a text editor.
+
 
 ## Configuration Suggestions
 

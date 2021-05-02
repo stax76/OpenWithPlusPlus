@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "Main.h"
 
+#include <regex>
+#include <filesystem>
 
 Item::~Item()
 {
@@ -13,6 +15,40 @@ Item::~Item()
 }
 
 
+std::wstring JoinList(std::list<std::wstring>* list, const std::wstring& sep)
+{
+	std::wstring ret;
+
+	if ((*list).size() > 0)
+		ret = *(*list).begin();
+
+	if ((*list).size() > 1)
+	{
+		std::list<std::wstring>::iterator it = (*list).begin();
+		it++;
+
+		for (it; it != (*list).end(); it++)
+			ret += sep + (*it);
+	}
+
+	return ret;
+}
+
+
+std::wstring ToLower(std::wstring val)
+{
+	std::transform(val.begin(), val.end(), val.begin(), tolower);
+	return val;
+}
+
+
+std::wstring GetExtNoDot(std::wstring pathName)
+{
+	size_t period = pathName.find_last_of(L".");
+	return ToLower(pathName.substr(period + 1));
+}
+
+
 BOOL FileExists(std::wstring file)
 {
 	if (file.length() == 0)
@@ -20,6 +56,13 @@ BOOL FileExists(std::wstring file)
 
 	DWORD dwAttrib = GetFileAttributes(file.c_str());
 	return dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+
+BOOL DirectoryExist(std::wstring path)
+{
+	DWORD dwAttrib = GetFileAttributes(path.c_str());
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 
@@ -97,6 +140,15 @@ HRESULT SetIcon(HMENU menu, UINT position, UINT flags, Item* item)
 			path = szPath;
 	}
 
+	// starts with
+	if (path.rfind(L"..\\", 0) == 0)
+	{
+		WCHAR szExeDir[500];
+		SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeDir", szExeDir, NULL);
+		std::wstring exeDir(szExeDir);
+		path = exeDir + path;
+	}
+
 	if (!FileExists(path))
 		return S_OK;
 
@@ -125,47 +177,6 @@ HRESULT SetIcon(HMENU menu, UINT position, UINT flags, Item* item)
 		return E_FAIL;
 
 	return S_OK;
-}
-
-
-std::wstring JoinList(std::list<std::wstring>* list, const std::wstring& sep)
-{
-	std::wstring ret;
-
-	if ((*list).size() > 0)
-		ret = *(*list).begin();
-
-	if ((*list).size() > 1)
-	{
-		std::list<std::wstring>::iterator it = (*list).begin();
-		it++;
-
-		for (it; it != (*list).end(); it++)
-			ret += sep + (*it);
-	}
-
-	return ret;
-}
-
-
-std::wstring ToLower(std::wstring val)
-{
-	std::transform(val.begin(), val.end(), val.begin(), tolower);
-	return val;
-}
-
-
-std::wstring GetExtNoDot(std::wstring pathName)
-{
-	size_t period = pathName.find_last_of(L".");
-	return ToLower(pathName.substr(period + 1));
-}
-
-
-BOOL DirectoryExist(std::wstring path)
-{
-	DWORD dwAttrib = GetFileAttributes(path.c_str());
-	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 
@@ -246,6 +257,8 @@ HRESULT CMain::LoadXML()
 				item->IconIndex = std::stoi(std::wstring(cNodeText));
 			else if (cNodeName == L"FileTypes")
 				item->FileTypes = cNodeText;
+			else if (cNodeName == L"Filter")
+				item->Filter = cNodeText;
 			else if (cNodeName == L"SubMenu")
 				item->SubMenu = (cNodeText == L"true") ? true : false;
 			else if (cNodeName == L"Directories")
@@ -348,6 +361,9 @@ STDMETHODIMP CMain::QueryContextMenu(
 	bool isFile = FileExists(*g_ShellItems.begin());
 	bool isDirectory = !isFile && DirectoryExist(*g_ShellItems.begin());
 
+	std::wstring ext = GetExtNoDot(*g_ShellItems.begin());
+	std::wstring path = *g_ShellItems.begin();
+
 	g_EditCommandIndex = -1;
 
 	int res = InsertMenu(hmenu, uMenuIndex, MF_BYPOSITION | MF_POPUP, (UINT_PTR)subMenu, L"Open with++");
@@ -364,10 +380,10 @@ STDMETHODIMP CMain::QueryContextMenu(
 	for (UINT i = 0; i < g_Items.size(); i++)
 	{
 		g_Items[i]->CommandIndex = -1;
-		std::wstring ext = GetExtNoDot(*g_ShellItems.begin());
 
 		if (isFile && g_Items[i]->FileTypes != L"" && ext != L""
 			&& (L" " + g_Items[i]->FileTypes + L" ").find(L" " + ext + L" ") != std::wstring::npos
+			&& (g_Items[i]->Filter == L"" || std::regex_search(path, std::wregex(g_Items[i]->Filter)))
 			&& (!g_Items[i]->Hidden || (g_Items[i]->Hidden && isCtrlPressed)))
 		{
 			g_Items[i]->CommandIndex = command - uidFirstCmd;
@@ -411,7 +427,8 @@ STDMETHODIMP CMain::QueryContextMenu(
 
 	for (UINT i = 0; i < g_Items.size(); i++)
 	{
-		if ((g_Items[i]->FileTypes == L"*.*" && isFile) || (g_Items[i]->Directories && isDirectory)
+		if ((g_Items[i]->FileTypes == L"*.*" && isFile || g_Items[i]->Directories && isDirectory)
+			&& (g_Items[i]->Filter == L"" || std::regex_search(path, std::wregex(g_Items[i]->Filter)))
 			&& (!g_Items[i]->Hidden || (g_Items[i]->Hidden && isCtrlPressed)))
 		{
 			g_Items[i]->CommandIndex = command - uidFirstCmd;
@@ -503,6 +520,15 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				args = value.GetBuffer();
 			}
 
+			if (args.find(L"%filename-no-ext%") != std::wstring::npos)
+			{
+				std::wstring firstFile = g_ShellItems.front();
+				std::filesystem::path fp(firstFile);
+				ATL::CString value = args.c_str();
+				value.Replace(L"%filename-no-ext%", fp.stem().c_str());
+				args = value.GetBuffer();
+			}
+
 			std::wstring verb;
 
 			if (g_Items[i]->RunAsAdmin || GetKeyState(VK_SHIFT) < 0)
@@ -520,6 +546,14 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 					path = szPath;
 			}
 
+			WCHAR szExeDir[500];
+			SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeDir", szExeDir, NULL);
+			std::wstring exeDir(szExeDir);
+
+			// starts with
+			if (path.rfind(L"..\\", 0) == 0)
+				path = exeDir + path;
+
 			if (args.find(var) != std::string::npos)
 			{
 				WCHAR szArgs[900];
@@ -532,12 +566,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 			std::wstring guiExe(L"OpenWithPPGUI.exe");
 
 			if (guiExe == path)
-			{
-				WCHAR szExeDir[500];
-				SHRegGetPath(HKEY_CURRENT_USER, L"Software\\" PRODUCT_NAME, L"ExeDir", szExeDir, NULL);
-				std::wstring exeDir(szExeDir);
 				path = exeDir + guiExe;
-			}
 
 			SHELLEXECUTEINFO info;
 

@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Open with++")>
-<Assembly: AssemblyDescription("Shell extension allowing to customize File Explorer context menu")>
+<Assembly: AssemblyDescription("A shell extension that allows customizing the File Explorer context menu.")>
 <Assembly: AssemblyCompany("Frank Skare (stax76)")>
 <Assembly: AssemblyProduct("Open with++")>
-<Assembly: AssemblyCopyright("Copyright (C) 2008-2020 Frank Skare (stax76)")>
+<Assembly: AssemblyCopyright("Copyright (C) 2008-2021 Frank Skare (stax76)")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -29,5 +29,5 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("3.8.0.0")>
-<Assembly: AssemblyFileVersion("3.8.0.0")>
+<Assembly: AssemblyVersion("3.9.0.0")>
+<Assembly: AssemblyFileVersion("3.9.0.0")>

@@ -4,7 +4,6 @@
 #include "Util.h"
 #include "Common.h"
 
-
 EXTERN_C const CLSID CLSID_Main;
 
 // {E7B8ACF5-FC18-4f0d-BC50-D0184481A5DC}
@@ -15,12 +14,13 @@ class Item
 public:
 	HBITMAP Icon = NULL;
 
+	std::wstring Arguments;
+	std::wstring FileTypes;
+	std::wstring Filter;
+	std::wstring IconFile;
 	std::wstring Name;
 	std::wstring Path;
-	std::wstring Arguments;
 	std::wstring WorkingDirectory;
-	std::wstring IconFile;
-	std::wstring FileTypes;
 
 	bool SubMenu;
 	bool Directories;

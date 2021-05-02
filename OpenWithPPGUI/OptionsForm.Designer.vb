@@ -41,6 +41,7 @@ Partial Class OptionsForm
         'bnOK
         '
         Me.bnOK.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.bnOK.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bnOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.bnOK.Location = New System.Drawing.Point(0, 0)
         Me.bnOK.Margin = New System.Windows.Forms.Padding(0, 0, 9, 0)
@@ -48,11 +49,12 @@ Partial Class OptionsForm
         Me.bnOK.Size = New System.Drawing.Size(250, 75)
         Me.bnOK.TabIndex = 0
         Me.bnOK.Text = "OK"
-        Me.bnOK.UseVisualStyleBackColor = True
+        Me.bnOK.UseVisualStyleBackColor = False
         '
         'bnCancel
         '
         Me.bnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.bnCancel.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.bnCancel.Location = New System.Drawing.Point(268, 0)
         Me.bnCancel.Margin = New System.Windows.Forms.Padding(9, 0, 0, 0)
@@ -60,7 +62,7 @@ Partial Class OptionsForm
         Me.bnCancel.Size = New System.Drawing.Size(250, 75)
         Me.bnCancel.TabIndex = 1
         Me.bnCancel.Text = "Cancel"
-        Me.bnCancel.UseVisualStyleBackColor = True
+        Me.bnCancel.UseVisualStyleBackColor = False
         '
         'laMacros
         '
@@ -79,6 +81,7 @@ Partial Class OptionsForm
         Me.tbMacros.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbMacros.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tbMacros.Location = New System.Drawing.Point(0, 0)
         Me.tbMacros.Margin = New System.Windows.Forms.Padding(0)
         Me.tbMacros.Multiline = True
@@ -90,6 +93,7 @@ Partial Class OptionsForm
         '
         'tlpMain
         '
+        Me.tlpMain.BackColor = System.Drawing.Color.Gainsboro
         Me.tlpMain.ColumnCount = 2
         Me.tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -158,6 +162,7 @@ Partial Class OptionsForm
         'tbSettingDirectory
         '
         Me.tbSettingDirectory.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbSettingDirectory.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tbSettingDirectory.Location = New System.Drawing.Point(0, 0)
         Me.tbSettingDirectory.Margin = New System.Windows.Forms.Padding(0)
         Me.tbSettingDirectory.Name = "tbSettingDirectory"

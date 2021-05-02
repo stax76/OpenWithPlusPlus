@@ -162,6 +162,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Changelog.md">
+      <Link>Changelog.md</Link>
+    </None>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
