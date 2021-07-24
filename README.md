@@ -279,3 +279,11 @@ Open files in Google Chrome.
 **Path**: `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`  
 **Arguments**: `%paths%`  
 **Icon**: `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe,0`  
+
+
+Related apps
+------------
+
+Find a list of related apps:
+
+https://stax76.github.io/frankskare
