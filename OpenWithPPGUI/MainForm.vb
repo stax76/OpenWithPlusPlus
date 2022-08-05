@@ -66,9 +66,10 @@ Public Class MainForm
     Friend WithEvents llInstallUninstall As LinkLabel
     Friend WithEvents llOptions As LinkLabel
     Friend WithEvents llWebsite As LinkLabel
-    Friend WithEvents llAbout As LinkLabel
+    Friend WithEvents llExport As LinkLabel
     Friend WithEvents laFilter As Label
     Friend WithEvents tbFilter As TextBox
+    Friend WithEvents llAbout As LinkLabel
     Friend WithEvents bnAdd As Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.tbName = New System.Windows.Forms.TextBox()
@@ -98,6 +99,7 @@ Public Class MainForm
         Me.llInstallUninstall = New System.Windows.Forms.LinkLabel()
         Me.llOptions = New System.Windows.Forms.LinkLabel()
         Me.llWebsite = New System.Windows.Forms.LinkLabel()
+        Me.llExport = New System.Windows.Forms.LinkLabel()
         Me.llAbout = New System.Windows.Forms.LinkLabel()
         Me.tlpSearch = New System.Windows.Forms.TableLayoutPanel()
         Me.bnFileTypes = New System.Windows.Forms.Button()
@@ -122,10 +124,10 @@ Public Class MainForm
         '
         Me.tbName.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbName.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.tbName.Location = New System.Drawing.Point(820, 16)
+        Me.tbName.Location = New System.Drawing.Point(849, 16)
         Me.tbName.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbName.Name = "tbName"
-        Me.tbName.Size = New System.Drawing.Size(1083, 55)
+        Me.tbName.Size = New System.Drawing.Size(1135, 55)
         Me.tbName.TabIndex = 1
         '
         'bnCancel
@@ -133,7 +135,7 @@ Public Class MainForm
         Me.bnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bnCancel.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.bnCancel.Location = New System.Drawing.Point(1132, 18)
+        Me.bnCancel.Location = New System.Drawing.Point(1274, 18)
         Me.bnCancel.Margin = New System.Windows.Forms.Padding(18)
         Me.bnCancel.Name = "bnCancel"
         Me.bnCancel.Size = New System.Drawing.Size(200, 75)
@@ -146,7 +148,7 @@ Public Class MainForm
         Me.bnOK.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnOK.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bnOK.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.bnOK.Location = New System.Drawing.Point(914, 18)
+        Me.bnOK.Location = New System.Drawing.Point(1056, 18)
         Me.bnOK.Margin = New System.Windows.Forms.Padding(160, 0, 0, 0)
         Me.bnOK.Name = "bnOK"
         Me.bnOK.Size = New System.Drawing.Size(200, 75)
@@ -158,10 +160,10 @@ Public Class MainForm
         '
         Me.tbPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbPath.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.tbPath.Location = New System.Drawing.Point(820, 200)
+        Me.tbPath.Location = New System.Drawing.Point(849, 200)
         Me.tbPath.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbPath.Name = "tbPath"
-        Me.tbPath.Size = New System.Drawing.Size(1083, 55)
+        Me.tbPath.Size = New System.Drawing.Size(1135, 55)
         Me.tbPath.TabIndex = 4
         '
         'tbArguments
@@ -169,11 +171,11 @@ Public Class MainForm
         Me.tbArguments.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbArguments.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tbArguments.HideSelection = False
-        Me.tbArguments.Location = New System.Drawing.Point(820, 284)
+        Me.tbArguments.Location = New System.Drawing.Point(849, 284)
         Me.tbArguments.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbArguments.Multiline = True
         Me.tbArguments.Name = "tbArguments"
-        Me.tbArguments.Size = New System.Drawing.Size(1083, 120)
+        Me.tbArguments.Size = New System.Drawing.Size(1135, 170)
         Me.tbArguments.TabIndex = 6
         '
         'cbDirectories
@@ -198,17 +200,17 @@ Public Class MainForm
         '
         Me.tbFileTypes.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbFileTypes.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.tbFileTypes.Location = New System.Drawing.Point(820, 107)
+        Me.tbFileTypes.Location = New System.Drawing.Point(849, 107)
         Me.tbFileTypes.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbFileTypes.Name = "tbFileTypes"
-        Me.tbFileTypes.Size = New System.Drawing.Size(1083, 55)
+        Me.tbFileTypes.Size = New System.Drawing.Size(1135, 55)
         Me.tbFileTypes.TabIndex = 2
         '
         'laExt
         '
         Me.laExt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laExt.AutoSize = True
-        Me.laExt.Location = New System.Drawing.Point(602, 110)
+        Me.laExt.Location = New System.Drawing.Point(631, 110)
         Me.laExt.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.laExt.Name = "laExt"
         Me.laExt.Size = New System.Drawing.Size(182, 48)
@@ -236,7 +238,7 @@ Public Class MainForm
         Me.lv.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.lv.Name = "lv"
         Me.tlpMain.SetRowSpan(Me.lv, 7)
-        Me.lv.Size = New System.Drawing.Size(566, 926)
+        Me.lv.Size = New System.Drawing.Size(595, 1043)
         Me.lv.TabIndex = 0
         Me.lv.UseCompatibleStateImageBehavior = False
         '
@@ -247,14 +249,14 @@ Public Class MainForm
         Me.tbSearch.Location = New System.Drawing.Point(0, 16)
         Me.tbSearch.Margin = New System.Windows.Forms.Padding(0)
         Me.tbSearch.Name = "tbSearch"
-        Me.tbSearch.Size = New System.Drawing.Size(566, 55)
+        Me.tbSearch.Size = New System.Drawing.Size(595, 55)
         Me.tbSearch.TabIndex = 0
         '
         'laPath
         '
         Me.laPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laPath.AutoSize = True
-        Me.laPath.Location = New System.Drawing.Point(602, 203)
+        Me.laPath.Location = New System.Drawing.Point(631, 203)
         Me.laPath.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.laPath.Name = "laPath"
         Me.laPath.Size = New System.Drawing.Size(97, 48)
@@ -265,7 +267,7 @@ Public Class MainForm
         '
         Me.laName.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laName.AutoSize = True
-        Me.laName.Location = New System.Drawing.Point(602, 20)
+        Me.laName.Location = New System.Drawing.Point(631, 20)
         Me.laName.Margin = New System.Windows.Forms.Padding(18, 20, 0, 20)
         Me.laName.Name = "laName"
         Me.laName.Size = New System.Drawing.Size(123, 48)
@@ -276,7 +278,7 @@ Public Class MainForm
         '
         Me.laArgs.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laArgs.AutoSize = True
-        Me.laArgs.Location = New System.Drawing.Point(602, 320)
+        Me.laArgs.Location = New System.Drawing.Point(631, 345)
         Me.laArgs.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.laArgs.Name = "laArgs"
         Me.laArgs.Size = New System.Drawing.Size(202, 48)
@@ -287,7 +289,7 @@ Public Class MainForm
         '
         Me.bnPath.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnPath.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnPath.Location = New System.Drawing.Point(1921, 190)
+        Me.bnPath.Location = New System.Drawing.Point(2002, 190)
         Me.bnPath.Margin = New System.Windows.Forms.Padding(18, 9, 18, 9)
         Me.bnPath.Name = "bnPath"
         Me.bnPath.Size = New System.Drawing.Size(200, 75)
@@ -299,7 +301,7 @@ Public Class MainForm
         '
         Me.bnArguments.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnArguments.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnArguments.Location = New System.Drawing.Point(1921, 306)
+        Me.bnArguments.Location = New System.Drawing.Point(2002, 331)
         Me.bnArguments.Margin = New System.Windows.Forms.Padding(18, 9, 18, 9)
         Me.bnArguments.Name = "bnArguments"
         Me.bnArguments.Size = New System.Drawing.Size(200, 75)
@@ -319,10 +321,10 @@ Public Class MainForm
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbRunAsAdmin)
         Me.PropsFlowLayoutPanel.Controls.Add(Me.cbHideWindow)
         Me.PropsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.PropsFlowLayoutPanel.Location = New System.Drawing.Point(584, 691)
+        Me.PropsFlowLayoutPanel.Location = New System.Drawing.Point(613, 741)
         Me.PropsFlowLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.PropsFlowLayoutPanel.Name = "PropsFlowLayoutPanel"
-        Me.PropsFlowLayoutPanel.Size = New System.Drawing.Size(1556, 323)
+        Me.PropsFlowLayoutPanel.Size = New System.Drawing.Size(1608, 390)
         Me.PropsFlowLayoutPanel.TabIndex = 16
         '
         'cbHidden
@@ -337,7 +339,7 @@ Public Class MainForm
         '
         'cbHideWindow
         '
-        Me.cbHideWindow.Location = New System.Drawing.Point(653, 3)
+        Me.cbHideWindow.Location = New System.Drawing.Point(25, 284)
         Me.cbHideWindow.Margin = New System.Windows.Forms.Padding(25, 3, 3, 3)
         Me.cbHideWindow.Name = "cbHideWindow"
         Me.cbHideWindow.Size = New System.Drawing.Size(600, 60)
@@ -392,14 +394,14 @@ Public Class MainForm
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlpMain.Size = New System.Drawing.Size(2140, 1125)
+        Me.tlpMain.Size = New System.Drawing.Size(2221, 1242)
         Me.tlpMain.TabIndex = 17
         '
         'laFilter
         '
         Me.laFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laFilter.AutoSize = True
-        Me.laFilter.Location = New System.Drawing.Point(602, 623)
+        Me.laFilter.Location = New System.Drawing.Point(631, 673)
         Me.laFilter.Margin = New System.Windows.Forms.Padding(18, 20, 0, 20)
         Me.laFilter.Name = "laFilter"
         Me.laFilter.Size = New System.Drawing.Size(215, 48)
@@ -410,10 +412,10 @@ Public Class MainForm
         '
         Me.tbFilter.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbFilter.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.tbFilter.Location = New System.Drawing.Point(820, 619)
+        Me.tbFilter.Location = New System.Drawing.Point(849, 669)
         Me.tbFilter.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbFilter.Name = "tbFilter"
-        Me.tbFilter.Size = New System.Drawing.Size(1083, 55)
+        Me.tbFilter.Size = New System.Drawing.Size(1135, 55)
         Me.tbFilter.TabIndex = 12
         '
         'FlowLayoutPanel1
@@ -425,13 +427,14 @@ Public Class MainForm
         Me.FlowLayoutPanel1.Controls.Add(Me.llInstallUninstall)
         Me.FlowLayoutPanel1.Controls.Add(Me.llOptions)
         Me.FlowLayoutPanel1.Controls.Add(Me.llWebsite)
+        Me.FlowLayoutPanel1.Controls.Add(Me.llExport)
         Me.FlowLayoutPanel1.Controls.Add(Me.llAbout)
         Me.FlowLayoutPanel1.Controls.Add(Me.bnOK)
         Me.FlowLayoutPanel1.Controls.Add(Me.bnCancel)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(790, 1014)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(729, 1131)
         Me.FlowLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(1350, 111)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(1492, 111)
         Me.FlowLayoutPanel1.TabIndex = 18
         '
         'llInstallUninstall
@@ -473,16 +476,29 @@ Public Class MainForm
         Me.llWebsite.TabStop = True
         Me.llWebsite.Text = "Website"
         '
+        'llExport
+        '
+        Me.llExport.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.llExport.AutoSize = True
+        Me.llExport.LinkColor = System.Drawing.Color.DimGray
+        Me.llExport.Location = New System.Drawing.Point(627, 31)
+        Me.llExport.Margin = New System.Windows.Forms.Padding(10)
+        Me.llExport.Name = "llExport"
+        Me.llExport.Size = New System.Drawing.Size(122, 48)
+        Me.llExport.TabIndex = 3
+        Me.llExport.TabStop = True
+        Me.llExport.Text = "Export"
+        '
         'llAbout
         '
         Me.llAbout.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.llAbout.AutoSize = True
         Me.llAbout.LinkColor = System.Drawing.Color.DimGray
-        Me.llAbout.Location = New System.Drawing.Point(627, 31)
+        Me.llAbout.Location = New System.Drawing.Point(769, 31)
         Me.llAbout.Margin = New System.Windows.Forms.Padding(10)
         Me.llAbout.Name = "llAbout"
         Me.llAbout.Size = New System.Drawing.Size(117, 48)
-        Me.llAbout.TabIndex = 3
+        Me.llAbout.TabIndex = 6
         Me.llAbout.TabStop = True
         Me.llAbout.Text = "About"
         '
@@ -499,14 +515,14 @@ Public Class MainForm
         Me.tlpSearch.Name = "tlpSearch"
         Me.tlpSearch.RowCount = 1
         Me.tlpSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpSearch.Size = New System.Drawing.Size(566, 88)
+        Me.tlpSearch.Size = New System.Drawing.Size(595, 88)
         Me.tlpSearch.TabIndex = 19
         '
         'bnFileTypes
         '
         Me.bnFileTypes.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnFileTypes.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnFileTypes.Location = New System.Drawing.Point(1921, 97)
+        Me.bnFileTypes.Location = New System.Drawing.Point(2002, 97)
         Me.bnFileTypes.Margin = New System.Windows.Forms.Padding(18, 9, 18, 9)
         Me.bnFileTypes.Name = "bnFileTypes"
         Me.bnFileTypes.Size = New System.Drawing.Size(200, 75)
@@ -518,7 +534,7 @@ Public Class MainForm
         '
         Me.bnWorkingDirectory.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnWorkingDirectory.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnWorkingDirectory.Location = New System.Drawing.Point(1921, 424)
+        Me.bnWorkingDirectory.Location = New System.Drawing.Point(2002, 474)
         Me.bnWorkingDirectory.Margin = New System.Windows.Forms.Padding(18, 9, 18, 9)
         Me.bnWorkingDirectory.Name = "bnWorkingDirectory"
         Me.bnWorkingDirectory.Size = New System.Drawing.Size(200, 75)
@@ -531,17 +547,17 @@ Public Class MainForm
         Me.tbWorkingDirectory.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbWorkingDirectory.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tbWorkingDirectory.HideSelection = False
-        Me.tbWorkingDirectory.Location = New System.Drawing.Point(820, 434)
+        Me.tbWorkingDirectory.Location = New System.Drawing.Point(849, 484)
         Me.tbWorkingDirectory.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbWorkingDirectory.Name = "tbWorkingDirectory"
-        Me.tbWorkingDirectory.Size = New System.Drawing.Size(1083, 55)
+        Me.tbWorkingDirectory.Size = New System.Drawing.Size(1135, 55)
         Me.tbWorkingDirectory.TabIndex = 8
         '
         'laWorkingDirectory
         '
         Me.laWorkingDirectory.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laWorkingDirectory.AutoSize = True
-        Me.laWorkingDirectory.Location = New System.Drawing.Point(602, 414)
+        Me.laWorkingDirectory.Location = New System.Drawing.Point(631, 464)
         Me.laWorkingDirectory.Margin = New System.Windows.Forms.Padding(18, 0, 12, 0)
         Me.laWorkingDirectory.Name = "laWorkingDirectory"
         Me.laWorkingDirectory.Size = New System.Drawing.Size(174, 96)
@@ -560,22 +576,22 @@ Public Class MainForm
         Me.tlpListView.Controls.Add(Me.bnClone, 2, 0)
         Me.tlpListView.Controls.Add(Me.bnRemove, 1, 0)
         Me.tlpListView.Controls.Add(Me.bnAdd, 0, 0)
-        Me.tlpListView.Location = New System.Drawing.Point(18, 1014)
+        Me.tlpListView.Location = New System.Drawing.Point(18, 1131)
         Me.tlpListView.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.tlpListView.Name = "tlpListView"
         Me.tlpListView.RowCount = 1
         Me.tlpListView.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tlpListView.Size = New System.Drawing.Size(566, 111)
+        Me.tlpListView.Size = New System.Drawing.Size(595, 111)
         Me.tlpListView.TabIndex = 27
         '
         'bnClone
         '
         Me.bnClone.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bnClone.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnClone.Location = New System.Drawing.Point(402, 18)
+        Me.bnClone.Location = New System.Drawing.Point(422, 18)
         Me.bnClone.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.bnClone.Name = "bnClone"
-        Me.bnClone.Size = New System.Drawing.Size(164, 75)
+        Me.bnClone.Size = New System.Drawing.Size(173, 75)
         Me.bnClone.TabIndex = 2
         Me.bnClone.Text = "Cl&one"
         Me.bnClone.UseVisualStyleBackColor = False
@@ -584,10 +600,10 @@ Public Class MainForm
         '
         Me.bnRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bnRemove.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnRemove.Location = New System.Drawing.Point(181, 18)
+        Me.bnRemove.Location = New System.Drawing.Point(190, 18)
         Me.bnRemove.Margin = New System.Windows.Forms.Padding(0)
         Me.bnRemove.Name = "bnRemove"
-        Me.bnRemove.Size = New System.Drawing.Size(203, 75)
+        Me.bnRemove.Size = New System.Drawing.Size(214, 75)
         Me.bnRemove.TabIndex = 1
         Me.bnRemove.Text = "&Remove"
         Me.bnRemove.UseVisualStyleBackColor = False
@@ -599,7 +615,7 @@ Public Class MainForm
         Me.bnAdd.Location = New System.Drawing.Point(0, 18)
         Me.bnAdd.Margin = New System.Windows.Forms.Padding(0, 0, 18, 0)
         Me.bnAdd.Name = "bnAdd"
-        Me.bnAdd.Size = New System.Drawing.Size(163, 75)
+        Me.bnAdd.Size = New System.Drawing.Size(172, 75)
         Me.bnAdd.TabIndex = 0
         Me.bnAdd.Text = "&Add"
         Me.bnAdd.UseVisualStyleBackColor = False
@@ -608,7 +624,7 @@ Public Class MainForm
         '
         Me.bnIcon.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.bnIcon.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bnIcon.Location = New System.Drawing.Point(1921, 519)
+        Me.bnIcon.Location = New System.Drawing.Point(2002, 569)
         Me.bnIcon.Margin = New System.Windows.Forms.Padding(18, 9, 18, 9)
         Me.bnIcon.Name = "bnIcon"
         Me.bnIcon.Size = New System.Drawing.Size(200, 75)
@@ -621,17 +637,17 @@ Public Class MainForm
         Me.tbIcon.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbIcon.BackColor = System.Drawing.Color.WhiteSmoke
         Me.tbIcon.HideSelection = False
-        Me.tbIcon.Location = New System.Drawing.Point(820, 529)
+        Me.tbIcon.Location = New System.Drawing.Point(849, 579)
         Me.tbIcon.Margin = New System.Windows.Forms.Padding(3, 10, 0, 10)
         Me.tbIcon.Name = "tbIcon"
-        Me.tbIcon.Size = New System.Drawing.Size(1083, 55)
+        Me.tbIcon.Size = New System.Drawing.Size(1135, 55)
         Me.tbIcon.TabIndex = 10
         '
         'laIcon
         '
         Me.laIcon.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.laIcon.AutoSize = True
-        Me.laIcon.Location = New System.Drawing.Point(602, 532)
+        Me.laIcon.Location = New System.Drawing.Point(631, 582)
         Me.laIcon.Margin = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.laIcon.Name = "laIcon"
         Me.laIcon.Size = New System.Drawing.Size(96, 48)
@@ -642,7 +658,7 @@ Public Class MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(288.0!, 288.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(2140, 1125)
+        Me.ClientSize = New System.Drawing.Size(2221, 1242)
         Me.Controls.Add(Me.tlpMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -1028,10 +1044,6 @@ Public Class MainForm
         Process.Start("https://github.com/stax76/OpenWithPlusPlus")
     End Sub
 
-    Sub llAbout_Click(sender As Object, e As EventArgs) Handles llAbout.Click
-        MsgInfo(Application.ProductName + " " + Application.ProductVersion.ToString + BR2 + "Copyright (C) 2008-2021 Frank Skare (stax76)" + BR2 + "MIT License")
-    End Sub
-
     Sub bnFileTypes_Click(sender As Object, e As EventArgs) Handles bnFileTypes.Click
         tbFileTypes.Focus()
         tbFileTypes.Text = "*.*"
@@ -1202,4 +1214,52 @@ Public Class MainForm
             SelectedItem.Filter = tbFilter.Text
         End If
     End Sub
+
+    Sub llAbout_Click(sender As Object, e As EventArgs) Handles llAbout.Click
+        MsgInfo(Application.ProductName + " " + Application.ProductVersion.ToString + BR2 + "Copyright (C) 2008-2021 Frank Skare (stax76)" + BR2 + "MIT License")
+    End Sub
+
+    Sub llExport_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles llExport.LinkClicked
+        If Msg("Export to ContextMenuForWindows11?", "Export", MessageBoxIcon.Question, MessageBoxButtons.OKCancel) <> DialogResult.OK Then
+            Exit Sub
+        End If
+
+        Dim items = TempItems
+        items.Sort()
+
+        For Each i In items
+            i.FileTypes = SolveMacros(i.FileTypesDisplay)
+        Next
+
+        Dim folder = Environment.ExpandEnvironmentVariables("C:\Users\%USERNAME%\AppData\Local\Packages\7061touchwp.CustomContextMenu_1zgtmak8c0kvy\LocalState\custom_commands\")
+
+        Try
+            Directory.CreateDirectory(folder)
+        Catch
+        End Try
+
+        For Each i In g.Settings.Items
+            Dim json = "{" + BR +
+                "    ""title"": " + EscapeJSON(i.Name) + "," + BR +
+                "    ""exe"": " + EscapeJSON(i.Path) + "," + BR +
+                "    ""param"": " + EscapeJSON(i.Arguments.Replace("%paths%", """{path}""")) + "," + BR +
+                "    ""icon"": " + EscapeJSON(i.IconFile) + "," + BR +
+                "    ""acceptExts"": " + EscapeJSON((" " + i.FileTypes).Replace(" ", " .").Replace("*.*", "*")) + "," + BR +
+                "    ""acceptDirectory"": " + If(i.Directories, "true", "false") + "," + BR +
+                "    ""acceptFile"": " + If(i.FileTypes <> "", "true", "false") + "," + BR +
+                "    ""acceptMultipleFilesFlag"": 0," + BR +
+                "    ""pathDelimiter"": """"," + BR +
+                "    ""paramForMultipleFiles"": """"," + BR +
+                "    ""index"": 0" + BR + "}"
+
+            Try
+                File.WriteAllText(folder + i.Name + ".json", json)
+            Catch
+            End Try
+        Next
+    End Sub
+
+    Function EscapeJSON(value As String) As String
+        Return Web.Helpers.Json.Encode(value)
+    End Function
 End Class

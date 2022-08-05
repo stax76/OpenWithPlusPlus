@@ -4,6 +4,12 @@
 Open with++ is a shell extension that allows to add command line driven
 custom menu items to the Windows File Explorer context menu.
 
+Windows 11 Note: Open with++ is based on the classic Win32 menu,
+which I prefer much over the new menu of Windows 11.
+The classic menu can be enabled via registry tweak in Windows 11.
+Users that prefer the new Windows 11 menu can use
+[ContextMenuForWindows11](https://github.com/ikas-mc/ContextMenuForWindows11)
+which is very similar to Open with++.
 
 ## Screenshots
 
