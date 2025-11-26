@@ -289,9 +289,9 @@ Open files in Google Chrome.
 **Icon**: `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe,0`  
 
 
-Related apps
-------------
+Other projects from me
+----------------------
 
-Find a list of related apps:
+A list of my other projects can be found here:
 
-https://stax76.github.io/frankskare
+https://stax76.github.io/software-list

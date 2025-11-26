@@ -529,6 +529,15 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 				args = value.GetBuffer();
 			}
 
+			if (args.find(L"%folder%") != std::wstring::npos)
+			{
+				std::wstring firstFile = g_ShellItems.front();
+				std::filesystem::path path(firstFile);
+				ATL::CString value = args.c_str();
+				value.Replace(L"%folder%", path.parent_path().c_str());
+				args = value.GetBuffer();
+			}
+
 			std::wstring verb;
 
 			if (g_Items[i]->RunAsAdmin || GetKeyState(VK_SHIFT) < 0)
@@ -556,7 +565,7 @@ STDMETHODIMP CMain::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 
 			if (args.find(var) != std::string::npos)
 			{
-				WCHAR szArgs[900];
+				WCHAR szArgs[32767];
 				DWORD result = ExpandEnvironmentStrings(args.c_str(), szArgs, std::size(szArgs));
 
 				if (result)
